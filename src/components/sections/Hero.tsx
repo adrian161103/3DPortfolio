@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import MainScene from '../3d/MainScene';
 import { useGsapTimeline } from '@/hooks/useGsapTimeline';
-import FullscreenView from '../ui/FullscreenView';
 
 export default function Hero() {
   const timeline = useGsapTimeline();
@@ -38,8 +37,6 @@ export default function Hero() {
   }, [timeline]);
 
   return (
-    <FullscreenView>
       <MainScene />
-    </FullscreenView>
   );
 }

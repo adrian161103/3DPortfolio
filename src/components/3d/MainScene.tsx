@@ -10,7 +10,6 @@ import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLigh
 import CameraController from "./CameraController";
 import KeyboardController from "./desktop/KeyboardController";
 import { useStandardMaterials } from "@/lib/useStandardMaterials";
-import TerminalScreen from "./desktop/TerminalScreen";
 
 // Inicializa los uniformes necesarios para `RectAreaLight` (requerido por
 // tres.js cuando se usan luces de área desde el paquete de ejemplos).
@@ -202,7 +201,6 @@ export default function MainScene() {
             <KeyboardController />
           </Suspense>
           <CameraController />
-          {/* <TerminalScreen/> */}
         </Canvas>
 
         {/* Overlay negro al inicio */}
