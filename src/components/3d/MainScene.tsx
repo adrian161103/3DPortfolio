@@ -10,6 +10,7 @@ import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLigh
 import CameraController from "./CameraController";
 import KeyboardController from "./desktop/KeyboardController";
 import { useStandardMaterials } from "@/lib/useStandardMaterials";
+import ConsoleScreen from "../ui/Console";
 
 // Inicializa los uniformes necesarios para `RectAreaLight` (requerido por
 // tres.js cuando se usan luces de área desde el paquete de ejemplos).
@@ -26,7 +27,7 @@ function DeskModel() {
   // materiales estén disponibles.
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
-      if (child.name.toLowerCase().includes("monitor.001")) {
+      if (child.name.toLowerCase().includes("monitor001")) {
         child.material.emissive = new THREE.Color("#00FF66");
         child.material.emissiveIntensity = 1.0;
       }
@@ -37,7 +38,10 @@ function DeskModel() {
     }
   });
 
-  return <primitive object={scene} scale={1.2} position={[0, -1, 0]} />;
+  return (<>
+  <primitive object={scene} scale={1.2} position={[0, -1, 0]} />
+  <ConsoleScreen /></>
+  )
 }
 
 function Scene() {
