@@ -31,7 +31,7 @@ function DeskModel() {
         child.material.emissive = new THREE.Color("#00FF66");
         child.material.emissiveIntensity = 1.0;
       }
-      if (child.name.toLowerCase().includes("bombilla")) {
+      if (child.name.toLowerCase().includes("sphere001")) {
         child.material.emissive = new THREE.Color("#FFD38A");
         child.material.emissiveIntensity = 10.0;
       }
