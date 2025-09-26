@@ -11,6 +11,7 @@ import CameraController from "./CameraController";
 import KeyboardController from "./desktop/KeyboardController";
 import { useStandardMaterials } from "@/lib/useStandardMaterials";
 import ConsoleScreen from "../ui/Console";
+import PrinterInteraction from "./PrinterInteraction";
 
 // Inicializa los uniformes necesarios para `RectAreaLight` (requerido por
 // tres.js cuando se usan luces de área desde el paquete de ejemplos).
@@ -29,7 +30,7 @@ function DeskModel() {
     if (child instanceof THREE.Mesh) {
       if (child.name.toLowerCase().includes("monitor001")) {
         child.material.emissive = new THREE.Color("#00FF66");
-        child.material.emissiveIntensity = 1.0;
+        child.material.emissiveIntensity = .59;
       }
       if (child.name.toLowerCase().includes("sphere001")) {
         child.material.emissive = new THREE.Color("#FFD38A");
@@ -202,6 +203,7 @@ export default function MainScene() {
         >
           <Suspense fallback={<LoadingScreen />}>
             <Scene />
+            <PrinterInteraction  />
             <KeyboardController />
           </Suspense>
           <CameraController />

@@ -1,7 +1,9 @@
 import { Html } from "@react-three/drei";
 import { useState, useEffect, useRef } from "react";
+import RetroWindows from "../sections/RetroWindows";
 
 export default function ConsoleScreen() {
+  const [showWindows, setShowWindows] = useState(false);
   const commands = [
     "about",
     "projects",
@@ -93,10 +95,10 @@ export default function ConsoleScreen() {
     if (commands.includes(cleanCmd)) {
       setShowCommands(false);
 
-      if (cleanCmd === "windows") {
-        console.log("🖥️ Ejecutar animación Windows retro aquí");
-        return;
-      }
+    if (cleanCmd === "windows") {
+  setShowWindows(true); //  Windows retro
+  return;
+}
 
       // Guardar backup antes de corromper
       const newBackup = [...lines, `> ${command}`];
@@ -165,10 +167,10 @@ export default function ConsoleScreen() {
     setActive(true);
   };
 
-  return (
+  return (<>
     <Html
       transform
-      position={[0, 1.25, 0.05]}
+      position={[0, 1.25, 0.02]}
       rotation={[0, 0, 0]}
       scale={0.09}
       occlude
@@ -251,6 +253,10 @@ export default function ConsoleScreen() {
           </div>
         )}
       </div>
+      {showWindows && <RetroWindows />}
     </Html>
-  );
+  
+
+    </>
+   );
 }

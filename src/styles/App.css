@@ -154,3 +154,38 @@
   /* ...tus estilos previos... */
   overflow-y: scroll;   /* en vez de auto */
 }
+
+/* Retro desktop ocupa toda la pantalla del monitor */
+.retro-desktop {
+  position: absolute;
+  inset: 0;            /* ocupa todo el área disponible */
+  background: #008080; /* clásico turquesa Windows 95 */
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  font-family: "Tahoma", sans-serif;
+}
+
+/* Barra de tareas */
+.taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #c0c0c0;
+  border-top: 2px solid #808080;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+/* Botón inicio con efecto clásico */
+.start-btn {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
