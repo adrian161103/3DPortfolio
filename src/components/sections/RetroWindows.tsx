@@ -14,7 +14,11 @@ type WindowType =
 export default function RetroWindows() {
   const [openWindows, setOpenWindows] = useState<WindowType[]>([]);
   const [showStartMenu, setShowStartMenu] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
+  const handleSelect = (icon: string) => {
+    setSelectedIcon(icon);
+  };
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +27,8 @@ export default function RetroWindows() {
         setShowStartMenu(false);
       }
     };
-    if (showStartMenu) document.addEventListener("mousedown", handleClickOutside);
+    if (showStartMenu)
+      document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showStartMenu]);
 
@@ -39,15 +44,26 @@ export default function RetroWindows() {
   };
 
   return (
-    <div className="retro-desktop">
+    <div
+      className="retro-desktop"
+      onClick={(e) => {
+        // Si clickeás en el fondo (no en un ícono)
+        if (e.target === e.currentTarget) {
+          setSelectedIcon(null);
+        }
+      }}
+    >
       {/* Barra de tareas (se mantiene con CSS clásico) */}
       <div className="taskbar">
+        <div className="start-btn ">
+        <img src="/icons/windows.png" alt="logo-Windows" className="w-4 h-4" />
         <button
-          className="start-btn"
+          className="text-[0.65rem]" 
           onClick={() => setShowStartMenu((prev) => !prev)}
         >
-          Inicio
+          {""}Inicio
         </button>
+        </div>
         <div className="taskbar-clock text-xs">12:00</div>
       </div>
 
@@ -55,7 +71,7 @@ export default function RetroWindows() {
       {showStartMenu && (
         <div
           ref={menuRef}
-          className="absolute bottom-10 left-0 w-[200px] bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044] font-[Tahoma] z-[9999]"
+          className="absolute bottom-6.5 left-0 w-[200px] bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044] font-[Tahoma] z-[9999]"
         >
           {/* Programas con submenú */}
           <div className="relative group px-2.5 py-1.5 text-[14px] cursor-pointer hover:bg-[#000080] hover:text-white">
@@ -114,35 +130,73 @@ export default function RetroWindows() {
       )}
 
       {/* Íconos de escritorio (Tailwind) */}
-      <div className="flex flex-col gap-5 p-5 text-white">
-        <div className="flex flex-col items-center w-12 cursor-pointer">
-          <img src="/icons/my-computer.png" alt="Mi PC" className="w-8 h-8" />
-          <span className="mt-1 text-[11px] text-white text-center font-[Tahoma] leading-tight drop-shadow-[1px_1px_0px_black]">
+      <div className="flex flex-col gap-8 p-5 text-white">
+        {/* Mi PC */}
+        <div
+          className="flex flex-col items-center w-12 cursor-pointer"
+          onClick={(e) => {
+  e.stopPropagation();
+  handleSelect("pc");
+}}
+        >
+          <img src="/icons/my-computer.png" alt="Mi PC" className="w-6 h-6" />
+          <span
+            className={`mt-1 text-[0.65rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black] px-0.5 ${
+              selectedIcon === "pc" ? "bg-[#000080] text-white" : "text-white"
+            }`}
+          >
             Mi PC
           </span>
         </div>
 
-        <div className="flex flex-col items-center w-12 cursor-pointer">
-          <img src="/icons/bin.png" alt="Papelera" className="w-8 h-8" />
-          <span className="mt-1 text-[11px] text-white text-center font-[Tahoma] leading-tight drop-shadow-[1px_1px_0px_black]">
+        {/* Papelera */}
+        <div
+          className="flex flex-col items-center w-12 cursor-pointer"
+          onClick={() => handleSelect("bin")}
+        >
+          <img src="/icons/bin.png" alt="Papelera" className="w-6 h-6" />
+          <span
+            className={`mt-1 text-[0.65rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black] px-0.5 ${
+              selectedIcon === "bin" ? "bg-[#000080] text-white" : "text-white"
+            }`}
+          >
             Papelera
           </span>
         </div>
 
-        <div className="flex flex-col items-center w-12 cursor-pointer">
-          <img src="/icons/my-documents.png" alt="Mis Docs" className="w-8 h-8" />
-          <span className="mt-1 text-[11px] text-white text-center font-[Tahoma] leading-tight drop-shadow-[1px_1px_0px_black]">
+        {/* Mis Documentos */}
+        <div
+          className="flex flex-col items-center w-12 cursor-pointer"
+          onClick={() => handleSelect("docs")}
+        >
+          <img
+            src="/icons/my-documents.png"
+            alt="Mis Docs"
+            className="w-6 h-6"
+          />
+          <span
+            className={`mt-1 text-[0.65rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black] px-0.5 ${
+              selectedIcon === "docs" ? "bg-[#000080] text-white" : "text-white"
+            }`}
+          >
             Mis Docs
           </span>
         </div>
 
-        {/* Internet: abre el navegador retro */}
+        {/* Internet */}
         <div
           className="flex flex-col items-center w-12 cursor-pointer"
+          onClick={() => handleSelect("internet")}
           onDoubleClick={() => openWindow("internet")}
         >
-          <img src="/icons/internet.png" alt="Internet" className="w-8 h-8" />
-          <span className="mt-1 text-[11px] text-white text-center font-[Tahoma] leading-tight drop-shadow-[1px_1px_0px_black]">
+          <img src="/icons/internet.png" alt="Internet" className="w-6 h-6" />
+          <span
+            className={`mt-1 text-[0.65rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black] px-0.5 ${
+              selectedIcon === "internet"
+                ? "bg-[#000080] text-white"
+                : "text-white"
+            }`}
+          >
             Internet
           </span>
         </div>
@@ -156,7 +210,10 @@ export default function RetroWindows() {
       )}
 
       {openWindows.includes("experience") && (
-        <RetroWindow title="Experience" onClose={() => closeWindow("experience")}>
+        <RetroWindow
+          title="Experience"
+          onClose={() => closeWindow("experience")}
+        >
           <p>Tu experiencia retro aquí...</p>
         </RetroWindow>
       )}
@@ -168,19 +225,28 @@ export default function RetroWindows() {
       )}
 
       {openWindows.includes("technologies") && (
-        <RetroWindow title="Technologies" onClose={() => closeWindow("technologies")}>
+        <RetroWindow
+          title="Technologies"
+          onClose={() => closeWindow("technologies")}
+        >
           <p>Listado de tecnologías retro aquí...</p>
         </RetroWindow>
       )}
 
       {openWindows.includes("minesweeper") && (
-        <RetroWindow title="Buscaminas" onClose={() => closeWindow("minesweeper")}>
+        <RetroWindow
+          title="Buscaminas"
+          onClose={() => closeWindow("minesweeper")}
+        >
           <p>Próximamente: Buscaminas 🎮</p>
         </RetroWindow>
       )}
 
       {openWindows.includes("internet") && (
-        <RetroWindow title="Internet Explorer" onClose={() => closeWindow("internet")}>
+        <RetroWindow
+          title="Internet Explorer"
+          onClose={() => closeWindow("internet")}
+        >
           <RetroBrowser />
         </RetroWindow>
       )}
