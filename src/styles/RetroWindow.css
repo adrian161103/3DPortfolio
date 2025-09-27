@@ -1,0 +1,4 @@
+/* Necesario para Draggable */
+.retro-window-titlebar {
+  cursor: move;
+}

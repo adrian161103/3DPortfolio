@@ -1,2 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import "tailwindcss";
+@import "./styles/App.css";
 
-@import "/src/styles/App.css";

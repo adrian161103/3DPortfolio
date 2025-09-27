@@ -1,0 +1,155 @@
+
+.console {
+  position: relative;
+  width: 400px;
+  height: 350px;
+  background: #000;
+  color: #00ff66;
+  font-family: "VT323", monospace;
+  font-size: 22px;
+  padding: 10px;
+  overflow-y: auto;
+  cursor: pointer;
+  text-shadow: 0 0 2px #00ff66, 0 0 5px #00ff66;
+}
+
+/* Scanlines CRT */
+.console::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+.flicker {
+  animation: flickerAnim 0.15s steps(2, end) 3;
+}
+
+@keyframes flickerAnim {
+  0% { background: #000; }
+  30% { background: #111; }
+  60% { background: #000; }
+  80% { background: #111; }
+  100% { background: #000; }
+}
+
+/* Animación RGB compartida */
+@keyframes cursor-glitch {
+  0% { color: #00ff66; }
+  25% { color: #00ffff; }
+  50% { color: #ff00ff; }
+  75% { color: #ff0033; }
+  100% { color: #00ff66; }
+}
+
+/* Sacudida */
+@keyframes screen-shake {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3px, 2px); }
+  40%  { transform: translate(3px, -2px); }
+  60%  { transform: translate(-2px, 1px); }
+  80%  { transform: translate(2px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Cuando se activa corrupción global */
+.corrupting {
+  animation: cursor-glitch 0.5s infinite, screen-shake 0.2s infinite;
+}
+
+/* Comandos válidos glitch */
+.glitch {
+  color: #00ff66;
+  text-shadow: 2px 0 magenta, -2px 0 cyan;
+  animation: glitch 1s infinite;
+}
+
+/* Último comando glitch fuerte */
+.glitch-strong {
+  color: #00ff66;
+  text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red;
+  animation: glitchStrong 0.2s infinite;
+}
+
+@keyframes glitchStrong {
+  0% { text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red; }
+  50% { text-shadow: -3px 0 magenta, 3px 0 cyan, 0 -2px blue; }
+  100% { text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red; }
+}
+
+/* Errores */
+.error-glitch {
+  color: #ff0033;
+  text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
+  animation: errorGlitch 0.8s infinite;
+}
+
+@keyframes errorGlitch {
+  0% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+  50% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
+  100% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+}
+
+/* Input y líneas limpias */
+.clean-line {
+  color: #00ff66;
+  text-shadow: 0 0 2px #00ff66, 0 0 5px #00ff66;
+}
+
+/* Cursor normal */
+.cursor {
+  color: #00ff66;
+}
+
+/* Lista de comandos */
+.command-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.command-text {
+  color: #00ff66;
+}
+
+.command-text:hover {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  cursor: pointer;
+}
+
+.scrollbar-retro::-webkit-scrollbar {
+  width: 6px;                 /* finita */
+}
+
+.scrollbar-retro::-webkit-scrollbar-track {
+  background: #000;           /* fondo CRT */
+}
+
+.scrollbar-retro::-webkit-scrollbar-thumb {
+  background: #00ff66;        /* verde fósforo */
+  border-radius: 4px;
+  box-shadow: 0 0 6px #00ff66;/* brillo sutil */
+}
+
+.scrollbar-retro::-webkit-scrollbar-thumb:hover {
+  background: #00ffff;        /* cian al hover */
+  box-shadow: 0 0 8px #00ffff;
+}
+
+/* Firefox */
+.scrollbar-retro {
+  scrollbar-width: thin;               /* finita */
+  scrollbar-color: #00ff66 #000;       /* thumb / track */
+}
+
+/* (Opcional) si querés que aparezca siempre y no "salte" el layout */
+.console {
+  /* ...tus estilos previos... */
+  overflow-y: scroll;   /* en vez de auto */
+}

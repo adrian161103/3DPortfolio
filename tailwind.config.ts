@@ -1,14 +1,10 @@
-import type { Config } from "tailwindcss";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
-export default {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
-  theme: {
-    extend: {
-      fontFamily: {
-        mono: ["ui-monospace", "SFMono-Regular", "monospace"],
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
-      },
-    },
-  },
-  plugins: [],
-} satisfies Config;
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+})
