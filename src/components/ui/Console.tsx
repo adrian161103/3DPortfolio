@@ -95,9 +95,13 @@ export default function ConsoleScreen() {
     if (commands.includes(cleanCmd)) {
       setShowCommands(false);
 
-    if (cleanCmd === "windows") {
-  setShowWindows(true); //  Windows retro
+if (cleanCmd === "windows") {
+  setShowWindows(true);
+  window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: true }));
   return;
+} else {
+  setShowWindows(false);
+  window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: false }));
 }
 
       // Guardar backup antes de corromper

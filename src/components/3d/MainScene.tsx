@@ -18,7 +18,7 @@ import PrinterInteraction from "./PrinterInteraction";
 RectAreaLightUniformsLib.init();
 
 function DeskModel() {
-  const { scene } = useGLTF("/models/adrian.glb");
+  const { scene } = useGLTF("/models/websites.glb");
   useStandardMaterials(scene);
 
   // Forzar propiedades emisivas en partes concretas del modelo:
@@ -227,4 +227,4 @@ export default function MainScene() {
 }
 
 // Precargar el modelo
-useGLTF.preload("/models/adrian.glb");
+useGLTF.preload("/models/websites.glb");
