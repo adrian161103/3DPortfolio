@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import MainScene from '../3d/MainScene';
-import { useGsapTimeline } from '@/hooks/useGsapTimeline';
+import { useGsapTimeline } from '../../hooks/useGsapTimeline';
 
 export default function Hero() {
   const timeline = useGsapTimeline();

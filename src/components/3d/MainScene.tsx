@@ -3,13 +3,13 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { ErrorBoundary } from "../ErrorBoundary";
-import { gsap } from "@/lib/gsap";
+import { gsap } from "../../lib/gsap";
 import * as THREE from "three";
 import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
 
 import CameraController from "./CameraController";
 import KeyboardController from "./desktop/KeyboardController";
-import { useStandardMaterials } from "@/lib/useStandardMaterials";
+import { useStandardMaterials } from "../../lib/useStandardMaterials";
 import ConsoleScreen from "../ui/Console";
 import PrinterInteraction from "./PrinterInteraction";
 

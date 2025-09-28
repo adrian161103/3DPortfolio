@@ -1,7 +1,7 @@
 // src/components/TrashController.tsx
 import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap } from "../../lib/gsap";
 import * as THREE from "three";
 
 export default function TrashController(controlsRef: any) {

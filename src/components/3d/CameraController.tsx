@@ -2,7 +2,7 @@
 import { useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap } from "../../lib/gsap";
 import * as THREE from "three";
 import TrashController from "./TrashController";
 
