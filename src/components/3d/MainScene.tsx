@@ -82,13 +82,16 @@ function Scene() {
 
     const baseIntensity = 80;
 
+    // Capturamos la referencia actual para evitar la advertencia de cambios
+    const lamp = lampLight.current;
+
     const flickerLoop = () => {
-      if (!lampLight.current) return;
+      if (!lamp) return;
 
       const randomDelay = Math.random() * 2 + 0.5; // tiempo aleatorio entre flickers
       const flickerIntensity = baseIntensity * (0.4 + Math.random() * 0.6); // rango 40% - 100%
 
-      gsap.to(lampLight.current, {
+      gsap.to(lamp, {
         intensity: flickerIntensity,
         duration: 0.1 + Math.random() * 0.2, // duración rápida
         yoyo: true,
@@ -102,7 +105,7 @@ function Scene() {
     flickerLoop(); // iniciar loop
 
     return () => {
-      gsap.killTweensOf(lampLight.current);
+      gsap.killTweensOf(lamp);
     };
   }, [flickerActive]);
 
@@ -188,6 +191,7 @@ export default function MainScene() {
       >
         <Canvas
           camera={{ position: [0, 5, 10], fov: 40 }}
+          dpr={Math.min(window.devicePixelRatio || 1, 2)}
           style={{ background: "#000", width: "100%", height: "100%" }}
           shadows
           gl={{

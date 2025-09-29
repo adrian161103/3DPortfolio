@@ -29,14 +29,14 @@ export default function CameraController() {
   gsap.to(perspectiveCamera.position, {
     x: 0,
     y: 2,
-    z: 1.5, 
+    z: 2.7, 
     duration: 2,
     ease: "power2.inOut",
     onUpdate: () => perspectiveCamera.lookAt(0, 1, 0),
   });
 
   gsap.to({ fov: perspectiveCamera.fov }, {
-    fov: 22, 
+    fov: 15, 
     duration: 1.5,
     ease: "power2.inOut",
     onUpdate: function () {
@@ -47,7 +47,7 @@ export default function CameraController() {
 
   gsap.to(controlsRef.current.target, {
     x: 0,
-    y: 1.25,
+    y: 1.27,
     z: 0,
     duration: 2,
     ease: "power2.inOut",

@@ -21,17 +21,23 @@ export default function RetroBrowser() {
         }
         return prev + 10;
       });
-    }, 200);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [page]);
 
   const renderPage = () => {
-    if (loading) return null; // 👈 no mostrar nada hasta terminar la carga
+    if (loading) {
+      return (
+        <div className="flex-1 bg-white text-center pt-10 text-gray-600">
+          Cargando...
+        </div>
+      );
+    }
 
     switch (page) {
       case "about":
-        return <p>Bienvenido a la página About 🌐</p>;
+        return <p className="text-3xl">Bienvenido a la página About 🌐</p>;
       case "projects":
         return (
           <ul className="list-disc pl-6">
@@ -45,10 +51,7 @@ export default function RetroBrowser() {
           <div>
             <p>Podés contactarme en:</p>
             <p>
-              <a
-                href="mailto:adrian@example.com"
-                className="text-blue-600 underline"
-              >
+              <a href="mailto:adrian@example.com" className="win98-link">
                 adrian@example.com
               </a>
             </p>
@@ -58,106 +61,100 @@ export default function RetroBrowser() {
         return (
           <div className="space-y-2">
             <p>
-              <button
-                onClick={() => setPage("about")}
-                className="text-blue-600 underline cursor-pointer"
-              >
+              <span onClick={() => setPage("about")} className="win98-link">
                 About
-              </button>
+              </span>
             </p>
             <p>
-              <button
-                onClick={() => setPage("projects")}
-                className="text-blue-600 underline cursor-pointer"
-              >
+              <span onClick={() => setPage("projects")} className="win98-link">
                 Projects
-              </button>
+              </span>
             </p>
             <p>
-              <button
-                onClick={() => setPage("contact")}
-                className="text-blue-600 underline cursor-pointer"
-              >
+              <span onClick={() => setPage("contact")} className="win98-link">
                 Contact
-              </button>
+              </span>
             </p>
           </div>
         );
     }
   };
 
+  const toolbarButtons = [
+    { icon: "/icons/ie/back.png", label: "Atrás", action: () => setPage("home") },
+    { icon: "/icons/ie/forward.png", label: "Adelante" },
+    { separator: true },
+    { icon: "/icons/ie/stop.png", label: "Detener" },
+    { icon: "/icons/ie/refresh.png", label: "Actualizar" },
+    { separator: true },
+    { icon: "/icons/ie/home.png", label: "Inicio", action: () => setPage("home") },
+    { icon: "/icons/ie/search.png", label: "Búsqueda" },
+    { icon: "/icons/ie/favorites.png", label: "Favoritos" },
+    { icon: "/icons/ie/history.png", label: "Historial" },
+    { icon: "/icons/ie/mail.png", label: "Correo" },
+    { icon: "/icons/ie/print.png", label: "Imprimir" },
+  ];
+
   return (
-    <div className="flex flex-col h-full text-[13px] font-[Tahoma,sans-serif]">
+    <div className="flex flex-col h-full w-full text-[11px] font-[Tahoma,'MS Sans Serif',sans-serif] bg-[#c0c0c0] border border-[#808080]">
       {/* ===== Toolbar ===== */}
-      <div className="bg-[#c0c0c0] px-1 py-1 flex items-center gap-1 border-b-2 border-[#808080]">
-        {[
-          { icon: "/icons/ie/back.png", label: "Atrás" },
-          { icon: "/icons/ie/forward.png", label: "Adelante" },
-          { icon: "/icons/ie/stop.png", label: "Detener" },
-          { icon: "/icons/ie/refresh.png", label: "Actualizar" },
-          { icon: "/icons/ie/home.png", label: "Inicio", action: () => setPage("home") },
-          { icon: "/icons/ie/search.png", label: "Búsqueda" },
-          { icon: "/icons/ie/favorites.png", label: "Favoritos" },
-          { icon: "/icons/ie/history.png", label: "Historial" },
-          { icon: "/icons/ie/mail.png", label: "Correo" },
-          { icon: "/icons/ie/print.png", label: "Imprimir" },
-        ].map((btn, i) => (
-          <button
-            key={i}
-            onClick={btn.action}
-            className="flex items-center gap-1 bg-[#c0c0c0] border border-[#808080] px-2 py-0.5 text-[12px] hover:bg-[#dfdfdf]"
-          >
-            <img src={btn.icon} alt={btn.label} className="w-4 h-4" />
-            {btn.label}
-          </button>
-        ))}
+      <div className="win98-bar flex items-center h-7 px-1">
+        {toolbarButtons.map((btn, i) =>
+          btn.separator ? (
+            <div key={i} className="win98-separator" />
+          ) : (
+            <button
+              key={i}
+              onClick={btn.action}
+              className="win98-button"
+            >
+              <img src={btn.icon} alt={btn.label} className="retro-icon" />
+              {btn.label}
+            </button>
+          )
+        )}
       </div>
 
       {/* ===== Address Bar ===== */}
-      <div className="bg-[#c0c0c0] px-1 py-1 flex items-center gap-1 border-b border-[#808080]">
-        <span className="px-1">Dirección</span>
+      <div className="win98-bar flex items-center gap-1 px-1 py-[2px]">
+        <span className="px-1 font-bold">Dirección</span>
         <input
           type="text"
           readOnly
           value={`http://retro.local/${page}`}
-          className="flex-1 px-2 py-0.5 border border-[#808080] bg-white text-[13px]"
+          className="flex-1 win98-input"
         />
-        <button className="bg-[#c0c0c0] border border-[#808080] px-2 text-[12px]">
-          Ir a
-        </button>
-        <button className="bg-[#c0c0c0] border border-[#808080] px-2 text-[12px]">
-          Vínculos
-        </button>
+        <button className="win98-button px-2">Ir a</button>
+        <button className="win98-button px-2">Vínculos</button>
       </div>
 
       {/* ===== Contenido ===== */}
       <div className="flex-1 bg-white p-3 overflow-auto">{renderPage()}</div>
 
-     {/* ===== Status Bar ===== */}
-<div className="bg-[#c0c0c0] border-t border-[#808080] text-[12px] flex items-center justify-between h-6">
-  {/* Izquierda: ícono + texto */}
-  <div className="flex items-center gap-1 px-2 border-r border-[#808080] w-40">
-    <img src="/icons/ie/globe.png" alt="IE" className="w-4 h-4" />
-    <span>{loading ? "Cargando..." : "Listo"}</span>
-  </div>
+      {/* ===== Status Bar ===== */}
+      <div className="win98-bar win98-status flex items-center justify-between h-6 px-1">
+        {/* Izquierda */}
+        <div className="flex items-center gap-1 w-40 border-r border-[#808080] px-1">
+          <img src="/icons/ie/internetpage.png" alt="IE" className="retro-icon" />
+          <span>{loading ? "Cargando..." : "Listo"}</span>
+        </div>
 
-  {/* Centro: barra de progreso */}
-  <div className="flex-1 h-full flex items-center px-2">
-    <div className="flex-1 h-3 border border-[#808080] bg-[#e0e0e0] relative">
-      <div
-        className="absolute top-0 left-0 h-full bg-[#000080]"
-        style={{ width: loading ? `${progress}%` : "0%" }}
-      />
-    </div>
-  </div>
+        {/* Centro */}
+        <div className="flex-1 flex items-center px-2">
+          <div className="win98-progress w-full">
+            <div
+              className="win98-progress-fill"
+              style={{ width: loading ? `${progress}%` : "0%" }}
+            />
+          </div>
+        </div>
 
-  {/* Derecha: ícono "Internet" */}
-  <div className="flex items-center px-3 border-l border-white">
-    <img src="/icons/ie/internet.png" alt="Internet" className="w-4 h-4" />
-    <span className="ml-1">Internet</span>
-  </div>
-</div>
-
+        {/* Derecha */}
+        <div className="flex items-center px-3 border-l border-white">
+          <img src="/icons/ie/world.png" alt="Internet" className="retro-icon" />
+          <span className="ml-1">Internet</span>
+        </div>
+      </div>
     </div>
   );
 }

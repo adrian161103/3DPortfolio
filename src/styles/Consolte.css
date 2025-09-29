@@ -10,7 +10,7 @@
   font-family: "VT323", monospace;
   /* Reducimos la fuente visual para mantener el mismo aspecto
      dentro de la escena 3D (al usar un scale menor en Html). */
-  font-size: 18px; /* antes 22 */
+  font-size: 2.5rem; /* antes 22 */
   padding: 10px;
   overflow-y: auto;
   cursor: pointer;

@@ -8,25 +8,53 @@ export function useStandardMaterials(obj: THREE.Object3D) {
   obj.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       const oldMat = child.material as THREE.MeshStandardMaterial;
+      type MaybeTexture = THREE.Texture | null;
+
+      // Helper para configurar texturas si existen
+      const configureTexture = (tex: MaybeTexture): MaybeTexture => {
+        if (!tex) return null;
+
+        // Algunas builds/typings exponen 'colorSpace' o 'encoding'. Intentamos ambos.
+        const tAny = tex as unknown as { colorSpace?: unknown; encoding?: unknown; anisotropy?: number };
+        if (tAny.colorSpace !== undefined) {
+          // @ts-ignore asignación compatible con varias versiones
+          tAny.colorSpace = (THREE as any).SRGBColorSpace ?? (THREE as any).sRGBEncoding;
+        } else if (tAny.encoding !== undefined) {
+          // @ts-ignore
+          tAny.encoding = (THREE as any).sRGBEncoding ?? (THREE as any).SRGBColorSpace;
+        }
+
+        tex.generateMipmaps = true;
+        tex.minFilter = THREE.LinearMipmapLinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+
+        // Asignar anisotropía si el objeto lo permite
+        try {
+          if (typeof tAny.anisotropy === "undefined" || tAny.anisotropy === null) tAny.anisotropy = 4;
+        } catch {
+          /* ignore */
+        }
+
+        tex.needsUpdate = true;
+        return tex;
+      };
 
       child.material = new THREE.MeshStandardMaterial({
         // Color base
         color: oldMat?.color ? oldMat.color.clone() : new THREE.Color(0xffffff),
 
         // Mapas
-        map: oldMat?.map ?? null,
-        normalMap: (oldMat as any)?.normalMap ?? null,
-        roughnessMap: (oldMat as any)?.roughnessMap ?? null,
-        metalnessMap: (oldMat as any)?.metalnessMap ?? null,
-        aoMap: (oldMat as any)?.aoMap ?? null,
-        emissiveMap: (oldMat as any)?.emissiveMap ?? null,
+    map: configureTexture(oldMat && (oldMat as any).map ? (oldMat as any).map : null),
+    normalMap: configureTexture(oldMat && (oldMat as any).normalMap ? (oldMat as any).normalMap : null),
+    roughnessMap: configureTexture(oldMat && (oldMat as any).roughnessMap ? (oldMat as any).roughnessMap : null),
+    metalnessMap: configureTexture(oldMat && (oldMat as any).metalnessMap ? (oldMat as any).metalnessMap : null),
+    aoMap: configureTexture(oldMat && (oldMat as any).aoMap ? (oldMat as any).aoMap : null),
+    emissiveMap: configureTexture(oldMat && (oldMat as any).emissiveMap ? (oldMat as any).emissiveMap : null),
 
         // Valores físicos
         roughness: oldMat?.roughness ?? 0.6,
         metalness: oldMat?.metalness ?? 0.1,
-        emissive: (oldMat as any)?.emissive
-          ? (oldMat as any).emissive.clone()
-          : new THREE.Color(0x000000),
+        emissive: (oldMat as any)?.emissive ? (oldMat as any).emissive.clone() : new THREE.Color(0x000000),
         emissiveIntensity: (oldMat as any)?.emissiveIntensity ?? 1.0,
 
         // Transparencia
