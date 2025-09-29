@@ -2,3 +2,7 @@
 .retro-window-titlebar {
   cursor: move;
 }
+.retro-icon {
+  image-rendering: pixelated;     /* fuerza modo pixel */
+  image-rendering: crisp-edges;   /* fallback */
+}

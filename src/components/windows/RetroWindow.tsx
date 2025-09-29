@@ -18,23 +18,25 @@ export default function RetroWindow({ title, children, onClose, onMinimize }: Re
   const WindowContent = (
     <div
       ref={nodeRef}
-      className="bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044] font-[Tahoma,sans-serif]"
+      className={`font-[Tahoma,sans-serif] flex flex-col ${
+        isMaximized ? "" : "border-2 border-[#808080] shadow-[4px_4px_0_#00000044]"
+      }`}
       style={{
         zIndex,
         position: "absolute",
         width: isMaximized ? "100%" : "300px",
-        height: isMaximized ? "calc(100% - 40px)" : "auto", // deja espacio para la taskbar
         top: isMaximized ? 0 : undefined,
         left: isMaximized ? 0 : undefined,
         right: isMaximized ? 0 : undefined,
-        bottom: isMaximized ? "40px" : undefined,
+        bottom: isMaximized ? "26px" : undefined, // deja espacio para la taskbar
+        background: "#c0c0c0",
       }}
       onClick={() => setZIndex((z) => z + 1)}
     >
       {/* Barra de título */}
       <div
         className="bg-[#000080] text-white font-bold px-2 py-0.5 flex justify-between items-center text-[14px] cursor-move retro-window-titlebar"
-        onDoubleClick={toggleMaximize} // 👈 doble click para maximizar/restaurar
+        onDoubleClick={toggleMaximize}
       >
         <span>{title}</span>
         <div className="flex gap-1 retro-window-controls">
@@ -60,7 +62,11 @@ export default function RetroWindow({ title, children, onClose, onMinimize }: Re
       </div>
 
       {/* Contenido */}
-      <div className="p-2 bg-white text-black text-[13px] min-h-[120px] retro-window-content">
+      <div
+        className={`p-2 bg-white text-black text-[13px] overflow-auto ${
+          isMaximized ? "flex-1" : "min-h-[120px]"
+        }`}
+      >
         {children}
       </div>
     </div>

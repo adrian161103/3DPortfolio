@@ -29,7 +29,7 @@ function DeskModel() {
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       if (child.name.toLowerCase().includes("monitor001")) {
-        child.material.emissive = new THREE.Color("#00FF66");
+        child.material.emissive = new THREE.Color("black");
         child.material.emissiveIntensity = .59;
       }
       if (child.name.toLowerCase().includes("sphere001")) {

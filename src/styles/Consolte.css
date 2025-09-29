@@ -1,12 +1,16 @@
 
 .console {
+  /* Aumentamos el tamaño real para mejorar la resolución
+     de la textura cuando React-Three-Drei rasteriza este DOM. */
   position: relative;
-  width: 400px;
-  height: 350px;
+  width: 808px; /* antes 404 */
+  height: 700px; /* antes 350 */
   background: #000;
   color: #00ff66;
   font-family: "VT323", monospace;
-  font-size: 22px;
+  /* Reducimos la fuente visual para mantener el mismo aspecto
+     dentro de la escena 3D (al usar un scale menor en Html). */
+  font-size: 18px; /* antes 22 */
   padding: 10px;
   overflow-y: auto;
   cursor: pointer;

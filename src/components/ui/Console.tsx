@@ -174,7 +174,7 @@ if (cleanCmd === "windows") {
   return (<>
     <Html
       transform
-      position={[0, 1.25, 0.02]}
+      position={[0, 1.273, 0.02]}
       rotation={[0, 0, 0]}
       scale={0.09}
       occlude

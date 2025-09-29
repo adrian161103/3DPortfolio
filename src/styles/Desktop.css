@@ -35,23 +35,3 @@
 }
 
 
-.retro-link {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.retro-link:visited {
-  color: purple;
-}
-.icon-label {
-  margin-top: 2px;
-  font-size: 11px;
-  text-align: center;
-  font-family: "Tahoma", sans-serif;
-  color: white;
-  text-shadow: 1px 1px #000000; /* efecto retro */
-  line-height: 1.2;
-  cursor: pointer;
-}

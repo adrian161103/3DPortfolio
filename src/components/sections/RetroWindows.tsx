@@ -107,13 +107,14 @@ export default function RetroWindows() {
   const handleSelect = (icon: string) => setSelectedIcon(icon);
 
   return (
-    <div
-      className="retro-desktop"
-      onClick={(e) => {
-        // Si clickeás en el fondo, no borra selección (como en Win95)
-        if (e.target === e.currentTarget) return;
-      }}
-    >
+ <div
+  className="retro-desktop"
+  onClick={(e) => {
+    if (e.target === e.currentTarget) {
+      setSelectedIcon(null); 
+    }
+  }}
+>
       {/* Barra de tareas */}
       <div className="taskbar">
         {/* Botón inicio */}
@@ -237,9 +238,9 @@ export default function RetroWindows() {
             }}
             onDoubleClick={dbl}
           >
-            <img src={icon} alt={label} className="w-6 h-6" />
+            <img src={icon} alt={label} className="w-10 h-10" />
             <span
-              className={`mt-1 text-[0.65rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black] px-0.5 ${
+              className={`mt-1 text-[0.7rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black]  ${
                 selectedIcon === id
                   ? "bg-[#000080] text-white  outline-1 outline-dotted outline-white"
                   : "text-white"
