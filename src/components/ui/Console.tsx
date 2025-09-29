@@ -1,9 +1,20 @@
 import { Html } from "@react-three/drei";
 import { useState, useEffect, useRef } from "react";
 import RetroWindows from "../sections/RetroWindows";
+import WindowsBoot from "./WindowsBoot";
 
 export default function ConsoleScreen() {
   const [showWindows, setShowWindows] = useState(false);
+  const [bootFinished, setBootFinished] = useState(false);
+
+  
+  // Reinicia el estado de boot cada vez que se cierra la vista de windows para que
+  // la secuencia de arranque se reproduzca la próxima vez que el usuario la abra.
+  useEffect(() => {
+    if (!showWindows) {
+      setBootFinished(false);
+    }
+  }, [showWindows]);
   const commands = [
     "about",
     "projects",
@@ -20,7 +31,7 @@ export default function ConsoleScreen() {
   ];
 
   const [lines, setLines] = useState<string[]>([...defaultLines]);
-  const [backupLines, setBackupLines] = useState<string[]>([]);
+  const backupLinesRef = useRef<string[]>([]);
   const [showCommands, setShowCommands] = useState(true);
   const [currentLine, setCurrentLine] = useState("");
   const [active, setActive] = useState(false);
@@ -105,8 +116,8 @@ if (cleanCmd === "windows") {
 }
 
       // Guardar backup antes de corromper
-      const newBackup = [...lines, `> ${command}`];
-      setBackupLines(newBackup);
+  const newBackup = [...lines, `> ${command}`];
+  backupLinesRef.current = newBackup;
 
       // Corrupción global
       setCorrupting(true);
@@ -179,14 +190,15 @@ if (cleanCmd === "windows") {
       scale={0.045}
       occlude
     >
-      <div
-        ref={consoleRef}
-        className={`console ${flicker ? "flicker" : ""} ${
-          globalGlitch ? "global-glitch" : ""
-        } ${corrupting ? "corrupting" : ""} scrollbar-retro`}
-        onClick={handleActivate}
-        style={{ cursor: active ? "text" : "pointer" }}
-      >
+      <div className="relative w-full h-full">
+        <div
+          ref={consoleRef}
+          className={`console ${flicker ? "flicker" : ""} ${
+            globalGlitch ? "global-glitch" : ""
+          } ${corrupting ? "corrupting" : ""} scrollbar-retro`}
+          onClick={handleActivate}
+          style={{ cursor: active ? "text" : "pointer" }}
+        >
         {/* Historial */}
         {lines.map((line, idx) => {
           if (line.startsWith(">")) {
@@ -257,7 +269,19 @@ if (cleanCmd === "windows") {
           </div>
         )}
       </div>
-      {showWindows && <RetroWindows />}
+
+        {showWindows && !bootFinished && (
+        <WindowsBoot
+          onFinish={() => {
+            setBootFinished(true);
+            // permitir que otros escuchadores sepan que estamos en modo windows
+            window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: true }));
+          }}
+        />
+      )}
+
+        {showWindows && bootFinished && <RetroWindows />}
+      </div>
     </Html>
   
 
