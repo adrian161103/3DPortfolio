@@ -176,7 +176,7 @@ if (cleanCmd === "windows") {
       transform
       position={[0, 1.273, 0.02]}
       rotation={[0, 0, 0]}
-      scale={0.09}
+      scale={0.045}
       occlude
     >
       <div
