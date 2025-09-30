@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import About from "./pages/about";
+import Projects from "./pages/Project";
+import Contact from "./pages/Contact";
 
 type Page = "home" | "about" | "projects" | "contact";
 
@@ -37,25 +40,14 @@ export default function RetroBrowser() {
 
     switch (page) {
       case "about":
-        return <p className="text-3xl">Bienvenido a la página About 🌐</p>;
+        return <About />;
       case "projects":
         return (
-          <ul className="list-disc pl-6">
-            <li>Proyecto 1</li>
-            <li>Proyecto 2</li>
-            <li>Proyecto 3</li>
-          </ul>
+      <Projects />
         );
       case "contact":
         return (
-          <div>
-            <p>Podés contactarme en:</p>
-            <p>
-              <a href="mailto:adrian@example.com" className="win98-link">
-                adrian@example.com
-              </a>
-            </p>
-          </div>
+       <Contact />
         );
       default:
         return (
