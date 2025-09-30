@@ -142,7 +142,7 @@ function Scene() {
         maxPolarAngle={Math.PI / 2}
       />
 
-      <EffectComposer>
+  <EffectComposer multisampling={4}>
         <Bloom
           intensity={0.3}
           luminanceThreshold={0.4}
@@ -191,7 +191,7 @@ export default function MainScene() {
       >
         <Canvas
           camera={{ position: [0, 5, 10], fov: 40 }}
-          dpr={Math.min(window.devicePixelRatio || 1, 2)}
+          dpr={[1, Math.min(window.devicePixelRatio || 1, 2)]}
           style={{ background: "#000", width: "100%", height: "100%" }}
           shadows
           gl={{
@@ -203,6 +203,11 @@ export default function MainScene() {
             gl.outputColorSpace = THREE.SRGBColorSpace;
             gl.toneMapping = THREE.ACESFilmicToneMapping;
             gl.toneMappingExposure = 1.0;
+            try {
+              gl.setPixelRatio(window.devicePixelRatio || 1);
+            } catch {
+              //  no permiten cambiarlo; ignorar
+            }
           }}
         >
           <Suspense fallback={<LoadingScreen />}>

@@ -42,33 +42,24 @@ export default function RetroWindow({
       }}
       onMouseDown={onFocus} // 👈 trae al frente al click
     >
-      {/* Barra de título */}
-      <div
-        className="bg-[#000080] text-white font-bold px-2 py-0.5 flex justify-between items-center text-[14px] cursor-move retro-window-titlebar"
-        onDoubleClick={toggleMaximize}
-      >
-        <span>{title}</span>
-        <div className="flex gap-1 retro-window-controls">
-          <button
-            onClick={onMinimize}
-            className="bg-[#c0c0c0] border-2 border-white px-2 text-[12px] font-bold leading-none"
-          >
-            ─
-          </button>
-          <button
-            onClick={toggleMaximize}
-            className="bg-[#c0c0c0] border-2 border-white px-2 text-[12px] font-bold leading-none"
-          >
-            {isMaximized ? "❐" : "□"}
-          </button>
-          <button
-            onClick={onClose}
-            className="bg-[#c0c0c0] border-2 border-white px-2 text-[12px] font-bold leading-none"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
+   <div
+  className="retro-window-titlebar"
+  onDoubleClick={toggleMaximize}
+  onMouseDown={onFocus}
+>
+  {/* Izquierda: ícono + título */}
+  <div className="title-left">
+    <img src="/icons/ie/internetpage.png" alt="icon" className="window-icon" />
+    <span>{title}</span>
+  </div>
+
+  {/* Derecha: controles */}
+  <div className="retro-window-controls">
+    <button onClick={onMinimize}>─</button>
+    <button onClick={toggleMaximize}>{isMaximized ? "❐" : "□"}</button>
+    <button onClick={onClose}>X</button>
+  </div>
+</div>
 
       {/* Contenido */}
       <div

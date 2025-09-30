@@ -17,10 +17,8 @@ export function useStandardMaterials(obj: THREE.Object3D) {
         // Algunas builds/typings exponen 'colorSpace' o 'encoding'. Intentamos ambos.
         const tAny = tex as unknown as { colorSpace?: unknown; encoding?: unknown; anisotropy?: number };
         if (tAny.colorSpace !== undefined) {
-          // @ts-ignore asignación compatible con varias versiones
           tAny.colorSpace = (THREE as any).SRGBColorSpace ?? (THREE as any).sRGBEncoding;
         } else if (tAny.encoding !== undefined) {
-          // @ts-ignore
           tAny.encoding = (THREE as any).sRGBEncoding ?? (THREE as any).SRGBColorSpace;
         }
 
@@ -28,9 +26,9 @@ export function useStandardMaterials(obj: THREE.Object3D) {
         tex.minFilter = THREE.LinearMipmapLinearFilter;
         tex.magFilter = THREE.LinearFilter;
 
-        // Asignar anisotropía si el objeto lo permite
+        // Aumentamos la anisotropía por defecto para mejorar el filtrado en ángulos oblicuos
         try {
-          if (typeof tAny.anisotropy === "undefined" || tAny.anisotropy === null) tAny.anisotropy = 4;
+          if (typeof tAny.anisotropy === "undefined" || tAny.anisotropy === null) tAny.anisotropy = 8;
         } catch {
           /* ignore */
         }

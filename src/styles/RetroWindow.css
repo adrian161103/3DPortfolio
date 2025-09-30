@@ -1,7 +1,68 @@
 /* Necesario para Draggable */
+/* === Barra de título estilo Win98 === */
 .retro-window-titlebar {
+  background: #000080; /* azul sólido */
+  color: white;
+  font-weight: bold;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 4px;
   cursor: move;
+  height: 20px;
+  user-select: none;
+  text-shadow: 1px 1px 0px black; /* sombra retro */
+  box-sizing: border-box;
 }
+
+/* Bloque de icono + título */
+.retro-window-titlebar .title-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.retro-window-titlebar .window-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* === Botones estilo Win98 (3D) === */
+.retro-window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.retro-window-controls button {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-top-color: #ffffff;   /* borde claro arriba */
+  border-left-color: #ffffff;  /* borde claro izquierda */
+  border-right-color: #404040; /* borde oscuro derecha */
+  border-bottom-color: #404040;/* borde oscuro abajo */
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 14px;
+  text-align: center;
+  padding: 0;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+/* Estado presionado (efecto hundido) */
+.retro-window-controls button:active {
+  border-top-color: #404040;
+  border-left-color: #404040;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  padding-top: 1px;
+  padding-left: 1px;
+}
+
 .retro-icon {
   width: 16px;
   height: 16px;
