@@ -57,9 +57,23 @@ const initialWindows: Record<AppId, WinState> = {
 };
 
 export default function RetroWindows() {
-  const [windows, setWindows] = useState<Record<AppId, WinState>>(initialWindows);
+  const [windows, setWindows] =
+    useState<Record<AppId, WinState>>(initialWindows);
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+  const [zCounter, setZCounter] = useState(10);
+  const [windowZ, setWindowZ] = useState<Record<AppId, number>>({} as any);
+  const [activeWindow, setActiveWindow] = useState<AppId | null>(null);
+  const [openedOrder, setOpenedOrder] = useState<AppId[]>([]);
+
+  const bringToFront = (id: AppId) => {
+    setZCounter((prev) => {
+      const newZ = prev + 1;
+      setWindowZ((old) => ({ ...old, [id]: newZ }));
+      return newZ;
+    });
+    setActiveWindow(id);
+  };
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -80,6 +94,12 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], open: true, minimized: false },
     }));
+
+    setOpenedOrder((prev) =>
+      prev.includes(id) ? prev : [...prev, id] // agrega al final si no estaba
+    );
+
+    bringToFront(id);
     setShowStartMenu(false);
   };
 
@@ -88,6 +108,7 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], open: false, minimized: false },
     }));
+    setActiveWindow(null);
   };
 
   const minimizeWindow = (id: AppId) => {
@@ -95,26 +116,47 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], minimized: true },
     }));
+    if (activeWindow === id) setActiveWindow(null);
   };
 
   const toggleTaskbar = (id: AppId) => {
-    setWindows((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], minimized: !prev[id].minimized, open: true },
-    }));
+    setWindows((prev) => {
+      const win = prev[id];
+
+      // Restaurar si está minimizada
+      if (win.minimized) {
+        bringToFront(id);
+        return {
+          ...prev,
+          [id]: { ...win, minimized: false, open: true },
+        };
+      }
+
+      // Minimizar si ya está activa
+      if (activeWindow === id) {
+        return {
+          ...prev,
+          [id]: { ...win, minimized: true },
+        };
+      }
+
+      // Solo traer al frente
+      bringToFront(id);
+      return prev;
+    });
   };
 
   const handleSelect = (icon: string) => setSelectedIcon(icon);
 
   return (
- <div
-  className="retro-desktop"
-  onClick={(e) => {
-    if (e.target === e.currentTarget) {
-      setSelectedIcon(null); 
-    }
-  }}
->
+    <div
+      className="retro-desktop"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          setSelectedIcon(null);
+        }
+      }}
+    >
       {/* Barra de tareas */}
       <div className="taskbar">
         {/* Botón inicio */}
@@ -131,27 +173,32 @@ export default function RetroWindows() {
         </div>
 
         {/* Botones de ventanas abiertas */}
-<div className="flex flex-1 items-center gap-1 ml-2 overflow-hidden">
-  {(Object.keys(windows) as AppId[])
-    .filter((id) => windows[id].open)
-    .map((id) => {
-      const win = windows[id];
-      return (
-        <button
-          key={id}
-          onClick={() => toggleTaskbar(id)}
-          className={`flex items-center gap-1 px-2 py-0.5 text-[11px] font-[Tahoma] bg-[#c0c0c0] truncate flex-1 min-w-[80px] max-w-[100px] ${
-            win.minimized
-              ? "border-2 border-[#808080] border-t-white border-l-white"
-              : "border-2 border-white border-b-[#808080] border-r-[#808080]"
-          }`}
-        >
-          <img src={win.icon} alt="" className="w-4 h-4 shrink-0" />
-          <span className="truncate">{win.title}</span>
-        </button>
-      );
-    })}
-</div>
+        <div className="flex flex-1 items-center gap-1 ml-2 overflow-hidden">
+          {openedOrder
+            .filter((id) => windows[id].open)
+            .map((id) => {
+              const win = windows[id];
+              const isActive = id === activeWindow;
+
+              return (
+                <button
+                  key={id}
+                  onClick={() => toggleTaskbar(id)}
+                  className={`flex items-center gap-1 px-2 py-0.5 text-[11px] font-[Tahoma] truncate flex-1 min-w-[80px] max-w-[100px]
+                    ${
+                      isActive
+                        ? "border-2 border-[#808080] border-t-[#404040] border-l-[#404040] bg-[#c0c0c0]"
+                        : win.minimized
+                        ? "border-2 border-[#808080] border-t-white border-l-white bg-[#c0c0c0]"
+                        : "border-2 border-white border-b-[#808080] border-r-[#808080] bg-[#c0c0c0]"
+                    }`}
+                >
+                  <img src={win.icon} alt="" className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{win.title}</span>
+                </button>
+              );
+            })}
+        </div>
 
         {/* Reloj */}
         <div className="taskbar-clock text-xs">12:00</div>
@@ -255,9 +302,12 @@ export default function RetroWindows() {
       {/* Ventanas */}
       {windows.about.open && !windows.about.minimized && (
         <RetroWindow
+          id="about"
           title={windows.about.title}
           onClose={() => closeWindow("about")}
           onMinimize={() => minimizeWindow("about")}
+          zIndex={windowZ.about || 10}
+          onFocus={() => bringToFront("about")}
         >
           <p>Tu biografía retro aquí...</p>
         </RetroWindow>
@@ -265,9 +315,12 @@ export default function RetroWindows() {
 
       {windows.experience.open && !windows.experience.minimized && (
         <RetroWindow
+          id="experience"
           title={windows.experience.title}
           onClose={() => closeWindow("experience")}
           onMinimize={() => minimizeWindow("experience")}
+          zIndex={windowZ.experience || 10}
+          onFocus={() => bringToFront("experience")}
         >
           <p>Tu experiencia retro aquí...</p>
         </RetroWindow>
@@ -275,9 +328,12 @@ export default function RetroWindows() {
 
       {windows.projects.open && !windows.projects.minimized && (
         <RetroWindow
+          id="projects"
           title={windows.projects.title}
           onClose={() => closeWindow("projects")}
           onMinimize={() => minimizeWindow("projects")}
+          zIndex={windowZ.projects || 10}
+          onFocus={() => bringToFront("projects")}
         >
           <p>Lista de proyectos retro aquí...</p>
         </RetroWindow>
@@ -285,9 +341,12 @@ export default function RetroWindows() {
 
       {windows.technologies.open && !windows.technologies.minimized && (
         <RetroWindow
+          id="technologies"
           title={windows.technologies.title}
           onClose={() => closeWindow("technologies")}
           onMinimize={() => minimizeWindow("technologies")}
+          zIndex={windowZ.technologies || 10}
+          onFocus={() => bringToFront("technologies")}
         >
           <p>Listado de tecnologías retro aquí...</p>
         </RetroWindow>
@@ -295,9 +354,12 @@ export default function RetroWindows() {
 
       {windows.minesweeper.open && !windows.minesweeper.minimized && (
         <RetroWindow
+          id="minesweeper"
           title={windows.minesweeper.title}
           onClose={() => closeWindow("minesweeper")}
           onMinimize={() => minimizeWindow("minesweeper")}
+          zIndex={windowZ.minesweeper || 10}
+          onFocus={() => bringToFront("minesweeper")}
         >
           <p>Próximamente: Buscaminas 🎮</p>
         </RetroWindow>
@@ -305,9 +367,12 @@ export default function RetroWindows() {
 
       {windows.internet.open && !windows.internet.minimized && (
         <RetroWindow
+          id="internet"
           title={windows.internet.title}
           onClose={() => closeWindow("internet")}
           onMinimize={() => minimizeWindow("internet")}
+          zIndex={windowZ.internet || 10}
+          onFocus={() => bringToFront("internet")}
         >
           <RetroBrowser />
         </RetroWindow>

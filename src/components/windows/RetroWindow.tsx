@@ -2,14 +2,23 @@ import { useRef, useState } from "react";
 import Draggable from "react-draggable";
 
 type RetroWindowProps = {
+  id: string;
   title: string;
   children: React.ReactNode;
   onClose: () => void;
   onMinimize?: () => void;
+  zIndex: number;
+  onFocus: () => void;
 };
 
-export default function RetroWindow({ title, children, onClose, onMinimize }: RetroWindowProps) {
-  const [zIndex, setZIndex] = useState(10);
+export default function RetroWindow({
+  title,
+  children,
+  onClose,
+  onMinimize,
+  zIndex,
+  onFocus,
+}: RetroWindowProps) {
   const [isMaximized, setIsMaximized] = useState(false);
   const nodeRef = useRef(null);
 
@@ -28,10 +37,10 @@ export default function RetroWindow({ title, children, onClose, onMinimize }: Re
         top: isMaximized ? 0 : undefined,
         left: isMaximized ? 0 : undefined,
         right: isMaximized ? 0 : undefined,
-        bottom: isMaximized ? "26px" : undefined, // deja espacio para la taskbar
+        bottom: isMaximized ? "26px" : undefined,
         background: "#c0c0c0",
       }}
-      onClick={() => setZIndex((z) => z + 1)}
+      onMouseDown={onFocus} // 👈 trae al frente al click
     >
       {/* Barra de título */}
       <div
@@ -65,7 +74,8 @@ export default function RetroWindow({ title, children, onClose, onMinimize }: Re
       <div
         className={`p-2 bg-white text-black text-[13px] overflow-auto ${
           isMaximized ? "flex-1" : "min-h-[120px]"
-        }`}
+        }`
+        }
       >
         {children}
       </div>
@@ -79,7 +89,7 @@ export default function RetroWindow({ title, children, onClose, onMinimize }: Re
       nodeRef={nodeRef}
       handle=".retro-window-titlebar"
       defaultPosition={{ x: 100, y: 100 }}
-      onStart={() => setZIndex((z) => z + 1)}
+      onStart={onFocus} // 👈 trae al frente también al arrastrar
     >
       {WindowContent}
     </Draggable>
