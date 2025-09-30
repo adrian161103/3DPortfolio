@@ -50,6 +50,30 @@ function Scene() {
   const lampLight = useRef<THREE.SpotLight>(null);
 
   const [flickerActive, setFlickerActive] = useState(false);
+const audioRef = useRef<HTMLAudioElement | null>(null);
+
+useEffect(() => {
+  const audio = new Audio("/sounds/rain.mp3");
+  audio.loop = true; // 🔄 se repite como ambiente
+  audio.volume = 0.4; // 🎚️ volumen bajo
+  audioRef.current = audio;
+
+  const playAudio = () => {
+    audio.play().catch(() => {});
+    // solo reproducir una vez al primer click
+    window.removeEventListener("click", playAudio);
+  };
+
+  // 🚨 necesario por política de autoplay de Chrome/Firefox
+  window.addEventListener("click", playAudio);
+
+  return () => {
+    audio.pause();
+    audioRef.current = null;
+    window.removeEventListener("click", playAudio);
+  };
+}, []);
+   
 
   useEffect(() => {
     if (!monitorLight.current || !lampLight.current) return;
