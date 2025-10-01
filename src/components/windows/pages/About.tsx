@@ -1,92 +1,164 @@
 import React from "react";
 
+/** Paleta y helpers comunes */
+const ui = {
+  surface: "bg-[#c0c0c0] text-[#111]",
+  bevel:
+    // Borde “3D” Win98: luz arriba/izq, sombra abajo/der
+    "border-t border-l border-white border-b-2 border-r-2 border-b-[#7a7a7a] border-r-[#7a7a7a]",
+  inset:
+    "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-[2px]",
+  titlebar:
+    "bg-gradient-to-r from-[#000080] to-[#1b89d6] text-white h-8 px-2 flex items-center justify-between select-none",
+  content: "p-4 md:p-5",
+  font: "font-sans [font-family:Tahoma,Segoe_UI,Arial,sans-serif]",
+};
+
+/** Contenedor de ventana Win98 */
+function Win98Window({
+  title,
+  children,
+  right,
+}: {
+  title: string;
+  children: React.ReactNode;
+  right?: React.ReactNode;
+}) {
+  return (
+    <section
+      className={`${ui.surface} ${ui.bevel} ${ui.font} rounded-[3px] overflow-hidden`}
+      role="region"
+      aria-label={title}
+    >
+      <header className={ui.titlebar}>
+        <h2 className="text-sm font-bold tracking-wide">{title}</h2>
+        <div className="flex items-center gap-1">{right}</div>
+      </header>
+      <div className={ui.content}>{children}</div>
+    </section>
+  );
+}
+
+/** Título de sección interna (group box) */
+function Win98Section({ label }: { label: string }) {
+  return (
+    <div className="relative mt-6 mb-3">
+      <div className="absolute -top-3 left-2 bg-[#c0c0c0] px-1 text-[12px] font-bold">
+        {label}
+      </div>
+      <div className={`${ui.bevel} ${ui.inset} h-[1px]`} />
+    </div>
+  );
+}
+
+/** Botón Win98 */
+function Win98Button({
+  children,
+  className = "",
+  type = "button",
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...rest}
+      type={type}
+      className={`${ui.surface} ${ui.bevel} ${ui.font} px-3 py-1 text-sm leading-none active:translate-x-[1px] active:translate-y-[1px] ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function About() {
   return (
-    <div className="bg-[#fdfaf4] text-black font-serif text-[14px] leading-relaxed p-6 border border-[#8b5e3c] shadow-md">
-      {/* Encabezado retro */}
-      <h1 className="text-3xl font-bold mb-2 text-[#5a3825]">✨ Bienvenido ✨</h1>
-      <h2 className="text-xl font-bold mb-4">Soy Adrián Keoma Alejos García</h2>
-
-      {/* Intro narrativa */}
-      <p className="mb-4">
-        Hola! Soy <b>Full-Stack Web Developer</b> de Buenos Aires y estudiante de{" "}
-        <b>Ingeniería en Sistemas en la UTN</b>. También curso la{" "}
-        <b>Tecnicatura en Desarrollo de Software en el IFTS Nº29</b> y finalicé
-        la <b>Certificación Full Stack Web en la UTN</b> en 2025.
-      </p>
-
-      <p className="mb-4">
-        Este sitio está inspirado en las viejas páginas web de los 90s, cuando
-        los fondos eran texturas, los botones parecían de Windows 98 y los
-        visitantes encontraban gifs de “Under Construction 🚧”.
-      </p>
-
-      <hr className="border-t-2 border-[#8b5e3c] my-4" />
-
-      {/* Habilidades narradas */}
-      <h3 className="text-lg font-bold text-[#5a3825]">💾 Mis herramientas</h3>
-      <p className="mb-4">
-        Me especializo en <b>React, TypeScript y Tailwind</b>, con animaciones en{" "}
-        <b>GSAP y Framer Motion</b>. En backend uso <b>Node.js</b> y{" "}
-        <b>Express</b>, junto con bases de datos <b>MySQL</b> y <b>MongoDB</b>.  
-        También aplico <i>SEO, accesibilidad</i> y <i>performance</i>.
-      </p>
-
-      <ul className="list-disc pl-6 mb-4">
-        <li>Frontend: React.js, Tailwind CSS, Vite</li>
-        <li>Animaciones: GSAP, Framer Motion</li>
-        <li>Backend: Node.js, Express.js</li>
-        <li>DB: MongoDB y MySQL</li>
-        <li>Herramientas: GitHub, Postman, GitFlow</li>
-      </ul>
-
-      <hr className="border-t-2 border-[#8b5e3c] my-4" />
-
-      {/* Bloque personal */}
-      <h3 className="text-lg font-bold text-[#5a3825]">🎮 Más sobre mí</h3>
-      <p className="mb-4">
-        Además de programar, me gusta crear <b>modelos 3D en Blender</b>,
-        experimentar con <i>diseños retro</i> y jugar videojuegos clásicos.
-        Siempre busco combinar lo mejor del pasado con las tecnologías actuales.
-      </p>
-
-      <p className="mb-4">
-        Mi objetivo es seguir creciendo como desarrollador y mantener vivo el
-        espíritu de la web clásica ✨.
-      </p>
-
-      <hr className="border-t-2 border-[#8b5e3c] my-4" />
-
-      {/* Contacto retro */}
-      <h3 className="text-lg font-bold text-[#5a3825]">✉️ Contacto</h3>
-      <ul className="list-disc pl-6">
-        <li>
-          📧{" "}
-          <a href="mailto:adriankeomaa@gmail.com" className="text-blue-700 underline">
-            adriankeomaa@gmail.com
-          </a>
-        </li>
-        <li>
-          🐙{" "}
-          <a href="https://github.com/adrian161103" target="_blank" className="text-blue-700 underline">
-            github.com/adrian161103
-          </a>
-        </li>
-        <li>
-          💼{" "}
-          <a
-            href="https://www.linkedin.com/in/adrianalejosgarcia"
-            target="_blank"
-            className="text-blue-700 underline"
+    <div className="w-full h-full p-0">
+      <Win98Window
+        title="About"
+        right={<Win98Button aria-label="Opciones">…</Win98Button>}
+      >
+        {/* Header principal */}
+        <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4">
+          {/* Avatar */}
+          <div
+            className={`${ui.bevel} ${ui.inset} w-[120px] h-[120px] mx-auto md:mx-0 overflow-hidden`}
+            aria-hidden
           >
-            linkedin.com/in/adrianalejosgarcia
-          </a>
-        </li>
-      </ul>
+            {/* Placeholder cuadrícula suave */}
+            <div className="w-full h-full bg-[repeating-linear-gradient(45deg,#d9d9d9_0_12px,#e5e5e5_12px_24px)]"></div>
+          </div>
 
-      <p className="mt-6 italic text-[#5a3825]">
-        © 2025 — Construido con espíritu retro 🖥️
-      </p>
+          {/* Intro */}
+          <div className="space-y-2">
+            <h1 className="text-xl font-bold">Adrián Alejos Garcia</h1>
+            <p className="text-sm leading-6">
+              Desarrollador orientado a producto con foco en accesibilidad,
+              rendimiento y detalle. Me motiva diseñar experiencias retro que se
+              sienten modernas por dentro: arquitectura clara, buenas prácticas
+              y DX agradable.
+            </p>
+            <p className="text-sm leading-6">
+              Actualmente trabajo con <strong>React + TypeScript + Tailwind</strong>
+              , animaciones con GSAP/Framer y patrones de estado simples.
+              También documento, maqueto y mantengo UI kits livianos para
+              equipos pequeños.
+            </p>
+
+            <div className="flex gap-2 pt-1">
+              <Win98Button>Descargar CV</Win98Button>
+              <Win98Button>Portafolio</Win98Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Secciones */}
+        <Win98Section label="Perfil">
+          {/* Solo separador visual */}
+        </Win98Section>
+        <div className="grid md:grid-cols-3 gap-4">
+          <ul className={`${ui.bevel} ${ui.inset} p-3 text-sm space-y-1`}>
+            <li>
+              <span className="font-bold">Rol:</span> Full-Stack / Front-end
+              Developer
+            </li>
+            <li>
+              <span className="font-bold">Stack:</span> React, TS, Tailwind,
+              Vite
+            </li>
+            <li>
+              <span className="font-bold">Intereses:</span> UI retro, DX, 3D
+            </li>
+          </ul>
+
+          <div className={`${ui.bevel} ${ui.inset} p-3 text-sm md:col-span-2`}>
+            <p className="leading-6">
+              Me enfoco en construir interfaces que comuniquen con claridad.
+              Priorizo estados vacíos útiles, micro-interacciones discretas y
+              layouts que escalen. Creo que una app “rápida” es aquella que
+              explica qué está pasando, no solo la que carga en milisegundos.
+            </p>
+          </div>
+        </div>
+
+        <Win98Section label="Habilidades clave" />
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className={`${ui.bevel} ${ui.inset} p-3`}>
+            <h3 className="text-sm font-bold mb-2">Front-end</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Componentes desacoplados y estados predecibles.</li>
+              <li>Diseño responsivo sin romper el estilo retro.</li>
+              <li>Accesibilidad: navegación por teclado y roles ARIA.</li>
+            </ul>
+          </div>
+          <div className={`${ui.bevel} ${ui.inset} p-3`}>
+            <h3 className="text-sm font-bold mb-2">Colaboración</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Docs vivas, changelogs y convenciones claras.</li>
+              <li>Revisiones de código enfocadas en intent y DX.</li>
+              <li>Diseño por tokens: colores, espaciados y capas.</li>
+            </ul>
+          </div>
+        </div>
+      </Win98Window>
     </div>
   );
 }

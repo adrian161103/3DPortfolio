@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import About from "./pages/about";
+import About from "./pages/About";
 import Projects from "./pages/Project";
 import Contact from "./pages/Contact";
 
@@ -120,8 +120,8 @@ export default function RetroBrowser() {
         <button className="win98-button px-2">Vínculos</button>
       </div>
 
-      {/* ===== Contenido ===== */}
-      <div className="flex-1 bg-white p-3 overflow-auto">{renderPage()}</div>
+  {/* ===== Contenido ===== */}
+  <div className="flex-1 bg-white p-0 overflow-auto">{renderPage()}</div>
 
       {/* ===== Status Bar ===== */}
       <div className="win98-bar win98-status flex items-center justify-between h-6 px-1">

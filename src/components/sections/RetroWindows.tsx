@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import RetroWindow from "../windows/RetroWindow";
 import RetroBrowser from "../windows/RetroBrowser";
+// import Minesweeper from "../minesweeper/Minesweeper";
 
 type AppId =
   | "about"
@@ -61,16 +62,15 @@ export default function RetroWindows() {
     useState<Record<AppId, WinState>>(initialWindows);
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
-  const [zCounter, setZCounter] = useState(10);
-  const [windowZ, setWindowZ] = useState<Record<AppId, number>>({} as any);
+  const [windowZ, setWindowZ] = useState<Partial<Record<AppId, number>>>({});
   const [activeWindow, setActiveWindow] = useState<AppId | null>(null);
   const [openedOrder, setOpenedOrder] = useState<AppId[]>([]);
 
   const bringToFront = (id: AppId) => {
-    setZCounter((prev) => {
-      const newZ = prev + 1;
-      setWindowZ((old) => ({ ...old, [id]: newZ }));
-      return newZ;
+    setWindowZ((old) => {
+      const currentMax = Object.values(old).length ? Math.max(...Object.values(old) as number[]) : 10;
+      const newZ = currentMax + 1;
+      return { ...old, [id]: newZ };
     });
     setActiveWindow(id);
   };
@@ -275,6 +275,12 @@ export default function RetroWindows() {
             label: "Internet",
             dbl: () => openWindow("internet"),
           },
+          {
+            id: "minesweeper",
+            icon: "/icons/minesweeper.png",
+            label: "Buscaminas",
+            dbl: () => openWindow("minesweeper"),
+          },
         ].map(({ id, icon, label, dbl }) => (
           <div
             key={id}
@@ -352,7 +358,7 @@ export default function RetroWindows() {
         </RetroWindow>
       )}
 
-      {windows.minesweeper.open && !windows.minesweeper.minimized && (
+      {/* {windows.minesweeper.open && !windows.minesweeper.minimized && (
         <RetroWindow
           id="minesweeper"
           title={windows.minesweeper.title}
@@ -361,9 +367,9 @@ export default function RetroWindows() {
           zIndex={windowZ.minesweeper || 10}
           onFocus={() => bringToFront("minesweeper")}
         >
-          <p>Próximamente: Buscaminas 🎮</p>
+          <Minesweeper />
         </RetroWindow>
-      )}
+      )} */}
 
       {windows.internet.open && !windows.internet.minimized && (
         <RetroWindow
