@@ -24,6 +24,8 @@ export default function CameraController() {
 
       (window as any).windowsModeActive = isWindows;
 
+      window.dispatchEvent(new CustomEvent("focusMode", { detail: isWindows }));
+
    if (isWindows) {
   // POV especial de Windows
   gsap.to(perspectiveCamera.position, {
