@@ -1,5 +1,5 @@
 import { Html } from "@react-three/drei";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import RetroWindows from "../sections/RetroWindows";
 import WindowsBoot from "./WindowsBoot";
 import { LanguageProvider, useLanguage } from "../../context/LanguageContext";
@@ -81,18 +81,18 @@ function ConsoleContent() {
   }, []);
 
   //  simula caracteres corruptos
-  const randomChar = () => {
+  const randomChar = useCallback(() => {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
     return chars[Math.floor(Math.random() * chars.length)];
-  };
+  }, []);
 
-  const corruptText = (text: string, strength = 0.7) => {
+  const corruptText = useCallback((text: string, strength = 0.7) => {
     return text
       .split("")
       .map((ch) => (ch.trim() && Math.random() < strength ? randomChar() : ch))
       .join("");
-  };
+  }, [randomChar]);
 
   // intenta autoescrollear al final
   useEffect(() => {
@@ -102,7 +102,7 @@ function ConsoleContent() {
   }, [lines]);
 
   // Ejecutar comandos
-  const executeCommand = (command: string, fromClick = false) => {
+  const executeCommand = useCallback((command: string, fromClick = false) => {
     const cleanCmd = command.toLowerCase().trim();
 
     if (!fromClick) {
@@ -179,7 +179,7 @@ if (cleanCmd === t.commands.windows) {
         `<error>${t.wantList} ${t.typeList}</error>`,
       ]);
     }
-  };
+  }, [lines, defaultLines, t, commands, setShowWindows, corruptText]);
 
   // Manejo de teclado
   useEffect(() => {
@@ -199,7 +199,7 @@ if (cleanCmd === t.commands.windows) {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [active, currentLine, lines]);
+  }, [active, currentLine, lines, executeCommand]);
 
   const handleActivate = () => {
     setActive(true);
@@ -210,8 +210,14 @@ if (cleanCmd === t.commands.windows) {
       transform
       position={[0, 1.273, 0.02]}
       rotation={[0, 0, 0]}
-      scale={0.045}
+      scale={0.0225}
       occlude
+      style={{
+        imageRendering: 'crisp-edges',
+        WebkitFontSmoothing: 'antialiased',
+        transform: 'translateZ(0)',
+        willChange: 'transform'
+      }}
     >
       <div className="relative w-full h-full">
         <div

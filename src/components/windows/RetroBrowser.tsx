@@ -95,9 +95,9 @@ export default function RetroBrowser() {
   ];
 
   return (
-    <div className="flex flex-col h-full w-full text-[11px] font-[Tahoma,'MS Sans Serif',sans-serif] bg-[#c0c0c0] border border-[#808080]">
+    <div className="flex flex-col h-full w-full text-[22px] font-[Tahoma,'MS Sans Serif',sans-serif] bg-[#c0c0c0] border-2 border-[#808080]">
       {/* ===== Toolbar ===== */}
-      <div className="win98-bar flex items-center h-7 px-1">
+      <div className="win98-bar flex items-center h-14 px-2">
         {toolbarButtons.map((btn, i) =>
           btn.separator ? (
             <div key={i} className="win98-separator" />
@@ -115,25 +115,25 @@ export default function RetroBrowser() {
       </div>
 
       {/* ===== Address Bar ===== */}
-      <div className="win98-bar flex items-center gap-1 px-1 py-[2px]">
-        <span className="px-1 font-bold">Dirección</span>
+      <div className="win98-bar flex items-center gap-2 px-2 py-1">
+        <span className="px-2 font-bold">Dirección</span>
         <input
           type="text"
           readOnly
           value={`http://retro.local/${page}`}
           className="flex-1 win98-input"
         />
-        <button className="win98-button px-2">Ir a</button>
-        <button className="win98-button px-2">Vínculos</button>
+        <button className="win98-button px-4">Ir a</button>
+        <button className="win98-button px-4">Vínculos</button>
       </div>
 
   {/* ===== Contenido ===== */}
-  <div className="flex-1 bg-white p-0 overflow-auto">{renderPage()}</div>
+  <div className="flex-1 bg-white p-0 overflow-auto min-h-0">{renderPage()}</div>
 
       {/* ===== Status Bar ===== */}
-      <div className="win98-bar win98-status flex items-center justify-between h-6 px-1">
+      <div className="win98-bar win98-status flex items-center justify-between h-12 px-2">
         {/* Izquierda */}
-        <div className="flex items-center gap-1 w-40 border-r border-[#808080] px-1">
+        <div className="flex items-center gap-2 w-80 border-r-2 border-[#808080] px-2">
           <img src="/icons/ie/internetpage.png" alt="IE" className="retro-icon" />
           <span>{loading ? "Cargando..." : "Listo"}</span>
         </div>

@@ -198,19 +198,19 @@ export default function RetroWindows() {
       <div className="taskbar">
         {/* Botón inicio */}
         <div
-          className="start-btn flex items-center gap-1"
+          className="start-btn flex items-center gap-2"
           onClick={() => setShowStartMenu((prev) => !prev)}
         >
           <img
             src="/icons/windows.png"
             alt="logo-Windows"
-            className="w-4 h-4"
+            className="w-8 h-8"
           />
-          <p className="text-[0.65rem]">{t.start}</p>
+          <p className="text-[1.3rem]">{t.start}</p>
         </div>
 
         {/* Botones de ventanas abiertas */}
-        <div className="flex flex-1 items-center gap-1 ml-2 overflow-hidden">
+        <div className="flex flex-1 items-center gap-2 ml-4 overflow-hidden">
           {openedOrder
             .filter((id) => windows[id].open)
             .map((id) => {
@@ -221,16 +221,16 @@ export default function RetroWindows() {
                 <button
                   key={id}
                   onClick={() => toggleTaskbar(id)}
-                  className={`flex items-center gap-1 px-2 py-0.5 text-[11px] font-[Tahoma] truncate flex-1 min-w-[80px] max-w-[100px]
+                  className={`flex items-center gap-2 px-4 py-1 text-[22px] font-[Tahoma] truncate flex-1 min-w-[160px] max-w-[200px]
                     ${
                       isActive
-                        ? "border-2 border-[#808080] border-t-[#404040] border-l-[#404040] bg-[#c0c0c0]"
+                        ? "border-4 border-[#808080] border-t-[#404040] border-l-[#404040] bg-[#c0c0c0]"
                         : win.minimized
-                        ? "border-2 border-[#808080] border-t-white border-l-white bg-[#c0c0c0]"
-                        : "border-2 border-white border-b-[#808080] border-r-[#808080] bg-[#c0c0c0]"
+                        ? "border-4 border-[#808080] border-t-white border-l-white bg-[#c0c0c0]"
+                        : "border-4 border-white border-b-[#808080] border-r-[#808080] bg-[#c0c0c0]"
                     }`}
                 >
-                  <img src={win.icon} alt="" className="w-4 h-4 shrink-0" />
+                  <img src={win.icon} alt="" className="w-8 h-8 shrink-0" />
                   <span className="truncate">{win.title}</span>
                 </button>
               );
@@ -238,17 +238,17 @@ export default function RetroWindows() {
         </div>
 
         {/* Reloj */}
-        <div className="taskbar-clock text-xs">12:00</div>
+        <div className="taskbar-clock text-2xl">12:00</div>
       </div>
 
       {/* Menú de Inicio */}
       {showStartMenu && (
         <div
           ref={menuRef}
-          className="absolute bottom-6.5 left-0 w-[200px] bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044] font-[Tahoma] z-[9999]"
+          className="absolute bottom-6.5 left-0 w-[400px] bg-[#c0c0c0] border-4 border-[#808080] shadow-[8px_8px_0_#00000044] font-[Tahoma] z-[9999]"
         >
           <div 
-            className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white cursor-pointer"
+            className="px-5 py-3 text-[28px] hover:bg-[#000080] hover:text-white cursor-pointer"
             onClick={handleShutdown}
           >
             {t.shutdown}
@@ -257,7 +257,7 @@ export default function RetroWindows() {
       )}
 
       {/* Íconos de escritorio */}
-      <div className="flex flex-col gap-8 p-5 text-white">
+      <div className="flex flex-col gap-12 p-8 text-white">
         {[
           { id: "pc", icon: "/icons/my-computer.png", label: t.icons.myPc },
           { id: "bin", icon: "/icons/bin.png", label: t.icons.bin },
@@ -277,16 +277,16 @@ export default function RetroWindows() {
         ].map(({ id, icon, label, dbl }) => (
           <div
             key={id}
-            className="flex flex-col items-center w-12 cursor-pointer"
+            className="flex flex-col items-center w-20 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               handleSelect(id);
             }}
             onDoubleClick={dbl}
           >
-            <img src={icon} alt={label} className="w-10 h-10" />
+            <img src={icon} alt={label} className="w-16 h-16" />
             <span
-              className={`mt-1 text-[0.7rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black]  ${
+              className={`mt-1 text-[1.3rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black]  ${
                 selectedIcon === id
                   ? "bg-[#000080] text-white  outline-1 outline-dotted outline-white"
                   : "text-white"

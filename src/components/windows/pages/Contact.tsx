@@ -11,7 +11,7 @@ const ui = {
   inset:
     "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-[2px]",
   titlebar:
-    "bg-gradient-to-r from-[#000080] to-[#1b89d6] text-white h-8 px-2 flex items-center justify-between select-none",
+    "bg-gradient-to-r from-[#000080] to-[#1b89d6] text-white h-16 px-4 flex items-center justify-between select-none",
   content: "p-4 md:p-5",
   font: "font-sans [font-family:Tahoma,Segoe_UI,Arial,sans-serif]",
 };
@@ -32,8 +32,8 @@ function Win98Window({
       aria-label={title}
     >
       <header className={ui.titlebar}>
-        <h2 className="text-sm font-bold">{title}</h2>
-        <div className="flex items-center gap-1">{right}</div>
+        <h2 className="text-[28px] font-bold">{title}</h2>
+        <div className="flex items-center gap-2">{right}</div>
       </header>
       <div className={ui.content}>{children}</div>
     </section>
@@ -50,7 +50,7 @@ function Win98Button({
     <button
       {...rest}
       type={type}
-      className={`${ui.surface} ${ui.bevel} ${ui.font} px-3 py-1 text-sm leading-none active:translate-x-[1px] active:translate-y-[1px] ${className}`}
+      className={`${ui.surface} ${ui.bevel} ${ui.font} px-6 py-2 text-[28px] leading-none active:translate-x-[2px] active:translate-y-[2px] ${className}`}
     >
       {children}
     </button>
@@ -71,14 +71,14 @@ function Field({
   id: string;
 }) {
   return (
-    <div className="space-y-1">
-      <label htmlFor={id} className="text-sm font-bold">
+    <div className="space-y-2">
+      <label htmlFor={id} className="text-[28px] font-bold">
         {label} {required ? "*" : null}
       </label>
-      <div className={`${ui.surface} ${ui.bevel} ${ui.inset} p-1`}>
+      <div className={`${ui.surface} ${ui.bevel} ${ui.inset} p-2`}>
         {children}
       </div>
-      {hint ? <p className="text-[11px] opacity-80">{hint}</p> : null}
+      {hint ? <p className="text-[22px] opacity-80">{hint}</p> : null}
     </div>
   );
 }
@@ -108,10 +108,10 @@ export default function Contact() {
   }
 
   return (
-    <div className="w-full h-full p-0">
+    <div className="w-full p-0">
       <Win98Window
         title={contact.title}
-        right={<span className="text-xs opacity-90">{contact.version}</span>}
+        right={<span className="text-[24px] opacity-90">{contact.version}</span>}
       >
         <form onSubmit={onSubmit} className="space-y-4">
           <Field
@@ -124,7 +124,7 @@ export default function Contact() {
               id="name"
               name="name"
               required
-              className="w-full bg-transparent outline-none text-sm"
+              className="w-full bg-transparent outline-none text-[28px]"
               placeholder={contact.fields.name.placeholder}
               autoComplete="name"
             />
@@ -141,7 +141,7 @@ export default function Contact() {
               name="email"
               type="email"
               required
-              className="w-full bg-transparent outline-none text-sm"
+              className="w-full bg-transparent outline-none text-[28px]"
               placeholder={contact.fields.email.placeholder}
               autoComplete="email"
             />
@@ -158,12 +158,12 @@ export default function Contact() {
               name="message"
               required
               rows={6}
-              className="w-full bg-transparent outline-none text-sm resize-y"
+              className="w-full bg-transparent outline-none text-[28px] resize-y"
               placeholder={contact.fields.message.placeholder}
             />
           </Field>
 
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex items-center gap-4 pt-2">
             <Win98Button type="submit" disabled={state.status === "sending"}>
               {state.status === "sending" ? contact.buttons.sending : contact.buttons.send}
             </Win98Button>
@@ -172,7 +172,7 @@ export default function Contact() {
 
           {/* Barra de estado inferior */}
           <div
-            className={`${ui.surface} ${ui.bevel} ${ui.inset} mt-3 p-2 text-[12px]`}
+            className={`${ui.surface} ${ui.bevel} ${ui.inset} mt-6 p-4 text-[24px]`}
             role="status"
           >
             {state.status === "idle" && contact.status.idle}

@@ -33,11 +33,12 @@ export default function RetroWindow({
       style={{
         zIndex,
         position: "absolute",
-        width: isMaximized ? "100%" : "300px",
+        width: isMaximized ? "100%" : "1500px",
+        height: isMaximized ? undefined : "800px",
         top: isMaximized ? 0 : undefined,
         left: isMaximized ? 0 : undefined,
         right: isMaximized ? 0 : undefined,
-        bottom: isMaximized ? "26px" : undefined,
+        bottom: isMaximized ? "55px" : undefined,
         background: "#c0c0c0",
       }}
       onMouseDown={onFocus} // 👈 trae al frente al click
@@ -63,10 +64,10 @@ export default function RetroWindow({
 
       {/* Contenido */}
       <div
-        className={`p-2 bg-white text-black text-[13px] overflow-auto ${
-          isMaximized ? "flex-1" : "min-h-[120px]"
-        }`
-        }
+        className={`flex-1 p-4 bg-white text-black text-[26px] overflow-auto`}
+        style={{
+          transformOrigin: 'top left',
+        }}
       >
         {children}
       </div>

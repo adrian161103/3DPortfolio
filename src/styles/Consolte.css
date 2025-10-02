@@ -3,18 +3,27 @@
   /* Aumentamos el tamaño real para mejorar la resolución
      de la textura cuando React-Three-Drei rasteriza este DOM. */
   position: relative;
-  width: 808px; /* antes 404 */
-  height: 700px; /* antes 350 */
+  width: 1616px; 
+  height: 1400px; 
   background: #000;
   color: #00ff66;
   font-family: "VT323", monospace;
   /* Reducimos la fuente visual para mantener el mismo aspecto
      dentro de la escena 3D (al usar un scale menor en Html). */
-  font-size: 2.5rem; /* antes 22 */
-  padding: 10px;
+  font-size: 4rem; 
+  padding: 20px; 
   overflow-y: auto;
   cursor: pointer;
-  text-shadow: 0 0 2px #00ff66, 0 0 5px #00ff66;
+  text-shadow: 0 0 4px #00ff66, 0 0 10px #00ff66; 
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* Scanlines CRT */
@@ -25,8 +34,8 @@
   background: repeating-linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.04) 0px,
-    rgba(255, 255, 255, 0.04) 1px,
-    transparent 2px
+    rgba(255, 255, 255, 0.04) 2px,
+    transparent 4px
   );
   pointer-events: none;
 }
@@ -55,10 +64,10 @@
 /* Sacudida */
 @keyframes screen-shake {
   0%   { transform: translate(0, 0); }
-  20%  { transform: translate(-3px, 2px); }
-  40%  { transform: translate(3px, -2px); }
-  60%  { transform: translate(-2px, 1px); }
-  80%  { transform: translate(2px, -1px); }
+  20%  { transform: translate(-6px, 4px); }
+  40%  { transform: translate(6px, -4px); }
+  60%  { transform: translate(-4px, 2px); }
+  80%  { transform: translate(4px, -2px); }
   100% { transform: translate(0, 0); }
 }
 
@@ -70,40 +79,40 @@
 /* Comandos válidos glitch */
 .glitch {
   color: #00ff66;
-  text-shadow: 2px 0 magenta, -2px 0 cyan;
+  text-shadow: 4px 0 magenta, -4px 0 cyan;
   animation: glitch 1s infinite;
 }
 
 /* Último comando glitch fuerte */
 .glitch-strong {
   color: #00ff66;
-  text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red;
+  text-shadow: 6px 0 magenta, -6px 0 cyan, 0 4px red;
   animation: glitchStrong 0.2s infinite;
 }
 
 @keyframes glitchStrong {
-  0% { text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red; }
-  50% { text-shadow: -3px 0 magenta, 3px 0 cyan, 0 -2px blue; }
-  100% { text-shadow: 3px 0 magenta, -3px 0 cyan, 0 2px red; }
+  0% { text-shadow: 6px 0 magenta, -6px 0 cyan, 0 4px red; }
+  50% { text-shadow: -6px 0 magenta, 6px 0 cyan, 0 -4px blue; }
+  100% { text-shadow: 6px 0 magenta, -6px 0 cyan, 0 4px red; }
 }
 
 /* Errores */
 .error-glitch {
   color: #ff0033;
-  text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
+  text-shadow: 4px 0 #00ffff, -4px 0 #ff00ff;
   animation: errorGlitch 0.8s infinite;
 }
 
 @keyframes errorGlitch {
-  0% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
-  50% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
-  100% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+  0% { text-shadow: 4px 0 #00ffff, -4px 0 #ff00ff; }
+  50% { text-shadow: -4px 0 #00ffff, 4px 0 #ff00ff; }
+  100% { text-shadow: 4px 0 #00ffff, -4px 0 #ff00ff; }
 }
 
 /* Input y líneas limpias */
 .clean-line {
   color: #00ff66;
-  text-shadow: 0 0 2px #00ff66, 0 0 5px #00ff66;
+  text-shadow: 0 0 4px #00ff66, 0 0 10px #00ff66;
 }
 
 /* Cursor normal */
@@ -113,8 +122,8 @@
 
 /* Lista de comandos */
 .command-list {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .command-text {
@@ -123,12 +132,12 @@
 
 .command-text:hover {
   color: #00ffff;
-  text-shadow: 0 0 5px #00ffff;
+  text-shadow: 0 0 10px #00ffff;
   cursor: pointer;
 }
 
 .scrollbar-retro::-webkit-scrollbar {
-  width: 6px;                 /* finita */
+  width: 12px;                 /* x2 (antes 6px) */
 }
 
 .scrollbar-retro::-webkit-scrollbar-track {
@@ -136,14 +145,14 @@
 }
 
 .scrollbar-retro::-webkit-scrollbar-thumb {
-  background: #00ff66;        /* verde fósforo */
-  border-radius: 4px;
-  box-shadow: 0 0 6px #00ff66;/* brillo sutil */
+  background: #00ff66;        
+  border-radius: 8px;         
+  box-shadow: 0 0 12px #00ff66;
 }
 
 .scrollbar-retro::-webkit-scrollbar-thumb:hover {
-  background: #00ffff;        /* cian al hover */
-  box-shadow: 0 0 8px #00ffff;
+  background: #00ffff;        
+  box-shadow: 0 0 16px #00ffff; 
 }
 
 /* Firefox */

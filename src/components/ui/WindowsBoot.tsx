@@ -70,7 +70,7 @@ export default function WindowsBoot({ onFinish }: { onFinish: () => void }) {
     <div className="absolute inset-0 z-50 bg-black flex items-center justify-center pointer-events-auto">
       <div className="w-full h-full relative">
         {stage === "bios" && (
-          <div className="w-full h-full bg-black text-green-400 font-mono text-xs p-6 overflow-auto leading-tight">
+          <div className="w-full h-full bg-black text-green-400 font-mono text-[2rem] p-6 overflow-auto leading-tight">
             {visibleLines.map((line, idx) => (
               <div key={idx}>{line}</div>
             ))}
