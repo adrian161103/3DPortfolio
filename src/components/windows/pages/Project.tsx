@@ -1,12 +1,8 @@
 import React, { useMemo, useState } from "react";
-
-type Project = {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  imageAlt?: string;
-};
+import { useLanguage } from "../../../context/LanguageContext";
+import { projectsEs } from "../../../data/windowsProjects/projects.es";
+import { projectsEn } from "../../../data/windowsProjects/projects.en";
+import { ProjectsData } from "../../../data/windowsProjects/projectsTypes";
 
 const ui = {
   surface: "bg-[#c0c0c0] text-[#111]",
@@ -69,76 +65,34 @@ function Tag({ t }: { t: string }) {
   );
 }
 
-const ALL_PROJECTS: Project[] = [
-  {
-    id: "retrofolio",
-    title: "Retrofolio",
-    description:
-      "Portfolio minimal con estética Win98. Includes router simple, ventanas apilables y loader estilo IE.",
-    tags: ["React", "TS", "Tailwind"],
-  },
-  {
-    id: "termux",
-    title: "TermUX",
-    description:
-      "Terminal web con comandos ficticios, autocompletado y temas monocromos. Ideal para demos.",
-    tags: ["UI", "A11y", "DX"],
-  },
-  {
-    id: "aura-lite",
-    title: "Aura Lite",
-    description:
-      "Kit de componentes retro: botones, inputs, cards y barras de estado con tokens y variantes.",
-    tags: ["Design System", "Tokens"],
-  },
-  {
-    id: "sprite-studio",
-    title: "Sprite Studio",
-    description:
-      "Editor simple de sprites 16×16 con export PNG y atajos de teclado. Perfecto para íconos pixel-art.",
-    tags: ["Canvas", "Tools"],
-  },
-  {
-    id: "winmail",
-    title: "WinMail",
-    description:
-      "Cliente de correo ficticio con bandeja, lectura, filtros y estado offline simulado.",
-    tags: ["UX", "State"],
-  },
-  {
-    id: "mines98",
-    title: "Mines 98",
-    description:
-      "Clon accesible de Buscaminas con teclado, focus ring visible y escalado nítido.",
-    tags: ["Game", "Accessibility"],
-  },
-];
-
 export default function Projects() {
-  const [filter, setFilter] = useState<string>("All");
+  const { language } = useLanguage();
+  const data: ProjectsData = language === "es" ? projectsEs : projectsEn;
+  
+  const [filter, setFilter] = useState<string>(data.filterAll);
 
   const tags = useMemo(() => {
     const t = new Set<string>();
-    ALL_PROJECTS.forEach((p) => p.tags.forEach((x) => t.add(x)));
-    return ["All", ...Array.from(t)];
-  }, []);
+    data.projects.forEach((p) => p.tags.forEach((x) => t.add(x)));
+    return [data.filterAll, ...Array.from(t)];
+  }, [data]);
 
-  const projects = ALL_PROJECTS.filter(
-    (p) => filter === "All" || p.tags.includes(filter)
+  const projects = data.projects.filter(
+    (p) => filter === data.filterAll || p.tags.includes(filter)
   );
 
   return (
     <div className="w-full h-full p-0">
       <Win98Window
-        title="Projects"
+        title={data.title}
         right={
           <div className="flex items-center gap-2">
-            <span className="text-xs opacity-90">Filter:</span>
+            <span className="text-xs opacity-90">{data.filterLabel}</span>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               className={`${ui.surface} ${ui.bevel} ${ui.font} text-xs px-1 py-[2px]`}
-              aria-label="Filtrar por etiqueta"
+              aria-label={data.filterAriaLabel}
             >
               {tags.map((t) => (
                 <option key={t}>{t}</option>
@@ -156,7 +110,7 @@ export default function Projects() {
               {/* Preview */}
               <div
                 className={`${ui.inset} aspect-[4/3] mb-2 overflow-hidden`}
-                aria-label={`Vista previa de ${p.title}`}
+                aria-label={`${data.previewAlt} ${p.title}`}
               >
                 {/* Placeholder “retro screenshot” */}
                 <div className="w-full h-full bg-[repeating-linear-gradient(90deg,#d9d9d9_0_8px,#e6e6e6_8px_16px)]" />
@@ -175,8 +129,8 @@ export default function Projects() {
 
               {/* Acción */}
               <div className="mt-3 flex items-center justify-between">
-                <Win98Button>Ver demo</Win98Button>
-                <span className="text-[11px] opacity-75">status: Ready</span>
+                <Win98Button>{data.viewDemo}</Win98Button>
+                <span className="text-[11px] opacity-75">{data.statusReady}</span>
               </div>
             </li>
           ))}

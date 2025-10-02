@@ -2,10 +2,17 @@ import { useState, useEffect } from "react";
 import About from "./pages/About";
 import Projects from "./pages/Project";
 import Contact from "./pages/Contact";
+import { useLanguage } from "../../context/LanguageContext";
+import { browserEs } from "../../data/browser/browser.es";
+import { browserEn } from "../../data/browser/browser.en";
+import { BrowserData } from "../../data/browser/browserTypes";
 
 type Page = "home" | "about" | "projects" | "contact";
 
 export default function RetroBrowser() {
+  const { language } = useLanguage();
+  const t: BrowserData = language === "es" ? browserEs : browserEn;
+  
   const [page, setPage] = useState<Page>("home");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -33,7 +40,7 @@ export default function RetroBrowser() {
     if (loading) {
       return (
         <div className="flex-1 bg-white text-center pt-10 text-gray-600">
-          Cargando...
+          {t.loading}...
         </div>
       );
     }
@@ -54,17 +61,17 @@ export default function RetroBrowser() {
           <div className="space-y-2">
             <p>
               <span onClick={() => setPage("about")} className="win98-link">
-                About
+                {t.pages.about}
               </span>
             </p>
             <p>
               <span onClick={() => setPage("projects")} className="win98-link">
-                Projects
+                {t.pages.projects}
               </span>
             </p>
             <p>
               <span onClick={() => setPage("contact")} className="win98-link">
-                Contact
+                {t.pages.contact}
               </span>
             </p>
           </div>
@@ -73,18 +80,18 @@ export default function RetroBrowser() {
   };
 
   const toolbarButtons = [
-    { icon: "/icons/ie/back.png", label: "Atrás", action: () => setPage("home") },
-    { icon: "/icons/ie/forward.png", label: "Adelante" },
+    { icon: "/icons/ie/back.png", label: t.toolbar.back, action: () => setPage("home") },
+    { icon: "/icons/ie/forward.png", label: t.toolbar.forward },
     { separator: true },
-    { icon: "/icons/ie/stop.png", label: "Detener" },
-    { icon: "/icons/ie/refresh.png", label: "Actualizar" },
+    { icon: "/icons/ie/stop.png", label: t.toolbar.stop },
+    { icon: "/icons/ie/refresh.png", label: t.toolbar.refresh },
     { separator: true },
-    { icon: "/icons/ie/home.png", label: "Inicio", action: () => setPage("home") },
-    { icon: "/icons/ie/search.png", label: "Búsqueda" },
-    { icon: "/icons/ie/favorites.png", label: "Favoritos" },
-    { icon: "/icons/ie/history.png", label: "Historial" },
-    { icon: "/icons/ie/mail.png", label: "Correo" },
-    { icon: "/icons/ie/print.png", label: "Imprimir" },
+    { icon: "/icons/ie/home.png", label: t.toolbar.home, action: () => setPage("home") },
+    { icon: "/icons/ie/search.png", label: t.toolbar.search },
+    { icon: "/icons/ie/favorites.png", label: t.toolbar.favorites },
+    { icon: "/icons/ie/history.png", label: t.toolbar.history },
+    { icon: "/icons/ie/mail.png", label: t.toolbar.mail },
+    { icon: "/icons/ie/print.png", label: t.toolbar.print },
   ];
 
   return (

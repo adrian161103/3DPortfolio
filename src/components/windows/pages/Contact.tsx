@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useLanguage } from "../../../context/LanguageContext";
+import { contactEs } from "../../../data/windowsContact/contact.es";
+import { contactEn } from "../../../data/windowsContact/contact.en";
+import { ContactData } from "../../../data/windowsContact/contactTypes";
 
 const ui = {
   surface: "bg-[#c0c0c0] text-[#111]",
@@ -86,6 +90,9 @@ type FormState =
   | { status: "error"; message: string };
 
 export default function Contact() {
+  const { language } = useLanguage();
+  const contact: ContactData = language === "es" ? contactEs : contactEn;
+  
   const [state, setState] = useState<FormState>({ status: "idle" });
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -103,31 +110,31 @@ export default function Contact() {
   return (
     <div className="w-full h-full p-0">
       <Win98Window
-        title="Contact"
-        right={<span className="text-xs opacity-90">v1.0</span>}
+        title={contact.title}
+        right={<span className="text-xs opacity-90">{contact.version}</span>}
       >
         <form onSubmit={onSubmit} className="space-y-4">
           <Field
             id="name"
-            label="Nombre"
+            label={contact.fields.name.label}
             required
-            hint="Cómo te gustaría que te llame."
+            hint={contact.fields.name.hint}
           >
             <input
               id="name"
               name="name"
               required
               className="w-full bg-transparent outline-none text-sm"
-              placeholder="Ej: Ada Lovelace"
+              placeholder={contact.fields.name.placeholder}
               autoComplete="name"
             />
           </Field>
 
           <Field
             id="email"
-            label="Email"
+            label={contact.fields.email.label}
             required
-            hint="Nunca compartiremos tu correo."
+            hint={contact.fields.email.hint}
           >
             <input
               id="email"
@@ -135,16 +142,16 @@ export default function Contact() {
               type="email"
               required
               className="w-full bg-transparent outline-none text-sm"
-              placeholder="Ej: ada@example.com"
+              placeholder={contact.fields.email.placeholder}
               autoComplete="email"
             />
           </Field>
 
           <Field
             id="message"
-            label="Mensaje"
+            label={contact.fields.message.label}
             required
-            hint="Cuéntame sobre tu proyecto o idea."
+            hint={contact.fields.message.hint}
           >
             <textarea
               id="message"
@@ -152,15 +159,15 @@ export default function Contact() {
               required
               rows={6}
               className="w-full bg-transparent outline-none text-sm resize-y"
-              placeholder="Hola Adrián, me interesa trabajar en..."
+              placeholder={contact.fields.message.placeholder}
             />
           </Field>
 
           <div className="flex items-center gap-2 pt-1">
             <Win98Button type="submit" disabled={state.status === "sending"}>
-              {state.status === "sending" ? "Enviando..." : "Enviar"}
+              {state.status === "sending" ? contact.buttons.sending : contact.buttons.send}
             </Win98Button>
-            <Win98Button type="reset">Limpiar</Win98Button>
+            <Win98Button type="reset">{contact.buttons.clear}</Win98Button>
           </div>
 
           {/* Barra de estado inferior */}
@@ -168,10 +175,10 @@ export default function Contact() {
             className={`${ui.surface} ${ui.bevel} ${ui.inset} mt-3 p-2 text-[12px]`}
             role="status"
           >
-            {state.status === "idle" && "Listo"}
-            {state.status === "sending" && "Enviando — espere…"}
-            {state.status === "success" && "Mensaje enviado. ¡Gracias!"}
-            {state.status === "error" && `Error: ${state.message}`}
+            {state.status === "idle" && contact.status.idle}
+            {state.status === "sending" && contact.status.sending}
+            {state.status === "success" && contact.status.success}
+            {state.status === "error" && `${contact.status.error} ${state.message}`}
           </div>
         </form>
       </Win98Window>

@@ -1,10 +1,15 @@
 import { Html } from "@react-three/drei";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import RetroWindows from "../sections/RetroWindows";
 import WindowsBoot from "./WindowsBoot";
-import { LanguageProvider } from "../../context/LanguageContext";
+import { LanguageProvider, useLanguage } from "../../context/LanguageContext";
+import { consoleEs } from "../../data/console/console.es";
+import { consoleEn } from "../../data/console/console.en";
+import { ConsoleData } from "../../data/console/consoleTypes";
 
-export default function ConsoleScreen() {
+function ConsoleContent() {
+  const { language } = useLanguage();
+  const t: ConsoleData = language === "es" ? consoleEs : consoleEn;
   const [showWindows, setShowWindows] = useState(false);
   const [bootFinished, setBootFinished] = useState(false);
 
@@ -16,20 +21,32 @@ export default function ConsoleScreen() {
       setBootFinished(false);
     }
   }, [showWindows]);
-  const commands = [
-    "about",
-    "projects",
-    "technologies",
-    "education",
-    "windows",
-  ];
 
-  const defaultLines = [
-    "Welcome to Retro Console v1.0",
-    "Touch the screen and type a command...",
+  // Escuchar evento de apagar desde Windows
+  useEffect(() => {
+    const handleWindowsMode = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      setShowWindows(customEvent.detail);
+    };
+
+    window.addEventListener("setWindowsMode", handleWindowsMode);
+    return () => window.removeEventListener("setWindowsMode", handleWindowsMode);
+  }, []);
+  
+  const commands = useMemo(() => [
+    t.commands.about,
+    t.commands.projects,
+    t.commands.technologies,
+    t.commands.education,
+    t.commands.windows,
+  ], [t]);
+
+  const defaultLines = useMemo(() => [
+    t.welcome,
+    t.touchScreen,
     "",
-    "Available commands:",
-  ];
+    t.availableCommands,
+  ], [t]);
 
   const [lines, setLines] = useState<string[]>([...defaultLines]);
   const backupLinesRef = useRef<string[]>([]);
@@ -44,7 +61,12 @@ export default function ConsoleScreen() {
 
   const consoleRef = useRef<HTMLDivElement>(null); // 👈 referencia al contenedor
 
-  // 🎵 Sonido retro
+  // � Actualizar líneas cuando cambie el idioma
+  useEffect(() => {
+    setLines([...defaultLines]);
+  }, [defaultLines]);
+
+  //  Sonido retro
   const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     audioRef.current = new Audio("/sounds/zap.mp3");
@@ -95,10 +117,10 @@ export default function ConsoleScreen() {
       return;
     }
 
-    if (cleanCmd === "lista") {
+    if (cleanCmd === "lista" || cleanCmd === "list") {
       setLines((prev) => [
         ...prev,
-        "Mostrando lista de comandos nuevamente...",
+        t.showList,
       ]);
       setShowCommands(true);
       return;
@@ -107,7 +129,7 @@ export default function ConsoleScreen() {
     if (commands.includes(cleanCmd)) {
       setShowCommands(false);
 
-if (cleanCmd === "windows") {
+if (cleanCmd === t.commands.windows) {
   setShowWindows(true);
   window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: true }));
   return;
@@ -153,8 +175,8 @@ if (cleanCmd === "windows") {
       setShowCommands(false);
       setLines((prev) => [
         ...prev,
-        `<error>Comando no reconocido: "${command}"</error>`,
-        `<error>¿Quieres ver la lista? Escribe: lista</error>`,
+        `<error>${t.commandNotFound} "${command}"</error>`,
+        `<error>${t.wantList} ${t.typeList}</error>`,
       ]);
     }
   };
@@ -205,7 +227,7 @@ if (cleanCmd === "windows") {
           if (line.startsWith(">")) {
             const cleanCmd = line.replace(">", "").trim().toLowerCase();
             const isValid = commands.includes(cleanCmd);
-            const isWindows = cleanCmd === "windows";
+            const isWindows = cleanCmd === t.commands.windows;
 
             if (isValid && !isWindows && cleanCmd !== "cls") {
               return (
@@ -292,4 +314,12 @@ if (cleanCmd === "windows") {
 
     </>
    );
+}
+
+export default function ConsoleScreen() {
+  return (
+    <LanguageProvider>
+      <ConsoleContent />
+    </LanguageProvider>
+  );
 }

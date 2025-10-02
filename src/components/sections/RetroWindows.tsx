@@ -1,6 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import RetroWindow from "../windows/RetroWindow";
 import RetroBrowser from "../windows/RetroBrowser";
+import { useLanguage } from "../../context/LanguageContext";
+import { desktopEs } from "../../data/desktop/desktop.es";
+import { desktopEn } from "../../data/desktop/desktop.en";
+import { DesktopData } from "../../data/desktop/desktopTypes";
 // import Minesweeper from "../minesweeper/Minesweeper";
 
 type AppId =
@@ -46,7 +50,7 @@ const initialWindows: Record<AppId, WinState> = {
   minesweeper: {
     open: false,
     minimized: false,
-    title: "Buscaminas",
+    title: "Minesweeper",
     icon: "/icons/minesweeper.png",
   },
   internet: {
@@ -58,6 +62,19 @@ const initialWindows: Record<AppId, WinState> = {
 };
 
 export default function RetroWindows() {
+  const { language } = useLanguage();
+  const t: DesktopData = language === "es" ? desktopEs : desktopEn;
+
+  // Actualizar títulos cuando cambie el idioma
+  const windowTitles = useMemo(() => ({
+    about: t.windows.about,
+    experience: t.windows.experience,
+    projects: t.windows.projects,
+    technologies: t.windows.technologies,
+    minesweeper: t.windows.minesweeper,
+    internet: t.windows.internet,
+  }), [t]);
+
   const [windows, setWindows] =
     useState<Record<AppId, WinState>>(initialWindows);
   const [showStartMenu, setShowStartMenu] = useState(false);
@@ -76,6 +93,19 @@ export default function RetroWindows() {
   };
 
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Actualizar títulos de ventanas cuando cambie el idioma
+  useEffect(() => {
+    setWindows((prev) => {
+      const updated = { ...prev };
+      (Object.keys(windowTitles) as AppId[]).forEach((id) => {
+        if (updated[id]) {
+          updated[id] = { ...updated[id], title: windowTitles[id] };
+        }
+      });
+      return updated;
+    });
+  }, [windowTitles]);
 
   // cerrar menú si hago click fuera
   useEffect(() => {
@@ -117,6 +147,13 @@ export default function RetroWindows() {
       [id]: { ...prev[id], minimized: true },
     }));
     if (activeWindow === id) setActiveWindow(null);
+  };
+
+  // Función para apagar (volver a la consola)
+  const handleShutdown = () => {
+    setShowStartMenu(false);
+    // Disparar evento para volver a la consola
+    window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: false }));
   };
 
   const toggleTaskbar = (id: AppId) => {
@@ -169,7 +206,7 @@ export default function RetroWindows() {
             alt="logo-Windows"
             className="w-4 h-4"
           />
-          <p className="text-[0.65rem]">Inicio</p>
+          <p className="text-[0.65rem]">{t.start}</p>
         </div>
 
         {/* Botones de ventanas abiertas */}
@@ -210,55 +247,11 @@ export default function RetroWindows() {
           ref={menuRef}
           className="absolute bottom-6.5 left-0 w-[200px] bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044] font-[Tahoma] z-[9999]"
         >
-          <div className="relative group px-2.5 py-1.5 text-[14px] cursor-pointer hover:bg-[#000080] hover:text-white">
-            <div className="flex items-center justify-between">
-              <span>Programas</span>
-              <span className="ml-2">▸</span>
-            </div>
-
-            <div className="hidden group-hover:block absolute top-0 left-full w-[180px] bg-[#c0c0c0] border-2 border-[#808080] shadow-[4px_4px_0_#00000044]">
-              <div
-                className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white"
-                onClick={() => openWindow("about")}
-              >
-                About
-              </div>
-              <div
-                className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white"
-                onClick={() => openWindow("experience")}
-              >
-                Experience
-              </div>
-              <div
-                className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white"
-                onClick={() => openWindow("projects")}
-              >
-                Projects
-              </div>
-              <div
-                className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white"
-                onClick={() => openWindow("technologies")}
-              >
-                Technologies
-              </div>
-              <div className="h-0.5 bg-[#808080] my-1" />
-              <div
-                className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white"
-                onClick={() => openWindow("minesweeper")}
-              >
-                Buscaminas
-              </div>
-            </div>
-          </div>
-          <div className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white">
-            Documentos
-          </div>
-          <div className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white">
-            Configuración
-          </div>
-          <div className="h-0.5 bg-[#808080] my-1" />
-          <div className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white">
-            Apagar...
+          <div 
+            className="px-2.5 py-1.5 hover:bg-[#000080] hover:text-white cursor-pointer"
+            onClick={handleShutdown}
+          >
+            {t.shutdown}
           </div>
         </div>
       )}
@@ -266,19 +259,19 @@ export default function RetroWindows() {
       {/* Íconos de escritorio */}
       <div className="flex flex-col gap-8 p-5 text-white">
         {[
-          { id: "pc", icon: "/icons/my-computer.png", label: "Mi PC" },
-          { id: "bin", icon: "/icons/bin.png", label: "Papelera" },
-          { id: "docs", icon: "/icons/my-documents.png", label: "Mis Docs" },
+          { id: "pc", icon: "/icons/my-computer.png", label: t.icons.myPc },
+          { id: "bin", icon: "/icons/bin.png", label: t.icons.bin },
+          { id: "docs", icon: "/icons/my-documents.png", label: t.icons.myDocs },
           {
             id: "internet",
             icon: "/icons/internet.png",
-            label: "Internet",
+            label: t.icons.internet,
             dbl: () => openWindow("internet"),
           },
           {
             id: "minesweeper",
             icon: "/icons/minesweeper.png",
-            label: "Buscaminas",
+            label: t.icons.minesweeper,
             dbl: () => openWindow("minesweeper"),
           },
         ].map(({ id, icon, label, dbl }) => (

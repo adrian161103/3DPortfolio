@@ -1,8 +1,8 @@
 import React from "react";
 import { useLanguage } from "../../../context/LanguageContext";
-import { aboutEs } from "../../../data/about.es";
-import { aboutEn } from "../../../data/about.en";
-import { AboutData } from "../../../data/aboutTypes";
+import { aboutEs } from "../../../data/windowsAbout/about.es";
+import { aboutEn } from "../../../data/windowsAbout/about.en";
+import { AboutData } from "../../../data/windowsAbout/aboutTypes";
 
 /** Paleta y helpers comunes */
 const ui = {
