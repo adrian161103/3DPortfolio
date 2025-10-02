@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei";
 import { useState, useEffect, useRef } from "react";
 import RetroWindows from "../sections/RetroWindows";
 import WindowsBoot from "./WindowsBoot";
+import { LanguageProvider } from "../../context/LanguageContext";
 
 export default function ConsoleScreen() {
   const [showWindows, setShowWindows] = useState(false);
@@ -280,7 +281,11 @@ if (cleanCmd === "windows") {
         />
       )}
 
-        {showWindows && bootFinished && <RetroWindows />}
+        {showWindows && bootFinished && (
+          <LanguageProvider>
+            <RetroWindows />
+          </LanguageProvider>
+        )}
       </div>
     </Html>
   
