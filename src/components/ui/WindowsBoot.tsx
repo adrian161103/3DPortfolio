@@ -56,6 +56,7 @@ export default function WindowsBoot({ onFinish }: { onFinish: () => void }) {
       setFadeIn(true);
 
       const audio = new Audio(winSound);
+      audio.volume = 0.4;
       audio.play().catch(() => console.warn("Autoplay bloqueado"));
 
       setTimeout(() => {

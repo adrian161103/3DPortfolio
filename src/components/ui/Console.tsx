@@ -69,7 +69,9 @@ function ConsoleContent() {
   //  Sonido retro
   const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    audioRef.current = new Audio("/sounds/zap.mp3");
+    const audio = new Audio("/sounds/zap.mp3");
+    audio.volume = 0.4; 
+    audioRef.current = audio;
   }, []);
 
   // Cursor parpadeante
