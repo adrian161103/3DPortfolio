@@ -7,7 +7,7 @@
   flex-direction: column;
   z-index: 9999;
   font-family: "Tahoma", sans-serif;
-  font-size: 32px; 
+  font-size: 2rem;     
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -22,23 +22,22 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 6vh;
+  height: 6vh;       
   background: #c0c0c0;
-  border-top: 4px solid #808080;
+  border-top: 4px solid #808080; 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px; 
+  padding: 0 1.25rem;  
 }
 
 /* Botón inicio con efecto clásico */
 .start-btn {
   display: flex;
   background: #c0c0c0;
-  border: 4px outset #fff; 
-  padding: 0.2em 20px;
+  border: 4px outset #fff;  
+  padding: 0.2em 1.25rem;   
   font-weight: bold;
   cursor: pointer;
 }
-
 

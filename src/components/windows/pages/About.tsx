@@ -6,13 +6,13 @@ import { AboutData } from "../../../data/windowsAbout/aboutTypes";
 
 /** Paleta y helpers comunes */
 const ui = {
-  surface: "bg-[#c0c0c0] text-[#111]",
+  surface: "bg-gray-300 text-gray-900", 
   bevel:
-    "border-t border-l border-white border-b-2 border-r-2 border-b-[#7a7a7a] border-r-[#7a7a7a]",
+    "border-t border-l border-white border-b-2 border-r-2 border-b-gray-600 border-r-gray-600",
   inset:
-    "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-[2px]",
+    "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-sm", 
   titlebar:
-    "bg-gradient-to-r from-[#000080] to-[#1b89d6] text-white h-16 px-4 flex items-center justify-between select-none",
+    "bg-gradient-to-r from-blue-900 to-blue-500 text-white h-16 px-4 flex items-center justify-between select-none",
   content: "p-4 md:p-5",
   font: "font-sans [font-family:Tahoma,Segoe_UI,Arial,sans-serif]",
 };
@@ -34,7 +34,7 @@ function Win98Window({
       aria-label={title}
     >
       <header className={ui.titlebar}>
-        <h2 className="text-[28px] font-bold tracking-wide">{title}</h2>
+        <h2 className="text-[1.75rem] font-bold tracking-wide">{title}</h2> 
         <div className="flex items-center gap-2">{right}</div>
       </header>
       <div className={ui.content}>{children}</div>
@@ -46,10 +46,10 @@ function Win98Window({
 function Win98Section({ label }: { label: string }) {
   return (
     <div className="relative mt-12 mb-6">
-      <div className="absolute -top-6 left-4 bg-[#c0c0c0] px-2 text-[24px] font-bold">
+      <div className="absolute -top-6 left-4 bg-gray-300 px-2 text-2xl font-bold"> 
         {label}
       </div>
-      <div className={`${ui.bevel} ${ui.inset} h-[2px]`} />
+      <div className={`${ui.bevel} ${ui.inset} h-0.5`} /> 
     </div>
   );
 }
@@ -65,8 +65,8 @@ function Win98Button({
     <button
       {...rest}
       type={type}
-      className={`${ui.surface} ${ui.bevel} ${ui.font} px-6 py-2 text-[28px] leading-none active:translate-x-[2px] active:translate-y-[2px] ${className}`}
-    >
+      className={`${ui.surface} ${ui.bevel} ${ui.font} px-6 py-2 text-[1.75rem] leading-none active:translate-x-0.5 active:translate-y-0.5 ${className}`}
+    >  
       {children}
     </button>
   );
@@ -86,7 +86,7 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8">
           {/* Avatar */}
           <div
-            className={`${ui.bevel} ${ui.inset} w-[240px] h-[240px] mx-auto md:mx-0 overflow-hidden`}
+            className={`${ui.bevel} ${ui.inset} w-60 h-60 mx-auto md:mx-0 overflow-hidden`}
             aria-hidden
           >
             <div className="w-full h-full bg-[repeating-linear-gradient(45deg,#d9d9d9_0_24px,#e5e5e5_24px_48px)]"></div>
@@ -94,9 +94,9 @@ export default function About() {
 
           {/* Intro */}
           <div className="space-y-4">
-            <h1 className="text-[40px] font-bold">{about.name}</h1>
+            <h1 className="text-[2.5rem] font-bold">{about.name}</h1>
             {about.bio.map((paragraph, i) => (
-              <p key={i} className="text-[28px] leading-[1.5]">
+              <p key={i} className="text-[1.75rem] leading-relaxed">
                 {paragraph}
               </p>
             ))}
@@ -111,7 +111,7 @@ export default function About() {
         {/* Sección Perfil */}
         <Win98Section label="Perfil" />
         <div className="grid md:grid-cols-3 gap-4">
-          <ul className={`${ui.bevel} ${ui.inset} p-6 text-[28px] space-y-2`}>
+          <ul className={`${ui.bevel} ${ui.inset} p-6 text-[1.75rem] space-y-2`}>
             <li>
               <span className="font-bold">Rol:</span> {about.profile.rol}
             </li>
@@ -124,8 +124,8 @@ export default function About() {
             </li>
           </ul>
 
-          <div className={`${ui.bevel} ${ui.inset} p-6 text-[28px] md:col-span-2`}>
-            <p className="leading-[1.5]">{about.profile.texto}</p>
+          <div className={`${ui.bevel} ${ui.inset} p-6 text-[1.75rem] md:col-span-2`}>
+            <p className="leading-relaxed">{about.profile.texto}</p>
           </div>
         </div>
 
@@ -133,16 +133,16 @@ export default function About() {
         <Win98Section label="Habilidades clave" />
         <div className="grid md:grid-cols-2 gap-4">
           <div className={`${ui.bevel} ${ui.inset} p-6`}>
-            <h3 className="text-[28px] font-bold mb-4">Tecnologías</h3>
-            <ul className="list-disc pl-10 text-[28px] space-y-2">
+            <h3 className="text-[1.75rem] font-bold mb-4">Tecnologías</h3>
+            <ul className="list-disc pl-10 text-[1.75rem] space-y-2">
               {about.skills.tecnologias.map((skill, i) => (
                 <li key={i}>{skill}</li>
               ))}
             </ul>
           </div>
           <div className={`${ui.bevel} ${ui.inset} p-6`}>
-            <h3 className="text-[28px] font-bold mb-4">Colaboración</h3>
-            <ul className="list-disc pl-10 text-[28px] space-y-2">
+            <h3 className="text-[1.75rem] font-bold mb-4">Colaboración</h3>
+            <ul className="list-disc pl-10 text-[1.75rem] space-y-2">
               {about.skills.colaboracion.map((skill, i) => (
                 <li key={i}>{skill}</li>
               ))}

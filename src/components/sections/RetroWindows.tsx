@@ -221,13 +221,13 @@ export default function RetroWindows() {
                 <button
                   key={id}
                   onClick={() => toggleTaskbar(id)}
-                  className={`flex items-center gap-2 px-4 py-1 text-[22px] font-[Tahoma] truncate flex-1 min-w-[160px] max-w-[200px]
+                  className={`flex items-center gap-2 px-4 py-1 text-xl font-[Tahoma] truncate flex-1 min-w-40 max-w-48
                     ${
                       isActive
-                        ? "border-4 border-[#808080] border-t-[#404040] border-l-[#404040] bg-[#c0c0c0]"
+                        ? "border-4 border-gray-600 border-t-gray-700 border-l-gray-700 bg-gray-300"
                         : win.minimized
-                        ? "border-4 border-[#808080] border-t-white border-l-white bg-[#c0c0c0]"
-                        : "border-4 border-white border-b-[#808080] border-r-[#808080] bg-[#c0c0c0]"
+                        ? "border-4 border-gray-600 border-t-white border-l-white bg-gray-300"
+                        : "border-4 border-white border-b-gray-600 border-r-gray-600 bg-gray-300"
                     }`}
                 >
                   <img src={win.icon} alt="" className="w-8 h-8 shrink-0" />
@@ -245,10 +245,10 @@ export default function RetroWindows() {
       {showStartMenu && (
         <div
           ref={menuRef}
-          className="absolute bottom-6.5 left-0 w-[400px] bg-[#c0c0c0] border-4 border-[#808080] shadow-[8px_8px_0_#00000044] font-[Tahoma] z-[9999]"
+          className="absolute bottom-12 left-0 w-96 bg-gray-300 border-4 border-gray-600 shadow-[8px_8px_0_#00000044] font-[Tahoma] z-[9999]"
         >
           <div 
-            className="px-5 py-3 text-[28px] hover:bg-[#000080] hover:text-white cursor-pointer"
+            className="px-5 py-3 text-[1.75rem] hover:bg-blue-900 hover:text-white cursor-pointer"
             onClick={handleShutdown}
           >
             {t.shutdown}
@@ -288,7 +288,7 @@ export default function RetroWindows() {
             <span
               className={`mt-1 text-[1.3rem] text-center font-[Tahoma,sans-serif] leading-tight drop-shadow-[1px_1px_0px_black]  ${
                 selectedIcon === id
-                  ? "bg-[#000080] text-white  outline-1 outline-dotted outline-white"
+                  ? "bg-blue-900 text-white  outline-1 outline-dotted outline-white"
                   : "text-white"
               }`}
             >

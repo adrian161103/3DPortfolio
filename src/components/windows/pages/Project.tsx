@@ -5,13 +5,13 @@ import { projectsEn } from "../../../data/windowsProjects/projects.en";
 import { ProjectsData } from "../../../data/windowsProjects/projectsTypes";
 
 const ui = {
-  surface: "bg-[#c0c0c0] text-[#111]",
+  surface: "bg-gray-300 text-gray-900",
   bevel:
-    "border-t border-l border-white border-b-2 border-r-2 border-b-[#7a7a7a] border-r-[#7a7a7a]",
+    "border-t border-l border-white border-b-2 border-r-2 border-b-gray-600 border-r-gray-600",
   inset:
-    "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-[2px]",
+    "shadow-[inset_1px_1px_0_#ffffff,inset_-1px_-1px_0_#7a7a7a] rounded-sm",
   titlebar:
-    "bg-gradient-to-r from-[#000080] to-[#1b89d6] text-white h-16 px-4 flex items-center justify-between select-none",
+    "bg-gradient-to-r from-blue-900 to-blue-500 text-white h-16 px-4 flex items-center justify-between select-none",
   content: "p-4 md:p-5",
   font: "font-sans [font-family:Tahoma,Segoe_UI,Arial,sans-serif]",
 };
@@ -32,7 +32,7 @@ function Win98Window({
       aria-label={title}
     >
       <header className={ui.titlebar}>
-        <h2 className="text-[28px] font-bold">{title}</h2>
+        <h2 className="text-[1.75rem] font-bold">{title}</h2>
         <div className="flex items-center gap-4">{right}</div>
       </header>
       <div className={ui.content}>{children}</div>
@@ -48,7 +48,7 @@ function Win98Button({
   return (
     <button
       {...rest}
-      className={`${ui.surface} ${ui.bevel} ${ui.font} px-6 py-2 text-[28px] leading-none active:translate-x-[2px] active:translate-y-[2px] ${className}`}
+      className={`${ui.surface} ${ui.bevel} ${ui.font} px-6 py-2 text-[1.75rem] leading-none active:translate-x-0.5 active:translate-y-0.5 ${className}`}
     >
       {children}
     </button>
@@ -58,7 +58,7 @@ function Win98Button({
 function Tag({ t }: { t: string }) {
   return (
     <span
-      className={`${ui.surface} ${ui.bevel} text-[22px] px-4 py-1 mr-2`}
+      className={`${ui.surface} ${ui.bevel} text-[1.375rem] px-4 py-1 mr-2`}
     >
       {t}
     </span>
@@ -87,11 +87,11 @@ export default function Projects() {
         title={data.title}
         right={
           <div className="flex items-center gap-1">
-            <span className="text-[20px] opacity-90">{data.filterLabel}</span>
+            <span className="text-[1.25rem] opacity-90">{data.filterLabel}</span>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className={`${ui.surface} ${ui.bevel} ${ui.font} text-[20px] px-2 py-[2px] max-w-[140px] [transform-style:flat]`}
+              className={`${ui.surface} ${ui.bevel} ${ui.font} text-[1.25rem] px-2 py-0.5 max-w-35 [transform-style:flat]`}
               aria-label={data.filterAriaLabel}
               style={{ 
                 backfaceVisibility: 'hidden', 
@@ -121,8 +121,8 @@ export default function Projects() {
               </div>
 
               {/* Texto */}
-              <h3 className="text-[28px] font-bold mb-2">{p.title}</h3>
-              <p className="text-[28px] leading-[1.5] line-clamp-4">{p.description}</p>
+              <h3 className="text-[1.75rem] font-bold mb-2">{p.title}</h3>
+              <p className="text-[1.75rem] leading-relaxed line-clamp-4">{p.description}</p>
 
               {/* Tags */}
               <div className="mt-4">
@@ -134,7 +134,7 @@ export default function Projects() {
               {/* Acción */}
               <div className="mt-6 flex items-center justify-between">
                 <Win98Button>{data.viewDemo}</Win98Button>
-                <span className="text-[22px] opacity-75">{data.statusReady}</span>
+                <span className="text-[1.375rem] opacity-75">{data.statusReady}</span>
               </div>
             </li>
           ))}

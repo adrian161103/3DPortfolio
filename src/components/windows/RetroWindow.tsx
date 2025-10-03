@@ -28,7 +28,7 @@ export default function RetroWindow({
     <div
       ref={nodeRef}
       className={`font-[Tahoma,sans-serif] flex flex-col ${
-        isMaximized ? "" : "border-2 border-[#808080] shadow-[4px_4px_0_#00000044]"
+        isMaximized ? "" : "border-2 border-gray-600 shadow-[4px_4px_0_#00000044]"
       }`}
       style={{
         zIndex,
@@ -64,7 +64,7 @@ export default function RetroWindow({
 
       {/* Contenido */}
       <div
-        className={`flex-1 p-4 bg-white text-black text-[26px] overflow-auto`}
+        className={`flex-1 p-4 bg-white text-black text-[1.625rem] overflow-auto`}
         style={{
           transformOrigin: 'top left',
         }}

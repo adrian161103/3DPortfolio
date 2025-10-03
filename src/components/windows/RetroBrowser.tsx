@@ -95,7 +95,7 @@ export default function RetroBrowser() {
   ];
 
   return (
-    <div className="flex flex-col h-full w-full text-[22px] font-[Tahoma,'MS Sans Serif',sans-serif] bg-[#c0c0c0] border-2 border-[#808080]">
+    <div className="flex flex-col h-full w-full text-xl font-[Tahoma,'MS Sans Serif',sans-serif] bg-gray-300 border-2 border-gray-600">
       {/* ===== Toolbar ===== */}
       <div className="win98-bar flex items-center h-14 px-2">
         {toolbarButtons.map((btn, i) =>
@@ -133,7 +133,7 @@ export default function RetroBrowser() {
       {/* ===== Status Bar ===== */}
       <div className="win98-bar win98-status flex items-center justify-between h-12 px-2">
         {/* Izquierda */}
-        <div className="flex items-center gap-2 w-80 border-r-2 border-[#808080] px-2">
+        <div className="flex items-center gap-2 w-80 border-r-2 border-gray-600 px-2">
           <img src="/icons/ie/internetpage.png" alt="IE" className="retro-icon" />
           <span>{loading ? "Cargando..." : "Listo"}</span>
         </div>
