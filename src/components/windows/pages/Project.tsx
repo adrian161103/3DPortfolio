@@ -58,7 +58,7 @@ function Win98Button({
 function Tag({ t }: { t: string }) {
   return (
     <span
-      className={`${ui.surface} ${ui.bevel} text-[1.375rem] px-4 py-1 mr-2`}
+      className={`${ui.surface} ${ui.bevel} text-[1.375rem] px-4 py-1 mr-2 mb-2 inline-block`}
     >
       {t}
     </span>
@@ -70,6 +70,7 @@ export default function Projects() {
   const data: ProjectsData = language === "es" ? projectsEs : projectsEn;
   
   const [filter, setFilter] = useState<string>(data.filterAll);
+  const [expandedProject, setExpandedProject] = useState<string | null>(null);
 
   const tags = useMemo(() => {
     const t = new Set<string>();
@@ -122,18 +123,35 @@ export default function Projects() {
 
               {/* Texto */}
               <h3 className="text-[1.75rem] font-bold mb-2">{p.title}</h3>
-              <p className="text-[1.75rem] leading-relaxed line-clamp-4">{p.description}</p>
+              <div
+                className="relative cursor-pointer select-none"
+                onClick={() => setExpandedProject(expandedProject === p.id ? null : p.id)}
+              >
+                <p className={`text-[1.75rem] leading-relaxed transition-all duration-300 ${
+                  expandedProject === p.id ? '' : 'line-clamp-3'
+                }`}>
+                  {p.description}
+                </p>
+                {expandedProject !== p.id && (
+                  <span className=" "/>
+                )}
+              </div>
 
               {/* Tags */}
-              <div className="mt-4">
-                {p.tags.map((t) => (
+              <div className="mt-4 flex flex-wrap">{p.tags.map((t) => (
                   <Tag key={t} t={t} />
                 ))}
               </div>
 
               {/* Acción */}
               <div className="mt-6 flex items-center justify-between">
-                <Win98Button>{data.viewDemo}</Win98Button>
+                <Win98Button
+                  onClick={() => p.demo && window.open(p.demo, '_blank', 'noopener,noreferrer')}
+                  disabled={!p.demo}
+                  className={!p.demo ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                >
+                  {data.viewDemo}
+                </Win98Button>
                 <span className="text-[1.375rem] opacity-75">{data.statusReady}</span>
               </div>
             </li>

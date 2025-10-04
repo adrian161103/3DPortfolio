@@ -4,6 +4,17 @@ import { contactEs } from "../../../data/windowsContact/contact.es";
 import { contactEn } from "../../../data/windowsContact/contact.en";
 import { ContactData } from "../../../data/windowsContact/contactTypes";
 
+// Validaciones
+const validateEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+const validateName = (name: string) => {
+  const onlyLetters = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const lettersCount = (onlyLetters.match(/[A-Za-zÑñÁÉÍÓÚáéíóúÜü]/g) || [])
+    .length;
+  return lettersCount >= 3;
+};
+
 const ui = {
   surface: "bg-gray-300 text-gray-900",
   bevel:
@@ -92,19 +103,122 @@ type FormState =
 export default function Contact() {
   const { language } = useLanguage();
   const contact: ContactData = language === "es" ? contactEs : contactEn;
-  
+  //logica de formulario
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState(""); // Anti-bot
+
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    message: false,
+  });
+
   const [state, setState] = useState<FormState>({ status: "idle" });
+
+  // Email receptor desde variable de entorno
+  const RECEIVER_EMAIL = import.meta.env.VITE_FORMSUBMIT_EMAIL as
+    | string
+    | undefined;
+  const FORMSUBMIT_URL = RECEIVER_EMAIL
+    ? `https://formsubmit.co/ajax/${RECEIVER_EMAIL}`
+    : null;
+
+  const onBlur = (field: keyof typeof touched) =>
+    setTouched((t) => ({ ...t, [field]: true }));
+
+  // Errores de validación
+  const nameError = touched.name && !validateName(name);
+  const emailError = touched.email && !validateEmail(email);
+  const messageError = touched.message && message.trim().length < 10;
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setMessage("");
+    setHoneypot("");
+    setTouched({ name: false, email: false, message: false });
+  };
+  //hasta aca
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+//validacion de form
+    // Marcar todos como tocados
+    setTouched({ name: true, email: true, message: true });
+
+    // Validar
+    const isValid =
+      validateName(name) &&
+      validateEmail(email) &&
+      message.trim().length >= 10;
+
+    // Honeypot: si está lleno, es un bot
+    if (honeypot) {
+      resetForm();
+      setState({ status: "success" });
+      return;
+    }
+
+    if (!isValid) {
+      setState({
+        status: "error",
+        message: language === "es" 
+          ? "Por favor, revisa los campos marcados en rojo." 
+          : "Please check the fields marked in red.",
+      });
+      return;
+    }
+
+    if (!FORMSUBMIT_URL) {
+      setState({
+        status: "error",
+        message: language === "es"
+          ? "Error de configuración. Contacta al administrador."
+          : "Configuration error. Contact the administrator.",
+      });
+      return;
+    }
+
     setState({ status: "sending" });
 
-    // Simulación de envío (reemplaza con tu lógica / endpoint)
-    await new Promise((r) => setTimeout(r, 800));
+    try {
+      const res = await fetch(FORMSUBMIT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          _subject: `Mensaje de ${name} desde Portfolio`,
+          _captcha: "false",
+        }),
+      });
 
-    // Demostración: alterna éxito siempre
-    setState({ status: "success" });
-    (e.currentTarget as HTMLFormElement).reset();
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Error ${res.status}`);
+      }
+
+      await res.json().catch(() => ({}));
+      setState({ status: "success" });
+      resetForm();
+    } catch (err) {
+      setState({
+        status: "error",
+        message:
+          err instanceof Error
+            ? err.message
+            : language === "es"
+            ? "No se pudo enviar el mensaje. Intenta más tarde."
+            : "Could not send the message. Try again later.",
+      });
+    }
+    //hasta aca
   }
 
   return (
@@ -113,18 +227,42 @@ export default function Contact() {
         title={contact.title}
         right={<span className="text-2xl opacity-90">{contact.version}</span>}
       >
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4" noValidate>
+          {/* Honeypot anti-bot */}
+          <input
+            type="text"
+            name="honeypot"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            className="hidden"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
           <Field
             id="name"
             label={contact.fields.name.label}
             required
-            hint={contact.fields.name.hint}
+            hint={
+              nameError
+                ? language === "es"
+                  ? "El nombre debe tener al menos 3 letras."
+                  : "Name must have at least 3 letters."
+                : contact.fields.name.hint
+            }
           >
             <input
               id="name"
               name="name"
               required
-              className="w-full bg-transparent outline-none text-[1.75rem]"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => onBlur("name")}
+              aria-invalid={nameError ? "true" : "false"}
+              className={`w-full bg-transparent outline-none text-[1.75rem] ${
+                nameError ? "text-red-600" : ""
+              }`}
               placeholder={contact.fields.name.placeholder}
               autoComplete="name"
             />
@@ -134,14 +272,26 @@ export default function Contact() {
             id="email"
             label={contact.fields.email.label}
             required
-            hint={contact.fields.email.hint}
+            hint={
+              emailError
+                ? language === "es"
+                  ? "Ingresa un correo válido."
+                  : "Enter a valid email."
+                : contact.fields.email.hint
+            }
           >
             <input
               id="email"
               name="email"
               type="email"
               required
-              className="w-full bg-transparent outline-none text-[1.75rem]"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => onBlur("email")}
+              aria-invalid={emailError ? "true" : "false"}
+              className={`w-full bg-transparent outline-none text-[1.75rem] ${
+                emailError ? "text-red-600" : ""
+              }`}
               placeholder={contact.fields.email.placeholder}
               autoComplete="email"
             />
@@ -151,14 +301,26 @@ export default function Contact() {
             id="message"
             label={contact.fields.message.label}
             required
-            hint={contact.fields.message.hint}
+            hint={
+              messageError
+                ? language === "es"
+                  ? "El mensaje debe tener al menos 10 caracteres."
+                  : "Message must have at least 10 characters."
+                : contact.fields.message.hint
+            }
           >
             <textarea
               id="message"
               name="message"
               required
               rows={6}
-              className="w-full bg-transparent outline-none text-[1.75rem] resize-y"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onBlur={() => onBlur("message")}
+              aria-invalid={messageError ? "true" : "false"}
+              className={`w-full bg-transparent outline-none text-[1.75rem] resize-y ${
+                messageError ? "text-red-600" : ""
+              }`}
               placeholder={contact.fields.message.placeholder}
             />
           </Field>
@@ -167,7 +329,9 @@ export default function Contact() {
             <Win98Button type="submit" disabled={state.status === "sending"}>
               {state.status === "sending" ? contact.buttons.sending : contact.buttons.send}
             </Win98Button>
-            <Win98Button type="reset">{contact.buttons.clear}</Win98Button>
+            <Win98Button type="reset" onClick={resetForm}>
+              {contact.buttons.clear}
+            </Win98Button>
           </div>
 
           {/* Barra de estado inferior */}
