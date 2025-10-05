@@ -83,7 +83,7 @@ export default function WindowsBoot({ onFinish }: { onFinish: () => void }) {
             src={winLogo}
             alt="Windows 98 Logo"
             style={{ transition: "opacity 1.2s ease" }}
-            className={`w-full h-full object-cover ${fadeIn ? "opacity-100" : "opacity-0"}`}
+            className={`w-full h-full object-cover ${fadeIn ? "opacity-100" : "opacity-0"} select-none pointer-events-none`}
           />
         )}
       </div>

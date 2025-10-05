@@ -19,6 +19,8 @@ function ConsoleContent() {
   useEffect(() => {
     if (!showWindows) {
       setBootFinished(false);
+      // Desactivar modo consola cuando se cierra Windows
+      window.dispatchEvent(new CustomEvent("setConsoleMode", { detail: false }));
     }
   }, [showWindows]);
 
@@ -116,6 +118,8 @@ function ConsoleContent() {
     if (cleanCmd === "cls") {
       setLines([...defaultLines]);
       setShowCommands(true);
+      // Ir a la vista del monitor al limpiar
+      window.dispatchEvent(new CustomEvent("setMonitorViewMode"));
       return;
     }
 
@@ -138,6 +142,8 @@ if (cleanCmd === t.commands.windows) {
 } else {
   setShowWindows(false);
   window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: false }));
+  // Disparar evento de consola para otros comandos (about, projects, etc.)
+  window.dispatchEvent(new CustomEvent("setConsoleMode", { detail: true }));
 }
 
       // Guardar backup antes de corromper
@@ -175,6 +181,8 @@ if (cleanCmd === t.commands.windows) {
       console.log("🌌 Ejecutar portal futurista para:", cleanCmd);
     } else {
       setShowCommands(false);
+      // Ir a la vista del monitor si hay error
+      window.dispatchEvent(new CustomEvent("setMonitorViewMode"));
       setLines((prev) => [
         ...prev,
         `<error>${t.commandNotFound} "${command}"</error>`,
