@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import About from "./pages/About";
 import Projects from "./pages/Project";
 import Contact from "./pages/Contact";
@@ -30,13 +30,13 @@ export default function RetroBrowser() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Navegación
-  const navigateTo = (newPage: Page) => {
+  const navigateTo = useCallback((newPage: Page) => {
     const newHistory = [...history.slice(0, historyIndex + 1), newPage];
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
     setPage(newPage);
     setShouldAnimate(true); // Activar animación solo en navegación
-  };
+  }, [history, historyIndex]);
 
   const goBack = () => {
     if (historyIndex > 0) {
@@ -84,6 +84,17 @@ export default function RetroBrowser() {
 
     return () => clearInterval(interval);
   }, [shouldAnimate]);
+
+  // Listener para eventos de navegación externos (desde About, etc.)
+  useEffect(() => {
+    const handleNavigate = (event: CustomEvent) => {
+      const targetPage = event.detail as Page;
+      navigateTo(targetPage);
+    };
+
+    window.addEventListener("navigateTo", handleNavigate as EventListener);
+    return () => window.removeEventListener("navigateTo", handleNavigate as EventListener);
+  }, [navigateTo]);
 
   const renderPage = () => {
     if (loading) {

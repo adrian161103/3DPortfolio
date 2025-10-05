@@ -21,6 +21,7 @@ export default function RetroWindow({
 }: RetroWindowProps) {
   const [isMaximized, setIsMaximized] = useState(false);
   const [savedContent, setSavedContent] = useState<React.ReactNode>(null);
+  const [bounds, setBounds] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
   const nodeRef = useRef(null);
 
   // Guardar el contenido cuando se minimiza/maximiza
@@ -29,6 +30,26 @@ export default function RetroWindow({
       setSavedContent(children);
     }
   }, [children, savedContent]);
+
+  // Calcular límites dinámicamente
+  useEffect(() => {
+    const updateBounds = () => {
+      const taskbarHeight = 55;
+      const windowWidth = 1500;
+      const windowHeight = 800;
+      
+      setBounds({
+        left: 0,
+        top: 0,
+        right: Math.max(0, window.innerWidth - windowWidth),
+        bottom: Math.max(0, window.innerHeight - taskbarHeight - windowHeight),
+      });
+    };
+
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+    return () => window.removeEventListener('resize', updateBounds);
+  }, []);
 
   const toggleMaximize = () => setIsMaximized((prev) => !prev);
 
@@ -92,6 +113,7 @@ export default function RetroWindow({
       handle=".retro-window-titlebar"
       defaultPosition={{ x: 100, y: 100 }}
       onStart={onFocus}
+      bounds={bounds}
     >
       {WindowContent}
     </Draggable>

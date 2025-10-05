@@ -114,11 +114,20 @@ export default function Projects() {
             <li key={p.id} className={`${ui.surface} ${ui.bevel} p-4`}>
               {/* Preview */}
               <div
-                className={`${ui.inset} aspect-[4/3] mb-4 overflow-hidden`}
+                className={`${ui.inset} aspect-[4/3] mb-4 overflow-hidden bg-gray-200 cursor-pointer group`}
                 aria-label={`${data.previewAlt} ${p.title}`}
               >
-                {/* Placeholder “retro screenshot” */}
-                <div className="w-full h-full bg-[repeating-linear-gradient(90deg,#d9d9d9_0_16px,#e6e6e6_16px_32px)]" />
+                {p.image ? (
+                  <img 
+                    src={p.image} 
+                    alt={p.imageAlt || `${data.previewAlt} ${p.title}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                ) : (
+                  /* Placeholder "retro screenshot" */
+                  <div className="w-full h-full bg-[repeating-linear-gradient(90deg,#d9d9d9_0_16px,#e6e6e6_16px_32px)]" />
+                )}
               </div>
 
               {/* Texto */}
@@ -132,8 +141,15 @@ export default function Projects() {
                 }`}>
                   {p.description}
                 </p>
-                {expandedProject !== p.id && (
-                  <span className=" "/>
+                {expandedProject !== p.id && p.description.length > 100 && (
+                  <span className="text-blue-600 underline text-[1.375rem] mt-1 inline-block hover:text-blue-800">
+                    Leer más...
+                  </span>
+                )}
+                {expandedProject === p.id && p.description.length > 100 && (
+                  <span className="text-blue-600 underline text-[1.375rem] mt-1 inline-block hover:text-blue-800">
+                    Leer menos
+                  </span>
                 )}
               </div>
 

@@ -76,6 +76,16 @@ export default function About() {
   const { language } = useLanguage();
   const about: AboutData = language === "es" ? aboutEs : aboutEn;
 
+  // Abrir CV en nueva pestaña
+  const handleOpenCV = () => {
+    window.open("/docs/adrian alejos garcia cv.pdf", "_blank");
+  };
+
+  // Navegar a Projects dentro del navegador IE
+  const handleOpenPortfolio = () => {
+    window.dispatchEvent(new CustomEvent("navigateTo", { detail: "projects" }));
+  };
+
   return (
     <div className="w-full p-0">
       <Win98Window
@@ -89,7 +99,11 @@ export default function About() {
             className={`${ui.bevel} ${ui.inset} w-60 h-60 mx-auto md:mx-0 overflow-hidden`}
             aria-hidden
           >
-            <div className="w-full h-full bg-[repeating-linear-gradient(45deg,#d9d9d9_0_24px,#e5e5e5_24px_48px)]"></div>
+            <img 
+              src="/Adrian.jpg" 
+              alt="Adrian Alejos Garcia" 
+              className="w-full h-full object-cover grayscale"
+            />
           </div>
 
           {/* Intro */}
@@ -102,8 +116,8 @@ export default function About() {
             ))}
 
             <div className="flex gap-4 pt-2">
-              <Win98Button>CV</Win98Button>
-              <Win98Button>Portfolio</Win98Button>
+              <Win98Button onClick={handleOpenCV}>CV</Win98Button>
+              <Win98Button onClick={handleOpenPortfolio}>Portfolio</Win98Button>
             </div>
           </div>
         </div>

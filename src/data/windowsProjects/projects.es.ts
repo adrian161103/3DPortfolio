@@ -24,6 +24,8 @@ export const projectsEs: ProjectsData = {
         "Mi primer portafolio personal. Desarrollado con React, Framer Motion y React Router. Desplegado en GitHub Pages con animaciones fluidas y diseño responsivo.",
       tags: ["React", "Framer Motion", "javascript", "Github Pages"],
       demo: "https://adrian161103.github.io/AdrianWeb/",
+      image: "/projects/adrianweb.png",
+      imageAlt: "Captura de pantalla del portafolio AdrianWeb",
     },
     {
       id: "andrea-dorado",
@@ -32,6 +34,8 @@ export const projectsEs: ProjectsData = {
         "Landing page profesional optimizada para SEO y Core Web Vitals. Creada con React, Tailwind CSS y Vite, implementando buenas prácticas de accesibilidad y rendimiento.",
       tags: ["React", "Tailwind", "SEO", "Vercel"],
       demo: "https://www.andreadorado.com.ar/",
+      image: "/projects/andrea.png",
+      imageAlt: "Captura de pantalla de la landing page de Andrea Dorado",
     },
     {
       id: "aura",
@@ -40,6 +44,8 @@ export const projectsEs: ProjectsData = {
         "Aplicación web moderna desarrollada en equipo con React y React Router. Interfaz elegante con Tailwind CSS y arquitectura escalable usando TypeScript.",
       tags: ["React", "TypeScript", "Tailwind", "Router","Postman", "Netlify"],
       demo: "https://github.com/adrian161103/Aura",
+      image: "/projects/aura.jpeg",
+      imageAlt: "Captura de pantalla de la aplicación Aura",
     },
     {
       id: "tienda-fitness",
@@ -48,6 +54,8 @@ export const projectsEs: ProjectsData = {
         "Aplicación full-stack con React, Node.js y MongoDB. Incluye autenticación JWT, API REST, animaciones con GSAP y Framer Motion, e interfaz dinámica y responsive.",
       tags: ["React", "Node.js", "MongoDB", "Express", "Full Stack", "javascript", "Postman", "Vercel"],
       demo: "https://www.pedrolamanna.com/",
+      image: "/projects/pedro.png",
+      imageAlt: "Captura de pantalla de la tienda fitness de Pedro Lamanna",
     },
   ],
 };
