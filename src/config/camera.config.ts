@@ -82,6 +82,18 @@ export const CAMERA_VIEWS: Record<string, CameraViewConfig> = {
     fovDuration: 1.5,
     ease: "power2.inOut",
   },
+
+  /**
+   * Vista del agujero negro - Zoom hacia el agujero negro
+   */
+  blackHole: {
+    position: { x: 0, y: 10, z: 0 }, 
+    target: { x: 0, y: 0, z: 0 },
+    fov: 0, // (entra en el agujero negro)
+    duration: 2.5,
+    fovDuration: 2,
+    ease: "power3.inOut",
+  },
 };
 
 /**

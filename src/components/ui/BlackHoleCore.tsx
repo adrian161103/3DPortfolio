@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { AdditiveBlending } from 'three';
+import { animateCameraToViewByName } from '../../lib/cameraAnimator';
 
 // Shader para el disco de acreción del agujero negro
 const diskVertexShader = `
@@ -203,20 +204,23 @@ interface BlackHoleCoreProps {
   radius?: number;
   diskIntensity?: number;
   rotationSpeed?: number;
+  enableZoom?: boolean;
 }
 
 // Componente principal del agujero negro
 const BlackHoleCore: React.FC<BlackHoleCoreProps> = ({ 
   radius = 2.5, 
   diskIntensity = 1.0,
-  rotationSpeed = 1.0
+  rotationSpeed = 1.0,
+  enableZoom = false
 }) => {
   const diskRef = useRef<THREE.Points>(null);
   const diskMaterialRef = useRef<THREE.ShaderMaterial>(null);
   const horizonRef = useRef<THREE.Mesh>(null);
   const horizonMaterialRef = useRef<THREE.ShaderMaterial>(null);
+  const blackHoleRef = useRef<THREE.Mesh>(null);
   
-  const { viewport } = useThree();
+  const { viewport, camera } = useThree();
   
   // Radio interno (horizonte de eventos)
   const innerRadius = radius * 0.3;
@@ -325,6 +329,19 @@ const BlackHoleCore: React.FC<BlackHoleCoreProps> = ({
     };
   }, [radius, innerRadius, rotationSpeed]);
   
+  // Estado para controlar si el cursor está sobre el agujero negro
+  const [hovered, setHovered] = useState(false);
+  
+  // Función para manejar el zoom hacia el agujero negro
+  const handleBlackHoleClick = () => {
+    if (enableZoom) {
+      // Animar la cámara hacia la vista del agujero negro
+      animateCameraToViewByName(camera as THREE.PerspectiveCamera, null, 'blackHole');
+      
+      // No reproducimos sonido para este efecto
+    }
+  };
+
   // Actualización de la animación
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -335,6 +352,11 @@ const BlackHoleCore: React.FC<BlackHoleCoreProps> = ({
     
     if (horizonMaterialRef.current) {
       horizonMaterialRef.current.uniforms.uTime.value = time;
+    }
+
+    // Cambiar el cursor si está sobre el agujero negro
+    if (enableZoom) {
+      document.body.style.cursor = hovered ? 'pointer' : 'default';
     }
   });
   
@@ -391,8 +413,13 @@ const BlackHoleCore: React.FC<BlackHoleCoreProps> = ({
         />
       </points>
       
-      {/* Agujero negro (esfera negra) */}
-      <mesh>
+      {/* Agujero negro (esfera negra) con interactividad */}
+      <mesh 
+        ref={blackHoleRef}
+        onClick={handleBlackHoleClick}
+        onPointerOver={() => enableZoom && setHovered(true)}
+        onPointerOut={() => enableZoom && setHovered(false)}
+      >
         <sphereGeometry args={[innerRadius, 32, 32]} />
         <shaderMaterial
           vertexShader={blackHoleVertexShader}

@@ -32,15 +32,17 @@ const GalaxyWithBlackHole: React.FC = () => {
       {/* Galaxia existente */}
       <ParticleEffect />
       
-      {/* Agujero negro en el centro */}
-      <BlackHoleCore radius={3.0} diskIntensity={1.2} rotationSpeed={1.5} />
+      {/* Agujero negro en el centro con funcionalidad de zoom al hacer clic */}
+      <BlackHoleCore radius={3.0} diskIntensity={1.2} rotationSpeed={1.5} enableZoom={true} />
     </Canvas>
   );
 };
 
 const TestComponent: React.FC = () => {
   const [showEffect, setShowEffect] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
+  // Efecto overlay
   useEffect(() => {
     const timer = setTimeout(() => {
       // Activa el efecto visual
@@ -57,6 +59,32 @@ const TestComponent: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Efecto para mostrar el mensaje de ayuda solo una vez después de 4 segundos
+  useEffect(() => {
+    if (!showEffect) return; // No iniciar este efecto hasta que se muestre la galaxia
+    
+    // Mostrar el mensaje una sola vez después de 4 segundos
+    const hintTimer = setTimeout(() => {
+      setShowHint(true);
+    }, 4000);
+    
+    // Función para ocultar el mensaje permanentemente cuando se hace clic
+    const handleInteraction = () => {
+      setShowHint(false); // Oculta el mensaje cuando se hace clic
+      
+      // Eliminar el event listener después del primer clic
+      document.removeEventListener('click', handleInteraction);
+    };
+    
+    // Escuchar eventos de clic en todo el documento
+    document.addEventListener('click', handleInteraction);
+    
+    return () => {
+      clearTimeout(hintTimer);
+      document.removeEventListener('click', handleInteraction);
+    };
+  }, [showEffect]);
+
   if (!showEffect) {
     return <div className="bg-black h-screen w-screen" />;
   }
@@ -64,6 +92,11 @@ const TestComponent: React.FC = () => {
   return (
     <div className="relative bg-black text-white h-screen w-screen overflow-hidden">
       <GalaxyWithBlackHole />
+      {showHint && (
+        <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
+          arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
+        </div>
+      )}
     </div>
   );
 };
