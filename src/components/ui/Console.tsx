@@ -215,13 +215,50 @@ if (cleanCmd === t.commands.windows) {
     setActive(true);
   };
 
+  // Estado para controlar si la aplicación ha terminado de cargar
+  const [appReady, setAppReady] = useState(false);
+  const consoleContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Iniciar console medio segundo después del overlay
+    // Delay 
+    const syncTimer = setTimeout(() => {
+      console.log("Console: Iniciando con delay adicional de 0.5s");
+      setAppReady(true);
+    }, 1500); // 0.5s más que el delay del overlay
+    
+    return () => clearTimeout(syncTimer);
+  }, []);
+
+  // Estado para controlar la animación CSS
+  const [showAnimation, setShowAnimation] = useState(false);
+
+  // Activar animación con un pequeño delay después de que se monte el componente
+  useEffect(() => {
+    if (appReady) {
+      // Usar requestAnimationFrame para asegurar que el DOM esté listo
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          setShowAnimation(true);
+        }, 50); // Pequeño delay para que la transición CSS se active
+      });
+    }
+  }, [appReady]);
+
+  console.log("Console appReady:", appReady);
+
+  // No renderizar el console hasta que la app esté lista
+  if (!appReady) {
+    return null;
+  }
+
   return (<>
     <Html
       transform
       position={[0, 1.273, 0.02]}
       rotation={[0, 0, 0]}
       scale={0.0225}
-      occlude
+      occlude={false}
       style={{
         imageRendering: 'crisp-edges',
         WebkitFontSmoothing: 'antialiased',
@@ -229,7 +266,15 @@ if (cleanCmd === t.commands.windows) {
         willChange: 'transform'
       }}
     >
-      <div className="relative w-full h-full">
+      <div 
+        ref={consoleContainerRef} 
+        className="relative w-full h-full"
+        style={{
+          opacity: showAnimation ? 1 : 0,
+          transition: 'opacity 2s cubic-bezier(0.16, 1, 0.3, 1)',
+          willChange: 'opacity'
+        }}
+      >
         <div
           ref={consoleRef}
           className={`console ${flicker ? "flicker" : ""} ${

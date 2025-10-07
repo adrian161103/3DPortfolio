@@ -189,18 +189,6 @@ function LoadingScreen() {
 }
 
 export default function MainScene() {
-  const [overlayVisible, setOverlayVisible] = useState(true);
-
-  useEffect(() => {
-    // 🔦 Quitamos el overlay después de unos segundos (cuando termina la animación de luces)
-    gsap.to("#overlay", {
-      opacity: 0,
-      delay: 1,
-      duration: 2,
-      ease: "power2.inOut",
-      onComplete: () => setOverlayVisible(false),
-    });
-  }, []);
 
   return (
     <ErrorBoundary fallback={<LoadingScreen />}>
@@ -242,18 +230,7 @@ export default function MainScene() {
           <CameraController />
         </Canvas>
 
-        {/* Overlay negro al inicio */}
-        {overlayVisible && (
-          <div
-            id="overlay"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundColor: "black",
-              zIndex: 10,
-            }}
-          />
-        )}
+
       </div>
     </ErrorBoundary>
   );
