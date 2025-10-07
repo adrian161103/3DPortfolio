@@ -245,7 +245,6 @@ if (cleanCmd === t.commands.windows) {
     }
   }, [appReady]);
 
-  console.log("Console appReady:", appReady);
 
   // No renderizar el console hasta que la app esté lista
   if (!appReady) {

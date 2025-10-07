@@ -41,6 +41,7 @@ const GalaxyWithBlackHole: React.FC = () => {
 const TestComponent: React.FC = () => {
   const [showEffect, setShowEffect] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
 
   // Efecto overlay
   useEffect(() => {
@@ -59,31 +60,40 @@ const TestComponent: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Detectar cualquier interacción del usuario
+  useEffect(() => {
+    if (!showEffect) return;
+    
+    const handleUserInteraction = () => {
+      setUserInteracted(true);
+      setShowHint(false);
+    };
+
+    // Registrar listeners solo para los eventos más importantes
+    window.addEventListener('click', handleUserInteraction);
+    window.addEventListener('wheel', handleUserInteraction);
+    window.addEventListener('keydown', handleUserInteraction);
+    
+    return () => {
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('wheel', handleUserInteraction);
+      window.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, [showEffect]);
+
   // Efecto para mostrar el mensaje de ayuda solo una vez después de 4 segundos
   useEffect(() => {
-    if (!showEffect) return; // No iniciar este efecto hasta que se muestre la galaxia
+    if (!showEffect || userInteracted) return; // No iniciar si ya interactuó o si no se muestra la galaxia
     
-    // Mostrar el mensaje una sola vez después de 4 segundos
+    // Mostrar el mensaje una sola vez después de 4 segundos si no ha habido interacción
     const hintTimer = setTimeout(() => {
       setShowHint(true);
     }, 4000);
     
-    // Función para ocultar el mensaje permanentemente cuando se hace clic
-    const handleInteraction = () => {
-      setShowHint(false); // Oculta el mensaje cuando se hace clic
-      
-      // Eliminar el event listener después del primer clic
-      document.removeEventListener('click', handleInteraction);
-    };
-    
-    // Escuchar eventos de clic en todo el documento
-    document.addEventListener('click', handleInteraction);
-    
     return () => {
       clearTimeout(hintTimer);
-      document.removeEventListener('click', handleInteraction);
     };
-  }, [showEffect]);
+  }, [showEffect, userInteracted]);
 
   if (!showEffect) {
     return <div className="bg-black h-screen w-screen" />;
@@ -92,7 +102,7 @@ const TestComponent: React.FC = () => {
   return (
     <div className="relative bg-black text-white h-screen w-screen overflow-hidden">
       <GalaxyWithBlackHole />
-      {showHint && (
+      {showHint && !userInteracted && (
         <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
           arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
         </div>

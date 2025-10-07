@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { gsap } from "./lib/gsap";
 import Hero from "./components/sections/Hero";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
+import TestComponent from "./components/ui/TestComponent";
 
 function App() {
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const [currentView, setCurrentView] = useState<"hero" | "command">("hero");
 
   useEffect(() => {
     // 🔦 Quitamos el overlay después de unos segundos (cuando termina la animación de luces)
@@ -22,14 +24,55 @@ function App() {
     });
   }, []);
 
+  // Escuchar eventos para cambiar la vista
+  useEffect(() => {
+    const handleConsoleMode = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      if (customEvent.detail) {
+        setCurrentView("command");
+      }
+    };
+
+    const handleMonitorView = () => {
+      setCurrentView("hero");
+    };
+
+    const handleWindowsMode = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      if (!customEvent.detail) {
+        // Si se cierra Windows, volver a la vista hero
+        setCurrentView("hero");
+      }
+    };
+
+    window.addEventListener("setConsoleMode", handleConsoleMode);
+    window.addEventListener("setMonitorViewMode", handleMonitorView);
+    window.addEventListener("setWindowsMode", handleWindowsMode);
+
+    return () => {
+      window.removeEventListener("setConsoleMode", handleConsoleMode);
+      window.removeEventListener("setMonitorViewMode", handleMonitorView);
+      window.removeEventListener("setWindowsMode", handleWindowsMode);
+    };
+  }, []);
+
   return (
     <main className="h-screen w-screen overflow-hidden relative">
-      {/* LanguageSwitcher con z-index menor que el overlay */}
-      <div className="absolute top-2 left-2 z-30">
-        <LanguageSwitcher />
-      </div>
+      {/* LanguageSwitcher solo se muestra en la vista hero */}
+      {currentView === "hero" && (
+        <div className="absolute top-2 left-2 z-30">
+          <LanguageSwitcher />
+        </div>
+      )}
       
-      <Hero />
+      {/* Mostrar vista condicionalmente */}
+      {currentView === "hero" ? (
+        <Hero />
+      ) : (
+        <div className="h-full w-full flex items-center justify-center">
+          <TestComponent />
+        </div>
+      )}
       
       {/* Overlay negro al inicio - z-index mayor que todo para cubrirlo completamente */}
       {overlayVisible && (
