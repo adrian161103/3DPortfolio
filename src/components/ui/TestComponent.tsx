@@ -101,6 +101,12 @@ const TestComponent: React.FC = () => {
   useEffect(() => {
     const handleBlackHoleZoomComplete = () => {
       console.log("Animación del agujero negro completada, mostrando pantalla blanca");
+      
+      // Si no hay una sección guardada en localStorage, establecer 'default'
+      if (!localStorage.getItem('selectedSection')) {
+        localStorage.setItem('selectedSection', 'default');
+      }
+      
       setShowWhiteScreen(true);
     };
     

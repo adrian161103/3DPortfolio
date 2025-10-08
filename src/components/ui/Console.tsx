@@ -141,6 +141,16 @@ if (cleanCmd === t.commands.windows) {
 } else {
   setShowWindows(false);
   window.dispatchEvent(new CustomEvent("setWindowsMode", { detail: false }));
+  
+  // Guardar la sección seleccionada en localStorage
+  if (cleanCmd === t.commands.about) {
+    localStorage.setItem('selectedSection', 'about');
+  } else if (cleanCmd === t.commands.projects) {
+    localStorage.setItem('selectedSection', 'projects');
+  } else if (cleanCmd === t.commands.contact) {
+    localStorage.setItem('selectedSection', 'contact');
+  }
+  
   // Disparar evento de consola para otros comandos (about, projects, etc.)
   window.dispatchEvent(new CustomEvent("setConsoleMode", { detail: true }));
 }
