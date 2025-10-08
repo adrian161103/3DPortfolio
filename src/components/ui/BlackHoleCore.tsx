@@ -338,7 +338,11 @@ const BlackHoleCore: React.FC<BlackHoleCoreProps> = ({
       // Animar la cámara hacia la vista del agujero negro
       animateCameraToViewByName(camera as THREE.PerspectiveCamera, null, 'blackHole');
       
-      // No reproducimos sonido para este efecto
+      // Configurar un temporizador para emitir el evento cuando termine la animación
+      setTimeout(() => {
+        console.log("Emitiendo evento blackHoleZoomComplete");
+        window.dispatchEvent(new CustomEvent("blackHoleZoomComplete"));
+      }, 2500); //  mismo tiempo que la duración de la animación de la cámara
     }
   };
 

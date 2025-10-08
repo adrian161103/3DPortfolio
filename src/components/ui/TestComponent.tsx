@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import ParticleEffect from "./ParticleEffect";
 import BlackHoleCore from "./BlackHoleCore";
+import AfterBlackHole from "./AfterBlackHole";
 
 // Componente que integra la galaxia y el agujero negro
 const GalaxyWithBlackHole: React.FC = () => {
@@ -42,6 +43,7 @@ const TestComponent: React.FC = () => {
   const [showEffect, setShowEffect] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
+  const [showWhiteScreen, setShowWhiteScreen] = useState(false);
 
   // Efecto overlay
   useEffect(() => {
@@ -94,6 +96,20 @@ const TestComponent: React.FC = () => {
       clearTimeout(hintTimer);
     };
   }, [showEffect, userInteracted]);
+  
+  // Efecto para escuchar el evento de finalización del zoom del agujero negro
+  useEffect(() => {
+    const handleBlackHoleZoomComplete = () => {
+      console.log("Animación del agujero negro completada, mostrando pantalla blanca");
+      setShowWhiteScreen(true);
+    };
+    
+    window.addEventListener("blackHoleZoomComplete", handleBlackHoleZoomComplete);
+    
+    return () => {
+      window.removeEventListener("blackHoleZoomComplete", handleBlackHoleZoomComplete);
+    };
+  }, []);
 
   if (!showEffect) {
     return <div className="bg-black h-screen w-screen" />;
@@ -101,11 +117,18 @@ const TestComponent: React.FC = () => {
 
   return (
     <div className="relative bg-black text-white h-screen w-screen overflow-hidden">
-      <GalaxyWithBlackHole />
-      {showHint && !userInteracted && (
-        <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
-          arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
-        </div>
+      {/* Pantalla blanca que aparece después de la animación del agujero negro */}
+      {showWhiteScreen ? (
+        <AfterBlackHole />
+      ) : (
+        <>
+          <GalaxyWithBlackHole />
+          {showHint && !userInteracted && (
+            <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
+              arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
+            </div>
+          )}
+        </>
       )}
     </div>
   );
