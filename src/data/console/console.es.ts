@@ -11,9 +11,8 @@ export const consoleEs: ConsoleData = {
   typeList: "lista",
   commands: {
     about: "about",
+    contact: "contact",
     projects: "projects",
-    technologies: "technologies",
-    education: "education",
     windows: "windows",
   },
 };

@@ -37,9 +37,8 @@ function ConsoleContent() {
   
   const commands = useMemo(() => [
     t.commands.about,
+    t.commands.contact,
     t.commands.projects,
-    t.commands.technologies,
-    t.commands.education,
     t.commands.windows,
   ], [t]);
 

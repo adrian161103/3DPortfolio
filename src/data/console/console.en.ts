@@ -11,9 +11,8 @@ export const consoleEn: ConsoleData = {
   typeList: "list",
   commands: {
     about: "about",
+    contact: "contact",
     projects: "projects",
-    technologies: "technologies",
-    education: "education",
     windows: "windows",
   },
 };
