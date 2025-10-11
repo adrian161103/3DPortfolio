@@ -1,0 +1,274 @@
+.hover {
+    transition: transform 0.2s ease-out;
+}
+
+.hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(34, 211, 238, 0.2);
+}
+
+.glow {
+    position: relative;
+}
+
+.glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(45deg, rgba(34, 211, 238, 0) 60%, rgba(34, 211, 238, 0.6) 100%);
+    border-radius: inherit;
+    z-index: -1;
+    animation: glow-rotate 5s linear infinite;
+}
+
+@keyframes glow-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.tech-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    background-color: rgba(34, 211, 238, 0.1);
+    color: rgba(34, 211, 238, 0.9);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.status-indicator::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-indicator.status-completed::before {
+    background-color: #10B981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.status-indicator.status-in-progress::before {
+    background-color: #3B82F6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+.status-indicator.status-planned::before {
+    background-color: #F59E0B;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Animación para las tarjetas flotantes en la vista 3D */
+.float-card {
+    animation: cardFloat 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: all 0.5s ease;
+}
+
+.float-card:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+    box-shadow: 0 20px 30px -10px rgba(34, 211, 238, 0.3);
+}
+
+@keyframes cardFloat {
+    0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+    50% { transform: translateY(-15px) rotateX(3deg) rotateY(3deg); }
+}
+
+/* Animación para los detalles emergentes */
+.detail-appear {
+    animation: detailAppear 0.5s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+@keyframes detailAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilo para la fila expandida */
+.expanded-row {
+    animation: expandAnimation 0.5s forwards;
+    transform-origin: top;
+    overflow: hidden;
+}
+
+@keyframes expandAnimation {
+    0% {
+        max-height: 0;
+        opacity: 0;
+    }
+    100% {
+        max-height: 600px;
+        opacity: 1;
+    }
+}
+
+.terminal-text {
+    position: relative;
+    font-family: monospace;
+    color: #22d3ee;
+    overflow: hidden;
+    margin-bottom: 4px;
+    padding-left: 16px;
+}
+
+.terminal-text::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: #0891b2;
+}
+
+.terminal-text::after {
+    content: '|';
+    animation: blink 1s infinite step-start;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.hologram-effect {
+    position: relative;
+}
+
+.hologram-effect::before,
+.hologram-effect::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(34, 211, 238, 0.03),
+        rgba(34, 211, 238, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    animation: hologram-scan 8s linear infinite;
+}
+
+.hologram-effect::after {
+    background: linear-gradient(
+        transparent 0%,
+        rgba(34, 211, 238, 0.1) 50%,
+        transparent 100%
+    );
+    animation: hologram-flicker 5s linear infinite;
+}
+
+@keyframes hologram-scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+@keyframes hologram-flicker {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.7; }
+    25%, 75% { opacity: 0.3; }
+}
+
+/* Animación para la tarjeta expandida 3D */
+@keyframes floatCard {
+    0%, 100% { transform: translateZ(10px) rotateX(2deg); }
+    50% { transform: translateZ(20px) rotateX(-2deg); }
+}
+
+.float-card {
+    transform-style: preserve-3d;
+    animation: floatCard 6s ease-in-out infinite;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.float-card:hover {
+    transform: translateZ(25px) scale(1.02);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+.float-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.float-card:hover::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.expanded-project {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top center;
+    cursor: pointer;
+}
+
+.expanded-project.active {
+    height: auto;
+    opacity: 1;
+}
+
+.expanded-project:not(.active) {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
