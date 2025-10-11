@@ -112,10 +112,18 @@
   padding: 0.125rem 0.5rem;  
   font-size: 1.25rem;  
   cursor: default;
+  transition: none;
 }
 
-.win98-button:active {
+.win98-button:active:not(:disabled):not(.win98-button-disabled) {
   border: 4px inset #808080;  
+}
+
+.win98-button:disabled,
+.win98-button-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* === INPUTS === */
@@ -160,4 +168,124 @@
 
 .win98-link:hover {
   text-decoration: none;
+}
+
+/* === HOME PAGE STYLES === */
+.ie-home-page {
+  padding: 2rem;
+  background: linear-gradient(to bottom, #ffffff 0%, #e8f4ff 100%);
+  min-height: 100%;
+}
+
+.ie-home-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #000080;
+}
+
+.ie-home-icon {
+  width: 4rem;
+  height: 4rem;
+  image-rendering: pixelated;
+}
+
+.ie-home-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000080;
+  text-shadow: 2px 2px 0px #c0c0c0;
+}
+
+.ie-home-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.ie-home-section {
+  background: #ffffff;
+  border: 4px outset #fff;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.ie-section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000080;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #c0c0c0;
+}
+
+.ie-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.ie-nav-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f0f0f0;
+  border: 4px outset #fff;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.ie-nav-card:hover {
+  background: #e0e0ff;
+  border: 4px outset #000080;
+}
+
+.ie-nav-card:active {
+  border: 4px inset #808080;
+  transform: translateY(2px);
+}
+
+.ie-nav-icon {
+  font-size: 3rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.ie-nav-text {
+  flex: 1;
+}
+
+.ie-nav-link {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #0000ee;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
+}
+
+.ie-nav-card:hover .ie-nav-link {
+  color: #ff0000;
+}
+
+.ie-nav-desc {
+  font-size: 1.4rem;
+  color: #404040;
+  line-height: 1.4;
+}
+
+.ie-home-footer {
+  text-align: center;
+  padding: 2rem;
+  background: #c0c0c0;
+  border: 4px inset #808080;
+  margin-top: 1rem;
+}
+
+.ie-footer-text {
+  font-size: 1.4rem;
+  color: #000080;
+  font-style: italic;
 }

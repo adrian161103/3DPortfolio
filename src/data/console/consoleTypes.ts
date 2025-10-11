@@ -9,9 +9,8 @@ export interface ConsoleData {
   typeList: string;
   commands: {
     about: string;
+    contact: string;
     projects: string;
-    technologies: string;
-    education: string;
     windows: string;
   };
 }

@@ -7,17 +7,17 @@ export const contactEn: ContactData = {
     name: {
       label: "Name",
       hint: "How would you like me to call you.",
-      placeholder: "E.g: Ada Lovelace",
+      placeholder: "E.g: adrian alejos",
     },
     email: {
       label: "Email",
-      hint: "We'll never share your email.",
+      hint: "Don't worry, I won't share your email.",
       placeholder: "E.g: ada@example.com",
     },
     message: {
       label: "Message",
-      hint: "Tell me about your project or idea.",
-      placeholder: "Hi Adrián, I'm interested in working on...",
+      hint: "Send me a contact message",
+      placeholder: "Hi Adrian...",
     },
   },
   buttons: {

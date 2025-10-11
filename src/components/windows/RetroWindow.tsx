@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Draggable from "react-draggable";
 
 type RetroWindowProps = {
@@ -20,7 +20,36 @@ export default function RetroWindow({
   onFocus,
 }: RetroWindowProps) {
   const [isMaximized, setIsMaximized] = useState(false);
+  const [savedContent, setSavedContent] = useState<React.ReactNode>(null);
+  const [bounds, setBounds] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
   const nodeRef = useRef(null);
+
+  // Guardar el contenido cuando se minimiza/maximiza
+  useEffect(() => {
+    if (!savedContent) {
+      setSavedContent(children);
+    }
+  }, [children, savedContent]);
+
+  // Calcular límites dinámicamente
+  useEffect(() => {
+    const updateBounds = () => {
+      const taskbarHeight = 55;
+      const windowWidth = 1500;
+      const windowHeight = 800;
+      
+      setBounds({
+        left: 0,
+        top: 0,
+        right: Math.max(0, window.innerWidth - windowWidth),
+        bottom: Math.max(0, window.innerHeight - taskbarHeight - windowHeight),
+      });
+    };
+
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+    return () => window.removeEventListener('resize', updateBounds);
+  }, []);
 
   const toggleMaximize = () => setIsMaximized((prev) => !prev);
 
@@ -41,35 +70,37 @@ export default function RetroWindow({
         bottom: isMaximized ? "55px" : undefined,
         background: "#c0c0c0",
       }}
-      onMouseDown={onFocus} // 👈 trae al frente al click
+      onMouseDown={onFocus}
     >
-   <div
-  className="retro-window-titlebar"
-  onDoubleClick={toggleMaximize}
-  onMouseDown={onFocus}
->
-  {/* Izquierda: ícono + título */}
-  <div className="title-left">
-    <img src="/icons/ie/internetpage.png" alt="icon" className="window-icon" />
-    <span>{title}</span>
-  </div>
+      <div
+        className="retro-window-titlebar"
+        onDoubleClick={toggleMaximize}
+        onMouseDown={onFocus}
+      >
+        {/* Izquierda: ícono + título */}
+        <div className="title-left">
+          <img src="/icons/ie/internetpage.png" alt="icon" className="window-icon" />
+          <span>{title}</span>
+        </div>
 
-  {/* Derecha: controles */}
-  <div className="retro-window-controls">
-    <button onClick={onMinimize}>─</button>
-    <button onClick={toggleMaximize}>{isMaximized ? "❐" : "□"}</button>
-    <button onClick={onClose}>X</button>
-  </div>
-</div>
+        {/* Derecha: controles */}
+        <div className="retro-window-controls">
+          <button onClick={onMinimize} aria-label="Minimizar">─</button>
+          <button onClick={toggleMaximize} aria-label="Maximizar/Restaurar">
+            {isMaximized ? "❐" : "□"}
+          </button>
+          <button onClick={onClose} aria-label="Cerrar">X</button>
+        </div>
+      </div>
 
-      {/* Contenido */}
+      {/* Contenido - NO recarga al minimizar/maximizar */}
       <div
         className={`flex-1 p-4 bg-white text-black text-[1.625rem] overflow-auto`}
         style={{
           transformOrigin: 'top left',
         }}
       >
-        {children}
+        {savedContent || children}
       </div>
     </div>
   );
@@ -81,7 +112,8 @@ export default function RetroWindow({
       nodeRef={nodeRef}
       handle=".retro-window-titlebar"
       defaultPosition={{ x: 100, y: 100 }}
-      onStart={onFocus} // 👈 trae al frente también al arrastrar
+      onStart={onFocus}
+      bounds={bounds}
     >
       {WindowContent}
     </Draggable>
