@@ -3,7 +3,7 @@ import { useThree } from '@react-three/fiber';
 
 export function useCursor(onHover = true) {
   const [hovered, setHovered] = useState(false);
-  const { viewport } = useThree();
+  useThree();
 
   useEffect(() => {
     if (onHover) {

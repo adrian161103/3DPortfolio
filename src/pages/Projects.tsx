@@ -1,5 +1,5 @@
-// Para el desarrollador que lee esto, por temas de tiempo, he decidido no modularizar momentaneamente este componente. posterior a la salida y con mas calma lo haré. Gracias por tu comprensión.
-// For the developer reading this: due to time constraints, I’ve decided not to modularize this component for now. I’ll do it later, once things settle down. Thanks for your understanding.
+// ES: Para el desarrollador que lee esto, por temas de tiempo, he decidido no modularizar momentaneamente este componente. posterior a la salida y con mas calma lo haré. Gracias por tu comprensión.
+// EN: For the developer reading this: due to time constraints, I’ve decided not to modularize this component for now. I’ll do it later, once things settle down. Thanks for your understanding.
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
@@ -29,7 +29,7 @@ const Projects: React.FC = () => {
   
   // Estado
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isHovering, setIsHovering] = useState<string | number | null>(null);
+  const [, setIsHovering] = useState<string | number | null>(null); //sin variable
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
