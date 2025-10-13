@@ -39,7 +39,7 @@ const GalaxyWithBlackHole: React.FC = () => {
   );
 };
 
-const TestComponent: React.FC = () => {
+const BlackHole: React.FC = () => {
   const [showEffect, setShowEffect] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
@@ -73,7 +73,7 @@ const TestComponent: React.FC = () => {
 
     // Registrar listeners solo para los eventos más importantes
     window.addEventListener('click', handleUserInteraction);
-    window.addEventListener('wheel', handleUserInteraction);
+    window.addEventListener('wheel', handleUserInteraction, { passive: true });
     window.addEventListener('keydown', handleUserInteraction);
     
     return () => {
@@ -140,4 +140,4 @@ const TestComponent: React.FC = () => {
   );
 };
 
-export default TestComponent;
+export default BlackHole;
