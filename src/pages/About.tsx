@@ -1,16 +1,24 @@
 import React from 'react';
+import AtmosphericScene from '../components/3d/AtmosphericScene';
 
 /**
- * Componente About - Página simple con fondo azul
+ * Componente About - Página con escena atmosférica 3D
  */
 const About: React.FC = () => {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center"
-         style={{ backgroundColor: '#1a2c42' }}> {/* Fondo azul oscuro */}
+    <div className="min-h-screen w-screen relative">
+      {/* Escena 3D atmosférica de fondo - fija pero permitiendo interacción */}
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0">
+        <AtmosphericScene />
+      </div>
       
-      <h1 className="text-5xl font-bold text-white">
-        About
-      </h1>
+      {/* Contenido que se puede scrollear */}
+      <div className="relative z-10 w-full">
+        {/* Espaciador transparente para scroll inicial */}
+        <div className="h-[200vh] w-full"></div>
+        
+      
+      </div>
     </div>
   );
 };
