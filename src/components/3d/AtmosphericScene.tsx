@@ -211,10 +211,9 @@ const SceneContent = () => {
       // A medida que la cámara se acerca, la roca también debe alejarse para mantener perspectiva
       rock.position.z = -2 - progress * 10; // Se aleja a la misma velocidad que la cámara se acerca
       
-      // Opcional: ajustar la escala de la roca para mantener su tamaño aparente
-      // A mayor progreso, menor escala para compensar la cercanía
+      // Mantener la escala constante para que el tamaño no cambie durante el scroll
       const baseScale = 1.0;
-      rock.scale.setScalar(baseScale - progress * 0.3); // Reducir escala hasta un 30% al máximo scroll
+      rock.scale.setScalar(baseScale); // Escala fija, sin cambios durante el scroll
     }
     
     // Movimiento de las nubes para crear profundidad
