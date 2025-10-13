@@ -36,34 +36,11 @@ const FloatingRock = () => {
       <mesh castShadow receiveShadow>
         <dodecahedronGeometry args={[0.3, 1]} />
         <meshPhongMaterial 
-          color="#3D2F24"
-          specular="#1A1410"
-          shininess={5}
+          color="#2C2C2C"
+          specular="#FFFFFF"
+          shininess={15}
           flatShading={true}
           transparent={false}
-        />
-      </mesh>
-      {/* Capas de textura irregular */}
-      <mesh position={[0.02, 0.01, 0.02]} castShadow>
-        <octahedronGeometry args={[0.28, 2]} />
-        <meshPhongMaterial 
-          color="#2A1F17"
-          specular="#0F0C0A"
-          shininess={3}
-          flatShading={true}
-          opacity={0.9}
-          transparent={true}
-        />
-      </mesh>
-      <mesh position={[-0.01, -0.01, 0.01]} castShadow>
-        <tetrahedronGeometry args={[0.32, 1]} />
-        <meshPhongMaterial 
-          color="#4A3B2E"
-          specular="#1F1812"
-          shininess={8}
-          flatShading={true}
-          opacity={0.7}
-          transparent={true}
         />
       </mesh>
     </group>
@@ -104,7 +81,39 @@ const CloudSystem = () => {
 
   return (
     <group ref={cloudGroupRef}>
-      {/* Capa de nubes principales */}
+      {/* Nubes cercanas a la roca - capa principal */}
+      <Cloud
+        position={[-2, 2.8, -1]}
+        speed={0.1}
+        opacity={0.8}
+        color="#e6f3ff"
+        segments={45}
+        bounds={[4, 1.5, 4]}
+        volume={3}
+        smallestVolume={0.2}
+      />
+      <Cloud
+        position={[1.5, 2.2, -0.5]}
+        speed={0.12}
+        opacity={0.7}
+        color="#f0f6ff"
+        segments={40}
+        bounds={[3, 1.2, 3]}
+        volume={2.5}
+        smallestVolume={0.15}
+      />
+      <Cloud
+        position={[0.5, 3.2, -3]}
+        speed={0.08}
+        opacity={0.9}
+        color="#ddeeff"
+        segments={50}
+        bounds={[5, 2, 5]}
+        volume={4}
+        smallestVolume={0.3}
+      />
+      
+      {/* Capa de nubes medias */}
       <Cloud
         position={[-4, 2, -8]}
         speed={0.1}
@@ -136,6 +145,38 @@ const CloudSystem = () => {
         smallestVolume={0.4}
       />
       
+      {/* Nubes adicionales para mayor densidad */}
+      <Cloud
+        position={[-1, 1.8, -6]}
+        speed={0.13}
+        opacity={0.5}
+        color="#f5faff"
+        segments={38}
+        bounds={[7, 1.8, 7]}
+        volume={5}
+        smallestVolume={0.25}
+      />
+      <Cloud
+        position={[3, 2.8, -9]}
+        speed={0.09}
+        opacity={0.6}
+        color="#e6f3ff"
+        segments={42}
+        bounds={[6, 2.2, 6]}
+        volume={4.5}
+        smallestVolume={0.28}
+      />
+      <Cloud
+        position={[-3, 3.5, -5]}
+        speed={0.11}
+        opacity={0.65}
+        color="#ddeeff"
+        segments={48}
+        bounds={[8, 2.5, 8]}
+        volume={6.5}
+        smallestVolume={0.35}
+      />
+      
       {/* Nubes de fondo más distantes */}
       <Cloud
         position={[-8, 0, -20]}
@@ -156,6 +197,36 @@ const CloudSystem = () => {
         bounds={[15, 2, 15]}
         volume={5}
         smallestVolume={0.15}
+      />
+      <Cloud
+        position={[0, -1, -30]}
+        speed={0.06}
+        opacity={0.2}
+        color="#ffffff"
+        segments={32}
+        bounds={[18, 3, 18]}
+        volume={7}
+        smallestVolume={0.18}
+      />
+      <Cloud
+        position={[-12, 2, -28]}
+        speed={0.04}
+        opacity={0.35}
+        color="#f0f6ff"
+        segments={28}
+        bounds={[14, 2.5, 14]}
+        volume={4.5}
+        smallestVolume={0.12}
+      />
+      <Cloud
+        position={[12, 3, -32]}
+        speed={0.05}
+        opacity={0.28}
+        color="#e6f3ff"
+        segments={26}
+        bounds={[16, 3, 16]}
+        volume={6}
+        smallestVolume={0.16}
       />
     </group>
   );
