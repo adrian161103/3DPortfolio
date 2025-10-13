@@ -1,4 +1,4 @@
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useRef, useEffect } from 'react';
 import { Sky, Cloud, Environment, PerspectiveCamera } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, Vignette } from '@react-three/postprocessing';
@@ -32,7 +32,7 @@ const FloatingRock = () => {
   }, []);
 
   return (
-    <group ref={rockRef} position={[0, 2.5, -2]}>
+    <group ref={rockRef} position={[0, 2.5, -2]} name="floatingRock">
       <mesh castShadow receiveShadow>
         <dodecahedronGeometry args={[0.3, 1]} />
         <meshPhongMaterial 
@@ -165,6 +165,7 @@ const CloudSystem = () => {
 const SceneContent = () => {
   const sceneRef = useRef<THREE.Group>(null!);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const scrollProgressRef = useRef(0);
 
   useEffect(() => {
     if (!sceneRef.current || !cameraRef.current) return;
@@ -173,29 +174,15 @@ const SceneContent = () => {
     cameraRef.current.position.set(0, 0, 5);
     cameraRef.current.lookAt(0, 0, 0);
 
-    // ScrollTrigger para la animación de descenso
+    // ScrollTrigger para capturar la posición de scroll
     ScrollTrigger.create({
       trigger: "body",
       start: "top top",
       end: "bottom bottom",
       scrub: 1,
       onUpdate: (self) => {
-        const progress = self.progress;
-        
-        // Animación de la cámara descendiendo
-        if (cameraRef.current) {
-          cameraRef.current.position.y = -progress * 15; // Descender 15 unidades
-          cameraRef.current.position.z = 5 - progress * 10; // Acercarse también
-        }
-        
-        // Movimiento de las nubes para crear profundidad
-        if (sceneRef.current) {
-          sceneRef.current.children.forEach((child, index) => {
-            if (child.userData.isCloud) {
-              child.position.y += progress * 0.1 * (index + 1);
-            }
-          });
-        }
+        // Solo guardamos el progreso, la actualización real se hace en useFrame
+        scrollProgressRef.current = self.progress;
       }
     });
 
@@ -203,6 +190,40 @@ const SceneContent = () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
+  
+  // Usamos useFrame para actualizar la posición de la cámara y la roca en cada frame
+  useFrame(() => {
+    if (!cameraRef.current || !sceneRef.current) return;
+    
+    const progress = scrollProgressRef.current;
+    
+    // Animación de la cámara descendiendo
+    cameraRef.current.position.y = -progress * 15; // Descender 15 unidades
+    cameraRef.current.position.z = 5 - progress * 10; // Acercarse también
+    
+    // Mover la roca para que siempre sea visible frente a la cámara
+    const rock = sceneRef.current.getObjectByName('floatingRock');
+    if (rock) {
+      // Mantener la posición relativa de la roca a la cámara
+      rock.position.y = 2.5 - progress * 15; // Mismo descenso que la cámara
+      
+      // Ajustar la posición Z de la roca para mantener la distancia relativa
+      // A medida que la cámara se acerca, la roca también debe alejarse para mantener perspectiva
+      rock.position.z = -2 - progress * 10; // Se aleja a la misma velocidad que la cámara se acerca
+      
+      // Opcional: ajustar la escala de la roca para mantener su tamaño aparente
+      // A mayor progreso, menor escala para compensar la cercanía
+      const baseScale = 1.0;
+      rock.scale.setScalar(baseScale - progress * 0.3); // Reducir escala hasta un 30% al máximo scroll
+    }
+    
+    // Movimiento de las nubes para crear profundidad
+    sceneRef.current.children.forEach((child, index) => {
+      if (child.userData.isCloud) {
+        child.position.y += progress * 0.1 * (index + 1);
+      }
+    });
+  });
 
   return (
     <group ref={sceneRef}>
@@ -249,7 +270,7 @@ const SceneContent = () => {
       {/* Sistema de nubes */}
       <CloudSystem />
       
-      {/* Roca flotante */}
+      {/* Roca flotante - ahora con nombre para poder referenciarla */}
       <FloatingRock />
       
       {/* Environment mapping */}
