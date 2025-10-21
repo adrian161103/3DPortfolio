@@ -5,7 +5,6 @@ import { EffectComposer, Bloom, ToneMapping, Vignette } from '@react-three/postp
 import { ToneMappingMode } from 'postprocessing';
 import * as THREE from 'three';
 import { gsap } from '../../lib/gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Componente de la roca flotante
 const FloatingRock = () => {
@@ -245,20 +244,47 @@ const SceneContent = () => {
     cameraRef.current.position.set(0, 0, 5);
     cameraRef.current.lookAt(0, 0, 0);
 
-    // ScrollTrigger para capturar la posición de scroll
-    ScrollTrigger.create({
-      trigger: "body",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 1,
-      onUpdate: (self) => {
-        // Solo guardamos el progreso, la actualización real se hace en useFrame
-        scrollProgressRef.current = self.progress;
+    // Escuchar eventos de scroll personalizados con mejor debugging
+    const handleAtmosphericScroll = (event: CustomEvent) => {
+      const newProgress = event.detail.progress;
+      scrollProgressRef.current = newProgress;
+      console.log('AtmosphericScene received scroll progress:', newProgress); // Debug
+    };
+
+    // Agregar listener para el evento personalizado
+    window.addEventListener('atmosphericScroll', handleAtmosphericScroll as EventListener);
+
+    // También agregar un listener de scroll directo como fallback
+    const handleDirectScroll = () => {
+      // Buscar contenedores scrolleables
+      const scrollableElements = document.querySelectorAll('[style*="overflow: auto"], .show-scrollbar');
+      
+      for (const element of scrollableElements) {
+        const scrollTop = element.scrollTop;
+        const scrollHeight = element.scrollHeight - element.clientHeight;
+        
+        if (scrollHeight > 0) {
+          const progress = scrollTop / scrollHeight;
+          scrollProgressRef.current = progress;
+          console.log('AtmosphericScene direct scroll progress:', progress); // Debug
+          break; // Solo usar el primer elemento scrolleable encontrado
+        }
       }
-    });
+    };
+
+    // Listener de scroll directo con throttling
+    let scrollTimeout: number;
+    const throttledDirectScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(handleDirectScroll, 16); // ~60fps
+    };
+
+    document.addEventListener('scroll', throttledDirectScroll, { passive: true, capture: true });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      window.removeEventListener('atmosphericScroll', handleAtmosphericScroll as EventListener);
+      document.removeEventListener('scroll', throttledDirectScroll, { capture: true });
+      clearTimeout(scrollTimeout);
     };
   }, []);
   

@@ -2,3 +2,22 @@
 @import "tailwindcss";
 @import "./styles/App.css";
 
+/* Ocultar scrollbars por defecto en elementos específicos */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+/* Mostrar scrollbars cuando sea necesario */
+.show-scrollbar {
+  -ms-overflow-style: auto;
+  scrollbar-width: auto;
+}
+
+.show-scrollbar::-webkit-scrollbar { 
+  display: block;
+}

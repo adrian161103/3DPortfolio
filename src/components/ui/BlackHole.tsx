@@ -122,19 +122,19 @@ const BlackHole: React.FC = () => {
   }
 
   return (
-    <div className="relative bg-black text-white h-screen w-screen overflow-hidden">
+    <div className="relative bg-black text-white h-screen w-screen">
       {/* Pantalla blanca que aparece después de la animación del agujero negro */}
       {showWhiteScreen ? (
         <AfterBlackHole />
       ) : (
-        <>
+        <div className="overflow-hidden h-full w-full">
           <GalaxyWithBlackHole />
           {showHint && !userInteracted && (
             <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
               arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

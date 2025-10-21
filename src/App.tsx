@@ -57,7 +57,7 @@ function App() {
   }, []);
 
   return (
-    <main className="h-screen w-screen overflow-hidden relative">
+    <main className="h-screen w-screen relative">
       {/* LanguageSwitcher solo se muestra en la vista hero */}
       {currentView === "hero" && (
         <div className="absolute top-2 left-2 z-30">
