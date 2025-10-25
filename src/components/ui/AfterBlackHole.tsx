@@ -126,19 +126,19 @@ const AfterBlackHole: React.FC = () => {
     switch (selectedSection) {
       case 'about':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default show-scrollbar" style={{ overflow: 'auto' }}>
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <About />
           </div>
         );
       case 'projects':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default show-scrollbar" style={{ overflow: 'auto' }}>
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <Projects />
           </div>
         );
       case 'contact':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default show-scrollbar" style={{ overflow: 'auto' }}>
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <Contact />
           </div>
         );
@@ -156,21 +156,20 @@ const AfterBlackHole: React.FC = () => {
     <div style={{ 
       position: 'relative', 
       width: '100%', 
-      height: '100%',
-      overflow: animationComplete ? 'visible' : 'hidden' // Ocultar scroll durante la animación
+      minHeight: '100vh',
+      overflow: 'visible' 
     }}>
-      {/* Capa de contenido (siempre presente pero inicialmente no visible) */}
-      <div className={`${animationComplete ? 'relative show-scrollbar' : 'absolute hide-scrollbar'} inset-0 z-40 w-full h-full`}
-           style={{ 
-             overflow: animationComplete ? 'auto' : 'hidden' // Scroll solo cuando la animación termina
-           }}>
-        {renderSelectedComponent()}
-      </div>
+      {/* Capa de contenido: se muestra solo al completar la animación */}
+      {animationComplete && (
+        <div className="relative z-40 w-full min-h-screen">
+          {renderSelectedComponent()}
+        </div>
+      )}
       
       {/* Capa de animación (controla la explosión y la animación blanca) */}
       <div 
         ref={containerRef} 
-        className="absolute inset-0 z-50 flex items-center justify-center cursor-default"
+        className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
         style={{ 
           backgroundColor: 'rgba(0, 0, 0, 1)', // Comienza negro
           pointerEvents: animationComplete ? 'none' : 'auto', // Evita bloquear interacciones después de la animación
