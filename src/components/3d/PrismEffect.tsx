@@ -87,8 +87,8 @@ export function PrismEffect() {
   return (
     <>
       {/* Configuración de iluminación ambiental y entorno */}
-      <Environment preset="studio" intensity={1.2} />
-      <ambientLight intensity={0.15} />
+      <Environment files="/hdri/studio_small_03_1k.hdr" />
+      <ambientLight intensity={0.18} />
       
       {/* Grupo de luces dinámicas que crean efectos de color */}
       <group ref={lightRef}>
