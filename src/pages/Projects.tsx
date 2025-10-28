@@ -316,7 +316,7 @@ const Projects: React.FC = () => {
       {/* Contenedor principal */}
       <div 
         ref={containerRef}
-        className="absolute inset-0 flex flex-col cursor-default px-4 py-8 overflow-hidden"
+        className="absolute inset-0 flex flex-col cursor-default px-4 pt-14 pb-8 overflow-hidden"
         style={{ 
           backgroundColor: '#0a0f18',
           backgroundImage: 'radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 60%)'

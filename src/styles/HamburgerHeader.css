@@ -1,0 +1,186 @@
+/* Hamburger Header Styles */
+.hamburger-header {
+  font-family: 'VT323', monospace;
+  /* Header transparent: no backdrop blur - keep only typography */
+  background: transparent;
+}
+
+.hamburger-btn {
+  transition: all 0.3s ease;
+}
+
+.hamburger-btn:hover {
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.hamburger-menu {
+  font-family: 'VT323', monospace;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 0 0 0 8px;
+}
+
+.menu-item {
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.menu-item:hover::before {
+  left: 100%;
+}
+
+.menu-item:active {
+  transform: scale(0.98);
+}
+
+/* Animación de parpadeo para el cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.hamburger-header .cursor::after {
+  content: '_';
+  animation: blink 1s infinite;
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .hamburger-menu {
+    width: 100vw;
+    right: 0;
+    border-radius: 0;
+  }
+  
+  .hamburger-header {
+    padding: 0 16px;
+  }
+}
+
+/* Glitch effect para hover estados */
+.hamburger-btn:hover span {
+  animation: glitch 0.3s ease-in-out;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+/* Terminal-style scrollbar */
+.hamburger-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hamburger-menu::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hamburger-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.hamburger-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Borde animado para el menú */
+.hamburger-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #ffffff 25%, 
+    #ffffff 75%, 
+    transparent 100%
+  );
+  animation: borderGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Efecto de líneas de escaneo */
+.hamburger-menu::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  animation: scanlines 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* Estilos para secciones expandibles */
+.expanded-section {
+  animation: expandIn 0.3s ease-out;
+}
+
+@keyframes expandIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+  }
+}
+
+.section-button {
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.section-button:hover {
+  border-left-color: rgba(255, 255, 255, 0.5);
+  padding-left: 20px;
+}
+
+.section-content {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}

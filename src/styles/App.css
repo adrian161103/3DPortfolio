@@ -2,3 +2,34 @@
 @import "./Desktop.css";
 @import "./RetroWindow.css";
 @import './ProjectsAnimation.css';
+@import './HamburgerHeader.css';
+@import './HamburgerDynamic.css';
+@import './CinematicEffects.css';
+
+/* ========================================
+   OCULTAR SCROLL GLOBALMENTE
+   ======================================== */
+
+/* Para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Para Internet Explorer y Edge legacy */
+* {
+  -ms-overflow-style: none;
+}
+
+/* Asegurar que el scroll funcione pero sin mostrar la barra */
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+
+

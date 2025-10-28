@@ -1,14 +1,15 @@
-// src/components/CameraController.tsx
+
 import { useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import TrashController from "./TrashController";
 import { animateCameraToView } from "../../lib/cameraAnimator";
 import { CAMERA_VIEWS } from "../../config/camera.config";
 
 export default function CameraController() {
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const { camera, scene } = useThree();
 
   // 👇 casteamos explícitamente la cámara
@@ -108,7 +109,15 @@ export default function CameraController() {
 
   return (
     <>
-      <OrbitControls ref={controlsRef} enableZoom={false} enablePan={false} />
+      <OrbitControls 
+        ref={controlsRef} 
+        enableZoom={false} 
+        enablePan={false}
+        minAzimuthAngle={-Math.PI / 2} // -90 grados
+        maxAzimuthAngle={Math.PI / 2}  // +90 grados
+        minPolarAngle={Math.PI / 4}    // 45 grados desde arriba
+        maxPolarAngle={Math.PI * 3/4}  // 135 grados (no completamente abajo)
+      />
       <TrashController controlsRef={controlsRef} />
     </>
   );

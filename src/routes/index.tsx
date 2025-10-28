@@ -1,6 +1,9 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
+// Layout global
+import Layout from "../components/layout/Layout";
+
 // Vista principal actual del portfolio (hero/animaciones)
 import App from "../App";
 
@@ -8,6 +11,7 @@ import App from "../App";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Projects from "../pages/Projects";
+import BlackHole from "../components/ui/BlackHole";
 
 /**
  * Rutas públicas de la aplicación (solo frontend)
@@ -18,15 +22,19 @@ import Projects from "../pages/Projects";
  */
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/projects" element={<Projects />} />
+    <Layout>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/blackhole" element={<BlackHole />} />
+        
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Layout>
   );
 };
 
