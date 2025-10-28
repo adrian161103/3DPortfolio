@@ -6,12 +6,12 @@ export const contactEs: ContactData = {
   fields: {
     name: {
       label: "Nombre",
-      hint: "Cómo te gustaría que te llame.",
+      hint: "como te llamas",
       placeholder: "Ej: adrian alejos",
     },
     email: {
       label: "Email",
-      hint: "No te preocupes no compartire tu correo.",
+      hint: "coloca tu correo",
       placeholder: "Ej: ada@example.com",
     },
     message: {

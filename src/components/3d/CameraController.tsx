@@ -1,4 +1,4 @@
-// src/components/CameraController.tsx
+
 import { useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
