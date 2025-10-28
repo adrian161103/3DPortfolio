@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import About from "./pages/About";
-import Projects from "./pages/Project";
-import Contact from "./pages/Contact";
+import About from "./pages/AboutWindows";
+import Projects from "./pages/ProjectWindows";
+import Contact from "./pages/ContactWindows";
 import { useLanguage } from "../../context/LanguageContext";
 import { browserEs } from "../../data/browser/browser.es";
 import { browserEn } from "../../data/browser/browser.en";

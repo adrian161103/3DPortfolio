@@ -1,0 +1,238 @@
+/* Aurora Effects CSS */
+
+@keyframes aurora-flow {
+  0% {
+    transform: translateX(-10%) translateY(-5%) scale(1);
+    filter: blur(40px) brightness(1);
+  }
+  25% {
+    transform: translateX(5%) translateY(-10%) scale(1.1);
+    filter: blur(35px) brightness(1.2);
+  }
+  50% {
+    transform: translateX(10%) translateY(5%) scale(0.9);
+    filter: blur(45px) brightness(0.9);
+  }
+  75% {
+    transform: translateX(-5%) translateY(10%) scale(1.05);
+    filter: blur(38px) brightness(1.1);
+  }
+  100% {
+    transform: translateX(-10%) translateY(-5%) scale(1);
+    filter: blur(40px) brightness(1);
+  }
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aurora-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glint-trail {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+@keyframes timeline-glow {
+  0%, 100% {
+    filter: blur(2px) brightness(1);
+  }
+  50% {
+    filter: blur(4px) brightness(1.3);
+  }
+}
+
+@keyframes timeline-connection-pulse {
+  0% {
+    stroke-opacity: 0.6;
+    stroke-width: 2;
+  }
+  50% {
+    stroke-opacity: 1;
+    stroke-width: 3;
+  }
+  100% {
+    stroke-opacity: 0.6;
+    stroke-width: 2;
+  }
+}
+
+@keyframes timeline-flow-animation {
+  0% {
+    opacity: 0.3;
+    transform: translateY(-10%);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translateY(10%);
+  }
+}
+
+/* Timeline Aurora Organic Styles */
+.aurora-main-path {
+  animation: aurora-main-flow 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px #0EF0B5);
+}
+
+.aurora-glow-path {
+  animation: aurora-glow-pulse 6s ease-in-out infinite;
+}
+
+.aurora-wave-left {
+  animation: aurora-wave-left-flow 10s ease-in-out infinite;
+}
+
+.aurora-wave-right {
+  animation: aurora-wave-right-flow 12s ease-in-out infinite;
+}
+
+.aurora-particle {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+@keyframes aurora-main-flow {
+  0%, 100% {
+    stroke-width: 8;
+    opacity: 0.9;
+  }
+  25% {
+    stroke-width: 10;
+    opacity: 1;
+  }
+  50% {
+    stroke-width: 6;
+    opacity: 0.8;
+  }
+  75% {
+    stroke-width: 9;
+    opacity: 0.95;
+  }
+}
+
+@keyframes aurora-glow-pulse {
+  0%, 100% {
+    stroke-width: 16;
+    opacity: 0.3;
+  }
+  50% {
+    stroke-width: 20;
+    opacity: 0.5;
+  }
+}
+
+@keyframes aurora-wave-left-flow {
+  0% {
+    stroke-dasharray: 0 100;
+    opacity: 0.6;
+  }
+  50% {
+    stroke-dasharray: 50 50;
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+    opacity: 0.6;
+  }
+}
+
+@keyframes aurora-wave-right-flow {
+  0% {
+    stroke-dasharray: 100 0;
+    opacity: 0.4;
+  }
+  50% {
+    stroke-dasharray: 50 50;
+    opacity: 0.7;
+  }
+  100% {
+    stroke-dasharray: 0 100;
+    opacity: 0.4;
+  }
+}
+
+.connection-line {
+  animation: timeline-connection-pulse 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.connection-line:hover {
+  stroke-opacity: 1 !important;
+  stroke-width: 5 !important;
+  filter: drop-shadow(0 0 12px #0EF0B5) !important;
+}
+
+.connection-point {
+  transition: all 0.3s ease;
+}
+
+.connection-point:hover {
+  filter: drop-shadow(0 0 15px #0EF0B5);
+  transform: scale(1.2);
+}
+
+.energy-flow {
+  filter: drop-shadow(0 0 6px #0EF0B5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  @keyframes aurora-flow {
+    0% {
+      transform: translateX(-5%) translateY(-3%) scale(0.8);
+      filter: blur(30px) brightness(1);
+    }
+    50% {
+      transform: translateX(5%) translateY(3%) scale(0.9);
+      filter: blur(35px) brightness(1.1);
+    }
+    100% {
+      transform: translateX(-5%) translateY(-3%) scale(0.8);
+      filter: blur(30px) brightness(1);
+    }
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes aurora-flow {
+    0%, 100% {
+      transform: translateX(0) translateY(0) scale(1);
+      filter: blur(40px) brightness(1);
+    }
+  }
+  
+  @keyframes aurora-drift {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+  }
+  
+  @keyframes aurora-pulse {
+    0%, 100% {
+      opacity: 0.5;
+    }
+  }
+}

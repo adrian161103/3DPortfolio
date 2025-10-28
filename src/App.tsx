@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { gsap } from "./lib/gsap";
 import Hero from "./components/sections/Hero";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
-import TestComponent from "./components/ui/TestComponent";
+import BlackHole from "./components/ui/BlackHole";
 
 function App() {
   const [overlayVisible, setOverlayVisible] = useState(true);
@@ -57,7 +57,7 @@ function App() {
   }, []);
 
   return (
-    <main className="h-screen w-screen overflow-hidden relative">
+    <main className="h-screen w-screen relative">
       {/* LanguageSwitcher solo se muestra en la vista hero */}
       {currentView === "hero" && (
         <div className="absolute top-2 left-2 z-30">
@@ -70,7 +70,7 @@ function App() {
         <Hero />
       ) : (
         <div className="h-full w-full flex items-center justify-center">
-          <TestComponent />
+          <BlackHole />
         </div>
       )}
       

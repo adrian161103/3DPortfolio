@@ -39,7 +39,7 @@ const GalaxyWithBlackHole: React.FC = () => {
   );
 };
 
-const TestComponent: React.FC = () => {
+const BlackHole: React.FC = () => {
   const [showEffect, setShowEffect] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
@@ -73,7 +73,7 @@ const TestComponent: React.FC = () => {
 
     // Registrar listeners solo para los eventos más importantes
     window.addEventListener('click', handleUserInteraction);
-    window.addEventListener('wheel', handleUserInteraction);
+    window.addEventListener('wheel', handleUserInteraction, { passive: true });
     window.addEventListener('keydown', handleUserInteraction);
     
     return () => {
@@ -122,22 +122,22 @@ const TestComponent: React.FC = () => {
   }
 
   return (
-    <div className="relative bg-black text-white h-screen w-screen overflow-hidden">
+    <div className="relative bg-black text-white h-screen w-screen">
       {/* Pantalla blanca que aparece después de la animación del agujero negro */}
       {showWhiteScreen ? (
         <AfterBlackHole />
       ) : (
-        <>
+        <div className="overflow-hidden h-full w-full">
           <GalaxyWithBlackHole />
           {showHint && !userInteracted && (
             <div className="absolute bottom-4 left-0 right-0 text-center text-gray-400 text-sm animate-pulse">
               arrastra para rotar, usa la rueda del ratón para hacer zoom o clickea el agujero negro
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
 };
 
-export default TestComponent;
+export default BlackHole;

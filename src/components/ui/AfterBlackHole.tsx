@@ -81,17 +81,30 @@ const AfterBlackHole: React.FC = () => {
         duration: 0.8,
         ease: "power2.out",
         onComplete: () => {
-          console.log('Animación completada');
+          console.log('Animación de texto completada');
+          // Mostrar el contenido inmediatamente cuando termine la animación del texto
           setAnimationComplete(true);
           
           // Después de que termine la animación principal, crear una nueva animación
           // para la transición del fondo sin afectar la animación original
           if (containerRef.current) {
+            // Primero remover los elementos de la explosión para que solo quede el fondo blanco
+            const explosion = containerRef.current.querySelector('.rounded-full');
+            if (explosion) {
+              (explosion as HTMLElement).style.display = 'none';
+            }
+            
             gsap.to(containerRef.current, {
               backgroundColor: 'rgba(255, 255, 255, 0)', // Hacer el fondo transparente
-              duration: 1.5,
+              duration: 2.5,
               ease: "power2.inOut",
               delay: 0.2,
+              onComplete: () => {
+                // Solo ocultar la capa cuando la transición esté completa
+                if (containerRef.current) {
+                  containerRef.current.style.display = 'none';
+                }
+              }
             });
           }
         }
@@ -113,19 +126,19 @@ const AfterBlackHole: React.FC = () => {
     switch (selectedSection) {
       case 'about':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default">
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <About />
           </div>
         );
       case 'projects':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default">
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <Projects />
           </div>
         );
       case 'contact':
         return (
-          <div className="texto-teesteo w-full h-full cursor-default">
+          <div className="texto-teesteo w-full min-h-screen cursor-default">
             <Contact />
           </div>
         );
@@ -140,19 +153,27 @@ const AfterBlackHole: React.FC = () => {
   };
   
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Capa de contenido (siempre presente pero inicialmente no visible) */}
-      <div className="absolute inset-0 z-40">
-        {renderSelectedComponent()}
-      </div>
+    <div style={{ 
+      position: 'relative', 
+      width: '100%', 
+      minHeight: '100vh',
+      overflow: 'visible' 
+    }}>
+      {/* Capa de contenido: se muestra solo al completar la animación */}
+      {animationComplete && (
+        <div className="relative z-40 w-full min-h-screen">
+          {renderSelectedComponent()}
+        </div>
+      )}
       
       {/* Capa de animación (controla la explosión y la animación blanca) */}
       <div 
         ref={containerRef} 
-        className="absolute inset-0 z-50 flex items-center justify-center cursor-default"
+        className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
         style={{ 
           backgroundColor: 'rgba(0, 0, 0, 1)', // Comienza negro
-          pointerEvents: animationComplete ? 'none' : 'auto' // Evita bloquear interacciones después de la animación
+          pointerEvents: animationComplete ? 'none' : 'auto', // Evita bloquear interacciones después de la animación
+          overflow: 'hidden' // Asegurar que no hay scroll en la capa de animación
         }}
       >
         {/* Explosión blanca ovalada */}
