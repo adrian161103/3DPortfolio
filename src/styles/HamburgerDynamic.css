@@ -1,0 +1,19 @@
+/* Hamburger Menu Dynamic Hover Effects */
+.menu-item:not(:disabled):hover {
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-color) !important;
+  border-color: var(--hover-border) !important;
+}
+
+/* Smooth transitions for all hamburger elements */
+.hamburger-header,
+.hamburger-menu,
+.menu-item,
+.section-content {
+  transition: all 0.3s ease;
+}
+
+/* Enhance hamburger lines animation */
+.hamburger-header span {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

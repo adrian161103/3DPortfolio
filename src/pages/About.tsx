@@ -6,7 +6,6 @@ import {
   TimelineAurora, 
   CTA 
 } from '../components/about';
-import '../styles/CinematicEffects.css';
 import { useLanguage } from '../context/LanguageContext';
 import { aboutEs } from '../data/about/about.es';
 import { aboutEn } from '../data/about/about.en';
