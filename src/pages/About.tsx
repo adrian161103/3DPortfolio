@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   HeroAurora, 
   Bio, 
@@ -23,6 +24,7 @@ import { aboutEn } from '../data/about/about.en';
  */
 const About: React.FC = () => {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const data = language === 'es' ? aboutEs : aboutEn;
   useEffect(() => {
     // Sin efectos de cursor personalizado
@@ -100,7 +102,10 @@ const About: React.FC = () => {
 
               {/* Botón de llamada a la acción cinematográfico */}
               <div className="pt-8">
-                <button className="group relative px-8 py-4 bg-gradient-to-r from-green-400/10 to-emerald-600/10 border border-green-400/30 rounded-full text-green-300 font-mono text-sm tracking-[0.2em] uppercase liquid-morph hover:from-green-400/20 hover:to-emerald-600/20 hover:border-green-400/60 transition-all duration-500">
+                <button 
+                  onClick={() => navigate('/projects')}
+                  className="group relative px-8 py-4 bg-gradient-to-r from-green-400/10 to-emerald-600/10 border border-green-400/30 rounded-full text-green-300 font-mono text-sm tracking-[0.2em] uppercase liquid-morph hover:from-green-400/20 hover:to-emerald-600/20 hover:border-green-400/60 transition-all duration-500 cursor-pointer"
+                >
                   <span className="relative z-10">{data.hero.ctaLabel}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-green-400/0 via-green-400/20 to-green-400/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </button>

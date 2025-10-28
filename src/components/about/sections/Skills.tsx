@@ -97,7 +97,9 @@ export const Skills: React.FC<SkillsProps> = ({ className = '' }) => {
           // Animación de contadores
           progressBars.forEach((bar) => {
             const skillLevel = parseInt(bar.getAttribute('data-level') || '0');
-            const counter = bar.parentElement?.querySelector('.skill-counter');
+            // Buscar el contador en el elemento padre del grupo completo
+            const skillGroup = bar.closest('.group');
+            const counter = skillGroup?.querySelector('.skill-counter');
             if (counter) {
               gsap.fromTo(counter, 
                 { textContent: '0%' },

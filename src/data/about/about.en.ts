@@ -59,7 +59,7 @@ export const aboutEn: AboutPageData = {
         { value: 'IFTS No.29', label: 'Software Dev. Technician (2025)' },
         { value: 'Full Stack', label: 'React · TS · Node · Mongo' }
       ],
-      photo: { initials: 'AA', alt: 'Adrián Alejos García - Full Stack Web Developer' },
+      photo: { src: '/Adrian.jpg', initials: 'AA', alt: 'Adrián Alejos García - Full Stack Web Developer' },
       availability: 'Available for remote work',
       status: 'Open to opportunities'
     },
@@ -79,13 +79,13 @@ export const aboutEn: AboutPageData = {
         title: 'Frontend',
         description: 'Modern, accessible and scalable interfaces',
         skills: [
-          { name: 'React', level: 90, category: 'framework', icon: '⚛️' },
-          { name: 'JavaScript', level: 90, category: 'language', icon: '🟨' },
+          { name: 'React', level: 80, category: 'framework', icon: '⚛️' },
+          { name: 'JavaScript', level: 70, category: 'language', icon: '🟨' },
           { name: 'TypeScript', level: 88, category: 'language', icon: '🔷' },
           { name: 'Tailwind CSS', level: 90, category: 'styling', icon: '🎨' },
           { name: 'Vite', level: 85, category: 'build', icon: '⚡' },
-          { name: 'GSAP', level: 86, category: 'animation', icon: '✨' },
-          { name: 'Three.js', level: 84, category: '3d', icon: '🌐' }
+          { name: 'GSAP', level: 76, category: 'animation', icon: '✨' },
+          { name: 'Three.js', level: 64, category: '3d', icon: '🌐' }
         ],
         color: 'from-green-400 to-emerald-600',
         accent: 'green'
@@ -94,10 +94,10 @@ export const aboutEn: AboutPageData = {
         title: 'Backend',
         description: 'Reliable and simple APIs',
         skills: [
-          { name: 'Node.js', level: 85, category: 'backend', icon: '🟢' },
-          { name: 'Express', level: 82, category: 'backend', icon: '🚀' },
-          { name: 'MongoDB', level: 80, category: 'database', icon: '🍃' },
-          { name: 'MySQL', level: 78, category: 'database', icon: '🐬' },
+          { name: 'Node.js', level: 75, category: 'backend', icon: '🟢' },
+          { name: 'Express', level: 62, category: 'backend', icon: '🚀' },
+          { name: 'MongoDB', level: 60, category: 'database', icon: '🍃' },
+          { name: 'MySQL', level: 63, category: 'database', icon: '🐬' },
           { name: 'TypeScript', level: 82, category: 'language', icon: '🔷' }
         ],
         color: 'from-blue-400 to-indigo-600',
@@ -107,7 +107,7 @@ export const aboutEn: AboutPageData = {
         title: 'Tooling',
         description: 'Ecosystem and workflow',
         skills: [
-          { name: 'Git', level: 90, category: 'tools', icon: '📦' },
+          { name: 'Git', level: 70, category: 'tools', icon: '📦' },
           { name: 'Postman', level: 85, category: 'tools', icon: '📫' },
           { name: 'REST', level: 85, category: 'api', icon: '🔌' }
         ],
@@ -118,9 +118,9 @@ export const aboutEn: AboutPageData = {
         title: 'Design & UX',
         description: 'Function with clear aesthetics',
         skills: [
-          { name: 'Figma', level: 80, category: 'design', icon: '🎨' },
-          { name: 'UI/UX', level: 82, category: 'design', icon: '💡' },
-          { name: 'Blender', level: 78, category: 'design', icon: '🧊' }
+          { name: 'Figma', level: 55, category: 'design', icon: '🎨' },
+          { name: 'UI/UX', level: 72, category: 'design', icon: '💡' },
+          { name: 'Blender', level: 55, category: 'design', icon: '🧊' }
         ],
         color: 'from-purple-400 to-pink-600',
         accent: 'purple'
@@ -130,7 +130,7 @@ export const aboutEn: AboutPageData = {
   timeline: {
     headerTitle: 'Journey Timeline',
     headerSubtitle:
-      'A path of learning and building with a focus on real impact',
+      'Explore my journey',
     items: [
       {
         id: 'interest-2023',

@@ -257,6 +257,16 @@ export const HeroAurora: React.FC<HeroAuroraProps> = ({
       <div 
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30"
+        onClick={() => {
+          // Hacer scroll suave a la siguiente sección
+          const nextSection = containerRef.current?.nextElementSibling as HTMLElement;
+          if (nextSection) {
+            nextSection.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }}
       >
         <div className="flex flex-col items-center text-gray-400 group cursor-pointer">
           <span className="text-sm mb-4 tracking-[0.3em] font-light uppercase transition-all duration-300 group-hover:text-[#0EF0B5] group-hover:tracking-[0.4em]">
