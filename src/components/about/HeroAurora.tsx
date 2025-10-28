@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { AuroraShaderMaterial } from '../shaders/AuroraShaderMaterial';
+import { AuroraShaderMaterial } from './shaders/AuroraShaderMaterial';
 gsap.registerPlugin(ScrollTrigger);
 
 interface AuroraPlaneProps {
@@ -42,7 +42,7 @@ function AuroraPlane({ mousePosition, scrollProgress }: AuroraPlaneProps) {
   return (
     <mesh scale={[viewport.width * 4.0, viewport.height * 4.0, 1]} position={[0, 0, -1]}>
       <planeGeometry args={[1, 1, 128, 128]} />
-      <auroraShaderMaterial ref={materialRef} />
+      <primitive object={new AuroraShaderMaterial()} ref={materialRef} />
     </mesh>
   );
 }

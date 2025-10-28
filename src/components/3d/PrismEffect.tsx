@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { MeshTransmissionMaterial, Environment } from '@react-three/drei';
 import { Mesh, Group, Vector3, MathUtils } from 'three';

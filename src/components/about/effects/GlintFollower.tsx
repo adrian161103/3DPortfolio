@@ -7,7 +7,6 @@ interface GlintFollowerProps {
 }
 
 export const GlintFollower: React.FC<GlintFollowerProps> = ({ 
-  intensity = 1, 
   disabled = false 
 }) => {
   const cursorRef = useRef<HTMLDivElement>(null);
