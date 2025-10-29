@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "./lib/gsap";
 import Hero from "./components/sections/Hero";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
-import BlackHole from "./components/ui/BlackHole";
 
 function App() {
+  const navigate = useNavigate();
   const [overlayVisible, setOverlayVisible] = useState(true);
-  const [currentView, setCurrentView] = useState<"hero" | "command">("hero");
 
   useEffect(() => {
     // 🔦 Quitamos el overlay después de unos segundos (cuando termina la animación de luces)
@@ -29,19 +29,19 @@ function App() {
     const handleConsoleMode = (e: Event) => {
       const customEvent = e as CustomEvent<boolean>;
       if (customEvent.detail) {
-        setCurrentView("command");
+        navigate("/blackhole");
       }
     };
 
     const handleMonitorView = () => {
-      setCurrentView("hero");
+      navigate("/");
     };
 
     const handleWindowsMode = (e: Event) => {
       const customEvent = e as CustomEvent<boolean>;
       if (!customEvent.detail) {
         // Si se cierra Windows, volver a la vista hero
-        setCurrentView("hero");
+        navigate("/");
       }
     };
 
@@ -54,25 +54,17 @@ function App() {
       window.removeEventListener("setMonitorViewMode", handleMonitorView);
       window.removeEventListener("setWindowsMode", handleWindowsMode);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="h-screen w-screen relative">
       {/* LanguageSwitcher solo se muestra en la vista hero */}
-      {currentView === "hero" && (
-        <div className="absolute top-2 left-2 z-30">
-          <LanguageSwitcher />
-        </div>
-      )}
+      <div className="absolute top-2 left-2 z-30">
+        <LanguageSwitcher />
+      </div>
       
-      {/* Mostrar vista condicionalmente */}
-      {currentView === "hero" ? (
-        <Hero />
-      ) : (
-        <div className="h-full w-full flex items-center justify-center">
-          <BlackHole />
-        </div>
-      )}
+      {/* Mostrar vista hero */}
+      <Hero />
       
       {/* Overlay negro al inicio - z-index mayor que todo para cubrirlo completamente */}
       {overlayVisible && (

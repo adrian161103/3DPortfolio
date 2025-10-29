@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import About from '../../pages/About';
-import Projects from '../../pages/Projects';
-import Contact from '../../pages/Contact';
 
 /**
  * Componente que muestra una explosión blanca ovalada que se expande desde el centro
@@ -10,7 +8,7 @@ import Contact from '../../pages/Contact';
 const AfterBlackHole: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const explosionRef = useRef<HTMLDivElement>(null);
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const navigate = useNavigate();
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   
   // Leer la sección seleccionada desde localStorage al montar el componente
@@ -67,127 +65,60 @@ const AfterBlackHole: React.FC = () => {
       duration: 0.5,
       ease: "power2.out"
     })
-    // Mostrar el texto
-    .fromTo('.texto-teesteo', 
-      {
-        opacity: 0,
-        scale: 0.8,
-        filter: 'blur(10px)'
-      }, 
-      {
-        opacity: 1,
-        scale: 1,
-        filter: 'blur(0px)',
-        duration: 0.8,
-        ease: "power2.out",
-        onComplete: () => {
-          console.log('Animación de texto completada');
-          // Mostrar el contenido inmediatamente cuando termine la animación del texto
-          setAnimationComplete(true);
-          
-          // Después de que termine la animación principal, crear una nueva animación
-          // para la transición del fondo sin afectar la animación original
-          if (containerRef.current) {
-            // Primero remover los elementos de la explosión para que solo quede el fondo blanco
-            const explosion = containerRef.current.querySelector('.rounded-full');
-            if (explosion) {
-              (explosion as HTMLElement).style.display = 'none';
-            }
-            
-            gsap.to(containerRef.current, {
-              backgroundColor: 'rgba(255, 255, 255, 0)', // Hacer el fondo transparente
-              duration: 2.5,
-              ease: "power2.inOut",
-              delay: 0.2,
-              onComplete: () => {
-                // Solo ocultar la capa cuando la transición esté completa
-                if (containerRef.current) {
-                  containerRef.current.style.display = 'none';
-                }
-              }
-            });
-          }
+    // Mantener el blanco y navegar a la ruta correspondiente
+    .call(() => {
+      console.log('Animación de explosión completada, navegando a:', selectedSection);
+      // Remover los elementos de la explosión para que solo quede el fondo blanco
+      if (explosionRef.current) {
+        explosionRef.current.style.display = 'none';
+      }
+      
+      // Navegar a la ruta correspondiente después de un pequeño delay
+      setTimeout(() => {
+        switch (selectedSection) {
+          case 'about':
+            navigate('/about');
+            break;
+          case 'projects':
+            navigate('/projects');
+            break;
+          case 'contact':
+            navigate('/contact');
+            break;
+          default:
+            navigate('/');
         }
-      }, 
-      "-=0.5" // Empezar un poco antes de que termine la transición de color
-    );
+      }, 200);
+    });
     
     // Limpieza al desmontar
     return () => {
       tl.kill();
     };
-  }, [selectedSection]);
+  }, [selectedSection, navigate]);
   
-  // Renderizar el componente correspondiente según la sección seleccionada
-  const renderSelectedComponent = () => {
-    if (!animationComplete) return null;
-    
-    // Aplicamos la clase texto-teesteo a todos para que se beneficien de la animación GSAP
-    switch (selectedSection) {
-      case 'about':
-        return (
-          <div className="texto-teesteo w-full min-h-screen cursor-default">
-            <About />
-          </div>
-        );
-      case 'projects':
-        return (
-          <div className="texto-teesteo w-full min-h-screen cursor-default">
-            <Projects />
-          </div>
-        );
-      case 'contact':
-        return (
-          <div className="texto-teesteo w-full min-h-screen cursor-default">
-            <Contact />
-          </div>
-        );
-      default:
-        return (
-          <div className="texto-teesteo text-white text-center">
-            <h1 className="text-4xl font-bold mb-4">¡Bienvenido!</h1>
-            <p className="text-xl">Usa la consola para navegar por el portfolio.</p>
-          </div>
-        );
-    }
-  };
+
   
   return (
-    <div style={{ 
-      position: 'relative', 
-      width: '100%', 
-      minHeight: '100vh',
-      overflow: 'visible' 
-    }}>
-      {/* Capa de contenido: se muestra solo al completar la animación */}
-      {animationComplete && (
-        <div className="relative z-40 w-full min-h-screen">
-          {renderSelectedComponent()}
-        </div>
-      )}
-      
-      {/* Capa de animación (controla la explosión y la animación blanca) */}
+    <div 
+      ref={containerRef} 
+      className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
+      style={{ 
+        backgroundColor: 'rgba(0, 0, 0, 1)', // Comienza negro
+        overflow: 'hidden' // Asegurar que no hay scroll en la capa de animación
+      }}
+    >
+      {/* Explosión blanca ovalada */}
       <div 
-        ref={containerRef} 
-        className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
-        style={{ 
-          backgroundColor: 'rgba(0, 0, 0, 1)', // Comienza negro
-          pointerEvents: animationComplete ? 'none' : 'auto', // Evita bloquear interacciones después de la animación
-          overflow: 'hidden' // Asegurar que no hay scroll en la capa de animación
+        ref={explosionRef} 
+        className="rounded-full bg-white flex items-center justify-center"
+        style={{
+          width: '200px',
+          height: '150px', 
+          filter: 'blur(5px)',
+          boxShadow: '0 0 40px 20px rgba(255, 255, 255, 1)',
         }}
-      >
-        {/* Explosión blanca ovalada */}
-        <div 
-          ref={explosionRef} 
-          className="rounded-full bg-white flex items-center justify-center"
-          style={{
-            width: '200px',
-            height: '150px', 
-            filter: 'blur(5px)',
-            boxShadow: '0 0 40px 20px rgba(255, 255, 255, 1)',
-          }}
-        />
-      </div>
+      />
     </div>
   );
 };

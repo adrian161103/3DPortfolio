@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { gsap } from 'gsap';
 import { 
   HeroAurora, 
   Bio, 
@@ -26,15 +27,55 @@ const About: React.FC = () => {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const data = language === 'es' ? aboutEs : aboutEn;
+  const whiteOverlayRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    // Sin efectos de cursor personalizado
+    // Crear animación de entrada desde blanco con timeout para asegurar que el DOM esté listo
+    const timer = setTimeout(() => {
+      if (whiteOverlayRef.current) {
+        console.log('About: Iniciando animación de transición desde blanco');
+        
+        // Asegurar que el overlay esté visible inicialmente
+        gsap.set(whiteOverlayRef.current, {
+          opacity: 1,
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+          display: 'block'
+        });
+        
+        // Desvanecer el overlay blanco después de un pequeño delay
+        gsap.to(whiteOverlayRef.current, {
+          opacity: 0,
+          duration: 3,
+          ease: "power2.out",
+          delay: 0.5,
+          onComplete: () => {
+            console.log('About: Transición desde blanco completada');
+            if (whiteOverlayRef.current) {
+              whiteOverlayRef.current.style.display = 'none';
+            }
+          }
+        });
+      }
+    }, 100);
+    
     return () => {
-      // Cleanup si es necesario
+      clearTimeout(timer);
     };
   }, []);
 
   return (
     <div className="min-h-screen w-full bg-black overflow-x-hidden overscroll-none">
+      {/* Overlay blanco para transición desde AfterBlackHole */}
+      <div 
+        ref={whiteOverlayRef}
+        className="fixed inset-0 z-50 bg-white"
+        style={{ 
+          opacity: 1,
+          display: 'block',
+          pointerEvents: 'none'
+        }}
+      />
+      
       {/* Sistema de partículas de fondo */}
       <div className="particle-system">
         {Array.from({ length: 30 }).map((_, i) => (
