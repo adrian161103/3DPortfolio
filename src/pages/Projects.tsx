@@ -17,6 +17,7 @@ const Projects: React.FC = () => {
   // Obtener los datos según el idioma
   const { language } = useLanguage();
   const projectsData: ProjectsData = language === "es" ? projectsEs : projectsEn;
+  const whiteOverlayRef = useRef<HTMLDivElement>(null);
   
   // Referencias para elementos DOM
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,30 @@ const Projects: React.FC = () => {
   useEffect(() => {
     if (isInitialized) return;
     
-    // Simulamos un tiempo de carga
+    // Crear animación de entrada desde blanco
+    if (whiteOverlayRef.current) {
+      // Comenzar con el overlay blanco visible
+      gsap.set(whiteOverlayRef.current, {
+        opacity: 1,
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        display: 'block'
+      });
+      
+      // Desvanecer el overlay blanco después de un pequeño delay
+      gsap.to(whiteOverlayRef.current, {
+        opacity: 0,
+        duration: 3,
+        ease: "power2.out",
+        delay: 0.3,
+        onComplete: () => {
+          if (whiteOverlayRef.current) {
+            whiteOverlayRef.current.style.display = 'none';
+          }
+        }
+      });
+    }
+    
+    // Ejecutar animaciones con un delay seguro para el DOM
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
       setIsInitialized(true);
@@ -298,6 +322,17 @@ const Projects: React.FC = () => {
 
   return (
     <>
+      {/* Overlay blanco para transición desde AfterBlackHole */}
+      <div 
+        ref={whiteOverlayRef}
+        className="fixed inset-0 z-[55] bg-white"
+        style={{ 
+          opacity: 1,
+          display: 'block',
+          pointerEvents: 'none'
+        }}
+      />
+      
       {/* Pantalla de carga */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black z-50">
@@ -580,7 +615,7 @@ const Projects: React.FC = () => {
                                 >
                                   <div 
                                     className="project-card-3d absolute inset-0 bg-gradient-to-b from-cyan-900/20 to-cyan-950/50
-                                            border-t border-b border-cyan-500/20 p-4 hologram-effect float-card"
+                                            border-t border-b border-cyan-500/20 p-4 projects-hologram-effect float-card"
                                   >
                                     {/* Imagen del proyecto con efecto holográfico */}
                                     <div className="absolute top-0 right-0 w-1/3 h-full overflow-hidden">

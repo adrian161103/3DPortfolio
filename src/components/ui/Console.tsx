@@ -36,10 +36,10 @@ function ConsoleContent() {
   }, []);
   
   const commands = useMemo(() => [
-    t.commands.about,
-    t.commands.contact,
-    t.commands.projects,
     t.commands.windows,
+    t.commands.about,
+    t.commands.projects,
+    t.commands.contact,
   ], [t]);
 
   const defaultLines = useMemo(() => [

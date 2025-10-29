@@ -36,7 +36,7 @@ export const projectsEs: ProjectsData = {
       url: 'https://github.com/adrian161103/3DPortfolio',
       description: 'Portfolio interactivo en 3D desarrollado con React Three Fiber y Three.js. Presenta animaciones fluidas con GSAP y modelos tridimensionales para una experiencia inmersiva.',
       technologies: ['React', 'Three.js', 'R3F', 'GSAP', 'TypeScript', 'tailwind', 'Vercel'],
-      status: 'completed'
+      status: 'in-progress'
     },
     { 
       id: "adrianweb", 

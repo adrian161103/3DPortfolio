@@ -1,11 +1,10 @@
 @import "./Consolte.css";
 @import "./Desktop.css";
 @import "./RetroWindow.css";
-@import './ProjectsAnimation.css';
 @import './HamburgerHeader.css';
 @import './HamburgerDynamic.css';
 @import './CinematicEffects.css';
-
+@import "./ProjectsAnimation.css";
 /* ========================================
    OCULTAR SCROLL GLOBALMENTE
    ======================================== */

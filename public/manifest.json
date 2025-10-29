@@ -1,0 +1,24 @@
+{
+  "name": "Adrian - Developer",
+  "short_name": "Adrian Portfolio",
+  "description": "Portfolio interactivo 3D, desarrollado con React, Three.js, tailwind y gsap.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00ff66",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/adrian-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/adrian-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}

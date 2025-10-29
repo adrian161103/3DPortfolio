@@ -10,20 +10,64 @@ import { useLanguage } from '../context/LanguageContext';
  */
 const Contact: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const whiteOverlayRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
 
   useGSAP(() => {
+    // Crear animación de entrada desde blanco con timeout para asegurar que el DOM esté listo
+    const timer = setTimeout(() => {
+      if (whiteOverlayRef.current) {
+        console.log('Contact: Iniciando animación de transición desde blanco');
+        
+        // Asegurar que el overlay esté visible inicialmente
+        gsap.set(whiteOverlayRef.current, {
+          opacity: 1,
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+          display: 'block'
+        });
+        
+        // Desvanecer el overlay blanco después de un pequeño delay
+        gsap.to(whiteOverlayRef.current, {
+          opacity: 0,
+          duration: 3,
+          ease: "power2.out",
+          delay: 0.5,
+          onComplete: () => {
+            console.log('Contact: Transición desde blanco completada');
+            if (whiteOverlayRef.current) {
+              whiteOverlayRef.current.style.display = 'none';
+            }
+          }
+        });
+      }
+    }, 100);
+    
     if (contentRef.current) {
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 0.5 }
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 0.8 }
       );
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, { scope: contentRef });
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden">
+      {/* Overlay blanco para transición desde AfterBlackHole */}
+      <div 
+        ref={whiteOverlayRef}
+        className="fixed inset-0 z-50 bg-white"
+        style={{ 
+          opacity: 1,
+          display: 'block',
+          pointerEvents: 'none'
+        }}
+      />
+      
       {/* Canvas principal para el prisma - ocupa toda la pantalla */}
       <div className="absolute inset-0">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
