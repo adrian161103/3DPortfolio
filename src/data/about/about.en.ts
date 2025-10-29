@@ -17,12 +17,11 @@ export const aboutEn: AboutPageData = {
   },
   bio: {
     kicker: 'About me / Professional',
-    heading: ['I\'m Adrián Alejos García,', ' Full Stack Web Developer', ' and Systems student (UTN)'],
+    heading: ['I\'m Adrián Alejos García,', ' Full Stack Web Developer'],
     paragraphs: [
-      'I work with React, TypeScript, Tailwind, Node.js and MongoDB to build modern, scalable interfaces with a focus on performance and user experience.',
-        'I\'m currently complementing my training with Software Development (IFTS No.29), strengthening fundamentals and good practices.',
-      'I develop personal projects—such as a website in the psychology field—blending design and technology to build trust and closeness.',
-      'I\'m passionate about innovation, optimization, and creating digital products with real impact.'
+      'I\'m a Full-Stack Web Developer focused on building modern, performant, and accessible interfaces. I work with React and TypeScript, Tailwind CSS, and animations (GSAP/Framer Motion) to bring products to life that inspire trust and closeness, maintaining clean code practices (ESLint/Prettier, GitFlow) and constant collaboration with product, design, and backend teams.',
+      'I have experience creating SEO/Core Web Vitals-optimized landing pages, e-commerce platforms, and internal dashboards by integrating REST APIs, authentication, and databases (MongoDB/MySQL), and deploying on Vercel/Render. I also work with immersive 3D experiences using Three.js, React Three Fiber, and Blender for asset modeling.',
+      'I\'m currently continuing my education in Systems Engineering (UTN) and Software Development (IFTS), while contributing to real projects with a focus on measurable results and experiences that generate positive impact for users.'
     ],
     columns: [
       {
