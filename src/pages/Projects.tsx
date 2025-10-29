@@ -615,7 +615,7 @@ const Projects: React.FC = () => {
                                 >
                                   <div 
                                     className="project-card-3d absolute inset-0 bg-gradient-to-b from-cyan-900/20 to-cyan-950/50
-                                            border-t border-b border-cyan-500/20 p-4 hologram-effect float-card"
+                                            border-t border-b border-cyan-500/20 p-4 projects-hologram-effect float-card"
                                   >
                                     {/* Imagen del proyecto con efecto holográfico */}
                                     <div className="absolute top-0 right-0 w-1/3 h-full overflow-hidden">
