@@ -82,6 +82,9 @@ export default function RetroWindows() {
   const [windowZ, setWindowZ] = useState<Partial<Record<AppId, number>>>({});
   const [activeWindow, setActiveWindow] = useState<AppId | null>(null);
   const [openedOrder, setOpenedOrder] = useState<AppId[]>([]);
+  const [maximizedWindows, setMaximizedWindows] = useState<Partial<Record<AppId, boolean>>>({});
+  const [lastTap, setLastTap] = useState<{ id: string; time: number } | null>(null);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   const bringToFront = (id: AppId) => {
     setWindowZ((old) => {
@@ -93,6 +96,7 @@ export default function RetroWindows() {
   };
 
   const menuRef = useRef<HTMLDivElement>(null);
+  const startBtnRef = useRef<HTMLDivElement>(null);
 
   // Actualizar títulos de ventanas cuando cambie el idioma
   useEffect(() => {
@@ -107,10 +111,46 @@ export default function RetroWindows() {
     });
   }, [windowTitles]);
 
-  // cerrar menú si hago click fuera
+  // Actualizar reloj cada minuto
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+      });
+      setCurrentTime(timeString);
+    };
+
+    // Actualizar inmediatamente
+    updateTime();
+    
+    // Calcular cuánto tiempo falta para el próximo minuto
+    const now = new Date();
+    const secondsUntilNextMinute = 60 - now.getSeconds();
+    
+    // Primer timeout para sincronizar con el cambio de minuto
+    const initialTimeout = setTimeout(() => {
+      updateTime();
+      // Luego actualizar cada minuto exacto
+      const interval = setInterval(updateTime, 60000);
+      
+      return () => clearInterval(interval);
+    }, secondsUntilNextMinute * 1000);
+    
+    return () => clearTimeout(initialTimeout);
+  }, []);
+
+  // cerrar menú 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(e.target as Node) &&
+        startBtnRef.current &&
+        !startBtnRef.current.contains(e.target as Node)
+      ) {
         setShowStartMenu(false);
       }
     };
@@ -129,6 +169,14 @@ export default function RetroWindows() {
       prev.includes(id) ? prev : [...prev, id] // agrega al final si no estaba
     );
 
+    // Si es Internet Explorer, maximizarlo automáticamente
+    if (id === "internet") {
+      setMaximizedWindows((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
+    }
+
     bringToFront(id);
     setShowStartMenu(false);
   };
@@ -138,6 +186,15 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], open: false, minimized: false },
     }));
+    
+    // Si es Internet Explorer, resetear el estado de maximización
+    if (id === "internet") {
+      setMaximizedWindows((prev) => ({
+        ...prev,
+        [id]: false,
+      }));
+    }
+    
     setActiveWindow(null);
   };
 
@@ -146,6 +203,8 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], minimized: true },
     }));
+    
+
     if (activeWindow === id) setActiveWindow(null);
   };
 
@@ -163,6 +222,15 @@ export default function RetroWindows() {
       // Restaurar si está minimizada
       if (win.minimized) {
         bringToFront(id);
+        
+        // Si es Internet Explorer, asegurar que se mantenga maximizado
+        if (id === "internet") {
+          setMaximizedWindows((prevMax) => ({
+            ...prevMax,
+            [id]: true,
+          }));
+        }
+        
         return {
           ...prev,
           [id]: { ...win, minimized: false, open: true },
@@ -185,6 +253,39 @@ export default function RetroWindows() {
 
   const handleSelect = (icon: string) => setSelectedIcon(icon);
 
+  // Función para manejar doble tap en móviles
+  const handleDoubleTap = (id: string, action?: () => void) => {
+    if (!action) return;
+
+    const now = Date.now();
+    const DOUBLE_TAP_DELAY = 300; // 300ms para considerar doble tap
+
+    if (lastTap && lastTap.id === id && now - lastTap.time < DOUBLE_TAP_DELAY) {
+      // Es un doble tap
+      action();
+      setLastTap(null);
+    } else {
+      // Es el primer tap
+      setLastTap({ id, time: now });
+      // Limpiar el estado después del delay para evitar taps tardíos
+      setTimeout(() => {
+        setLastTap((prev) => {
+          if (prev && prev.id === id && prev.time === now) {
+            return null;
+          }
+          return prev;
+        });
+      }, DOUBLE_TAP_DELAY);
+    }
+  };
+
+  // Función para manejar eventos táctiles
+  const handleTouchEnd = (e: React.TouchEvent, id: string, dbl?: () => void) => {
+    e.preventDefault();
+    handleSelect(id);
+    handleDoubleTap(id, dbl);
+  };
+
   return (
     <div
       className="retro-desktop"
@@ -198,8 +299,10 @@ export default function RetroWindows() {
       <div className="taskbar">
         {/* Botón inicio */}
         <div
+          ref={startBtnRef}
           className="start-btn flex items-center gap-2"
           onClick={() => setShowStartMenu((prev) => !prev)}
+          style={{ touchAction: 'manipulation' }}
         >
           <img
             src="/icons/windows.png"
@@ -238,7 +341,7 @@ export default function RetroWindows() {
         </div>
 
         {/* Reloj */}
-        <div className="taskbar-clock text-2xl">12:00</div>
+        <div className="taskbar-clock text-2xl">{currentTime}</div>
       </div>
 
       {/* Menú de Inicio */}
@@ -277,12 +380,23 @@ export default function RetroWindows() {
         ].map(({ id, icon, label, dbl }) => (
           <div
             key={id}
-            className="flex flex-col items-center w-20 cursor-pointer"
+            className="flex flex-col items-center w-20 cursor-pointer touch-manipulation select-none"
+            style={{ 
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              KhtmlUserSelect: 'none',
+              MozUserSelect: 'none',
+              msUserSelect: 'none',
+              userSelect: 'none'
+            }}
             onClick={(e) => {
               e.stopPropagation();
               handleSelect(id);
+              // También manejar doble tap en móviles
+              handleDoubleTap(id, dbl);
             }}
             onDoubleClick={dbl}
+            onTouchEnd={(e) => handleTouchEnd(e, id, dbl)}
           >
             <img src={icon} alt={label} className="w-16 h-16" />
             <span
@@ -372,6 +486,10 @@ export default function RetroWindows() {
           onMinimize={() => minimizeWindow("internet")}
           zIndex={windowZ.internet || 10}
           onFocus={() => bringToFront("internet")}
+          isMaximized={maximizedWindows.internet || false}
+          onMaximizeChange={(maximized) => 
+            setMaximizedWindows((prev) => ({ ...prev, internet: maximized }))
+          }
         >
           <RetroBrowser />
         </RetroWindow>

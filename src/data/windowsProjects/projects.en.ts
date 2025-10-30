@@ -16,6 +16,9 @@ export const projectsEn: ProjectsData = {
         "Interactive 3D portfolio developed with React Three Fiber and Three.js. Features smooth animations with GSAP and three-dimensional models for an immersive experience.",
       tags: ["React", "Three.js", "R3F", "GSAP", "TypeScript", "tailwind", "Vercel"],
       demo: "https://github.com/adrian161103/3DPortfolio",
+      image: "/projects/3dweb.png",
+      imageAlt: "Screenshot of 3dweb portfolio",
+
     },
     {
       id: "adrianweb",

@@ -61,6 +61,7 @@ function ConsoleContent() {
   const [corrupting, setCorrupting] = useState(false);
 
   const consoleRef = useRef<HTMLDivElement>(null); // 👈 referencia al contenedor
+  const hiddenInputRef = useRef<HTMLInputElement>(null); 
 
   // � Actualizar líneas cuando cambie el idioma
   useEffect(() => {
@@ -220,8 +221,35 @@ if (cleanCmd === t.commands.windows) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [active, currentLine, lines, executeCommand]);
 
+  // Manejo del input invisible para móviles
+  const handleHiddenInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentLine(e.target.value);
+  };
+
+  const handleHiddenInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (currentLine.trim().length > 0) {
+        executeCommand(currentLine.trim());
+      }
+      // Limpiar el input invisible después del comando
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.value = "";
+      }
+    }
+  };
+
+  // Detectar si es dispositivo móvil
+  const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent) || 
+                   ('ontouchstart' in window) || 
+                   (window.innerWidth <= 768);
+
   const handleActivate = () => {
     setActive(true);
+    
+    // En móviles, enfocar el input invisible para activar el teclado
+    if (isMobile && hiddenInputRef.current) {
+      hiddenInputRef.current.focus();
+    }
   };
 
   // Estado para controlar si la aplicación ha terminado de cargar
@@ -361,6 +389,29 @@ if (cleanCmd === t.commands.windows) {
             <span className="clean-line">&gt; {currentLine}</span>
             {cursorVisible && <span className="cursor">█</span>}
           </div>
+        )}
+
+        {/* Input invisible para móviles - activa el teclado virtual */}
+        {isMobile && active && (
+          <input
+            ref={hiddenInputRef}
+            type="text"
+            value={currentLine}
+            onChange={handleHiddenInputChange}
+            onKeyDown={handleHiddenInputKeyDown}
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              top: '-9999px',
+              opacity: 0,
+              pointerEvents: 'none',
+              fontSize: '16px' // Evita zoom en iOS
+            }}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+          />
         )}
       </div>
 

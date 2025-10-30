@@ -289,3 +289,282 @@
   color: #000080;
   font-style: italic;
 }
+
+/* === MEJORAS PARA DISPOSITIVOS TÁCTILES === */
+@media (hover: none) and (pointer: coarse) {
+  /* Estilos específicos para dispositivos táctiles */
+  .retro-window-controls button {
+    min-height: 44px; /* Tamaño mínimo recomendado para toques */
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  .retro-window-titlebar {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  /* Evitar zoom en doble tap */
+  .retro-window-titlebar,
+  .retro-window-controls button {
+    touch-action: manipulation;
+  }
+}
+
+/* === RESPONSIVE DESIGN PARA IE === */
+/* Tablet y móviles grandes (768px y menos) */
+@media (max-width: 768px) {
+  /* Aumentar tipografía general para mejor legibilidad */
+  .ie-home-page {
+    padding: 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.8rem;
+  }
+  
+  .ie-section-title {
+    font-size: 2.2rem;
+  }
+  
+  .ie-nav-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .ie-nav-card {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.8rem;
+    min-width: 2.8rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 2rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.6rem;
+  }
+  
+  /* Toolbar responsive */
+  .win98-bar {
+    flex-wrap: wrap;
+    min-height: 52px;
+    font-size: 1.5rem;
+    gap: 2px;
+    justify-content: flex-start;
+  }
+  
+  .win98-button {
+    min-height: 48px;
+    min-width: 48px;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.6rem;
+    flex-shrink: 0;
+  }
+  
+  .retro-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  
+  /* Separadores más visibles */
+  .win98-separator {
+    height: 60%;
+    margin: 0 0.3rem;
+  }
+  
+  /* Status bar */
+  .win98-status {
+    font-size: 1.4rem;
+  }
+}
+
+/* Móviles medianos (600px y menos) */
+@media (max-width: 600px) {
+  .ie-home-page {
+    padding: 1rem;
+  }
+  
+  .ie-home-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.4rem;
+  }
+  
+  .ie-section-title {
+    font-size: 2rem;
+  }
+  
+  .ie-home-section {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.5rem;
+    min-width: 2.5rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 1.8rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.5rem;
+  }
+  
+  /* Toolbar más grande para este breakpoint */
+  .win98-bar {
+    padding: 0.3rem;
+    gap: 3px;
+  }
+  
+  .win98-button {
+    min-height: 46px;
+    min-width: 46px;
+    font-size: 1.1rem;
+    padding: 0.35rem 0.5rem;
+  }
+  
+  .retro-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* Móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+  .ie-home-page {
+    padding: 0.8rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.2rem;
+  }
+  
+  .ie-section-title {
+    font-size: 1.8rem;
+  }
+  
+  .ie-nav-card {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.2rem;
+    min-width: 2.2rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 1.6rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.4rem;
+  }
+  
+  /* Toolbar muy compacto */
+  .win98-bar {
+    padding: 0.25rem;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .win98-bar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .win98-button {
+    font-size: 0;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0.3rem;
+    flex-shrink: 0;
+  }
+  
+  .win98-button .retro-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  
+  /* Ocultar texto en botones para móviles pequeños */
+  .win98-button {
+    white-space: nowrap;
+  }
+  
+  /* Address bar más compacto */
+  .win98-bar input {
+    font-size: 1.2rem;
+  }
+  
+  /* Status bar responsive */
+  .win98-status {
+    font-size: 1.2rem;
+    height: auto;
+    min-height: 44px;
+    flex-wrap: wrap;
+  }
+}
+
+/* === RESPONSIVE TOOLBAR ESPECÍFICO === */
+@media (max-width: 480px) {
+  /* Toolbar horizontal scrollable sin wrap en móviles pequeños */
+  .win98-bar.flex {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .win98-button {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+/* === ESTILOS ADICIONALES PARA INPUT Y PROGRESS === */
+.win98-input {
+  background: white;
+  border: 4px inset #c0c0c0;
+  padding: 0.5rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: black;
+}
+
+.win98-progress {
+  height: 1.5rem;
+  background: #c0c0c0;
+  border: 4px inset #808080;
+  position: relative;
+  overflow: hidden;
+}
+
+.win98-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #000080 0%, #0000ff 100%);
+  transition: width 0.3s ease;
+}

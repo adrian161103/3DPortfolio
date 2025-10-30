@@ -91,7 +91,7 @@ export const CAMERA_VIEWS: Record<string, CameraViewConfig> = {
   windowsMobileNoZoom: {
     position: { x: 0, y: 2, z: 2 },
     target: { x: 0, y: 1, z: 0 },
-    fov: 40,
+    fov: 30,
     duration: 2,
     fovDuration: 1.5,
     ease: "power2.inOut",

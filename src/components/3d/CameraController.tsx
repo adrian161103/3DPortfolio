@@ -17,12 +17,45 @@ export default function CameraController() {
 
   const [raycaster] = useState(() => new THREE.Raycaster());
   const [mouse] = useState(() => new THREE.Vector2());
+  const [isWindowsMode, setIsWindowsMode] = useState(false);
+
+  // Función para actualizar las restricciones de OrbitControls
+  const updateControlsConstraints = (windowsMode: boolean) => {
+    if (!controlsRef.current) return;
+
+    if (windowsMode) {
+      // En modo Windows: restringir movimiento al mínimo
+      controlsRef.current.minAzimuthAngle = -0; // Casi sin movimiento horizontal
+      controlsRef.current.maxAzimuthAngle = 0;
+      controlsRef.current.minPolarAngle = Math.PI / 2 - 0; // Casi sin movimiento vertical
+      controlsRef.current.maxPolarAngle = Math.PI / 2 + 0;
+      
+      // Bloquear movimiento hacia adelante/atrás con una distancia fija apropiada
+      // Usamos la distancia de la vista Windows (aproximadamente 2.7 unidades)
+      const windowsDistance = 3.3; //distancia 3.3 para que encuandre mejor ya que los valores se modificaron
+      controlsRef.current.minDistance = windowsDistance - 0;
+      controlsRef.current.maxDistance = windowsDistance + 0;
+    } else {
+      // Modo normal: permitir movimiento limitado
+      controlsRef.current.minAzimuthAngle = -Math.PI / 2; // -90 grados
+      controlsRef.current.maxAzimuthAngle = Math.PI / 2;  // +90 grados
+      controlsRef.current.minPolarAngle = Math.PI / 4;    // 45 grados desde arriba
+      controlsRef.current.maxPolarAngle = Math.PI * 3/4;  // 135 grados
+      
+      // Restaurar límites de distancia normales
+      controlsRef.current.minDistance = 1;  // Distancia mínima razonable
+      controlsRef.current.maxDistance = 10; // Distancia máxima razonable
+    }
+  };
 
   // === Windows mode listener ===
   useEffect(() => {
     const handleWindowsMode = (e: Event) => {
       const custom = e as CustomEvent<boolean>;
       const isWindows = custom.detail;
+
+      // Actualizar estado local
+      setIsWindowsMode(isWindows);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).windowsModeActive = isWindows;
@@ -54,11 +87,25 @@ export default function CameraController() {
         // Restaurar POV normal
         animateCameraToView(perspectiveCamera, controlsRef.current, CAMERA_VIEWS.desktop);
       }
+
+      // Actualizar restricciones de controles después de un pequeño delay
+      // para asegurar que la animación haya comenzado
+      setTimeout(() => {
+        updateControlsConstraints(isWindows);
+      }, 100);
     };
 
     window.addEventListener("setWindowsMode", handleWindowsMode);
     return () => window.removeEventListener("setWindowsMode", handleWindowsMode);
   }, [perspectiveCamera]);
+
+  // === Inicializar restricciones de controles ===
+  useEffect(() => {
+    if (controlsRef.current) {
+      // Aplicar restricciones iniciales
+      updateControlsConstraints(isWindowsMode);
+    }
+  }, [isWindowsMode]);
 
   // === Console mode listener ===
   useEffect(() => {
@@ -131,10 +178,7 @@ export default function CameraController() {
         ref={controlsRef} 
         enableZoom={false} 
         enablePan={false}
-        minAzimuthAngle={-Math.PI / 2} // -90 grados
-        maxAzimuthAngle={Math.PI / 2}  // +90 grados
-        minPolarAngle={Math.PI / 4}    // 45 grados desde arriba
-        maxPolarAngle={Math.PI * 3/4}  // 135 grados (no completamente abajo)
+        // Las restricciones de ángulos se manejan dinámicamente en updateControlsConstraints
       />
       <TrashController controlsRef={controlsRef} />
     </>
