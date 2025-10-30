@@ -41,8 +41,8 @@ export default function RetroWindow({
   useEffect(() => {
     const updateBounds = () => {
       const taskbarHeight = 55;
-      const windowWidth = 1500;
-      const windowHeight = 800;
+      const windowWidth = Math.min(1500, window.innerWidth * 0.95);
+      const windowHeight = Math.min(800, window.innerHeight * 0.85);
       
       setBounds({
         left: 0,
@@ -75,8 +75,8 @@ export default function RetroWindow({
       style={{
         zIndex,
         position: "absolute",
-        width: isMaximized ? "100%" : "1500px",
-        height: isMaximized ? undefined : "800px",
+        width: isMaximized ? "100%" : "min(1500px, 95vw)",
+        height: isMaximized ? undefined : "min(800px, 85vh)",
         top: isMaximized ? 0 : undefined,
         left: isMaximized ? 0 : undefined,
         right: isMaximized ? 0 : undefined,

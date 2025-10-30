@@ -317,3 +317,204 @@
     touch-action: manipulation;
   }
 }
+
+/* === RESPONSIVE DESIGN PARA IE === */
+/* Tablet y móviles grandes (768px y menos) */
+@media (max-width: 768px) {
+  /* Aumentar tipografía general para mejor legibilidad */
+  .ie-home-page {
+    padding: 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.8rem;
+  }
+  
+  .ie-section-title {
+    font-size: 2.2rem;
+  }
+  
+  .ie-nav-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .ie-nav-card {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.8rem;
+    min-width: 2.8rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 2rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.6rem;
+  }
+  
+  /* Toolbar responsive */
+  .win98-bar {
+    flex-wrap: wrap;
+    min-height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .win98-button {
+    min-height: 48px;
+    min-width: 48px;
+    font-size: 1.4rem;
+    padding: 0.6rem;
+  }
+  
+  .retro-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  
+  /* Status bar */
+  .win98-status {
+    font-size: 1.4rem;
+  }
+}
+
+/* Móviles medianos (600px y menos) */
+@media (max-width: 600px) {
+  .ie-home-page {
+    padding: 1rem;
+  }
+  
+  .ie-home-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.4rem;
+  }
+  
+  .ie-section-title {
+    font-size: 2rem;
+  }
+  
+  .ie-home-section {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.5rem;
+    min-width: 2.5rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 1.8rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.5rem;
+  }
+  
+  /* Toolbar más grande para este breakpoint */
+  .win98-button {
+    min-height: 46px;
+    min-width: 46px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+  .ie-home-page {
+    padding: 0.8rem;
+  }
+  
+  .ie-home-title {
+    font-size: 2.2rem;
+  }
+  
+  .ie-section-title {
+    font-size: 1.8rem;
+  }
+  
+  .ie-nav-card {
+    padding: 1.2rem;
+  }
+  
+  .ie-nav-icon {
+    font-size: 2.2rem;
+    min-width: 2.2rem;
+  }
+  
+  .ie-nav-link {
+    font-size: 1.6rem;
+  }
+  
+  .ie-nav-desc {
+    font-size: 1.4rem;
+  }
+  
+  /* Toolbar muy compacto */
+  .win98-bar {
+    padding: 0.4rem;
+  }
+  
+  .win98-button {
+    font-size: 0;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.4rem;
+  }
+  
+  .win98-button .retro-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  /* Address bar más compacto */
+  .win98-bar input {
+    font-size: 1.2rem;
+  }
+  
+  /* Status bar responsive */
+  .win98-status {
+    font-size: 1.2rem;
+    height: auto;
+    min-height: 44px;
+    flex-wrap: wrap;
+  }
+}
+
+/* === ESTILOS ADICIONALES PARA INPUT Y PROGRESS === */
+.win98-input {
+  background: white;
+  border: 4px inset #c0c0c0;
+  padding: 0.5rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: black;
+}
+
+.win98-progress {
+  height: 1.5rem;
+  background: #c0c0c0;
+  border: 4px inset #808080;
+  position: relative;
+  overflow: hidden;
+}
+
+.win98-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #000080 0%, #0000ff 100%);
+  transition: width 0.3s ease;
+}

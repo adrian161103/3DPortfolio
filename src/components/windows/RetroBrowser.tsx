@@ -218,7 +218,7 @@ export default function RetroBrowser() {
   return (
     <div className="flex flex-col h-full w-full text-xl font-[Tahoma,'MS Sans Serif',sans-serif] bg-gray-300 border-2 border-gray-600">
       {/* ===== Toolbar ===== */}
-      <div className="win98-bar flex items-center h-14 px-2">
+      <div className="win98-bar flex items-center h-14 px-2 overflow-x-auto flex-wrap">
         {toolbarButtons.map((btn, i) =>
           btn.separator ? (
             <div key={i} className="win98-separator" />
@@ -243,16 +243,16 @@ export default function RetroBrowser() {
       </div>
 
       {/* ===== Address Bar ===== */}
-      <div className="win98-bar flex items-center gap-2 px-2 py-1">
-        <span className="px-2 font-bold">Dirección</span>
+      <div className="win98-bar flex items-center gap-2 px-2 py-1 flex-wrap">
+        <span className="px-2 font-bold whitespace-nowrap">Dirección</span>
         <input
           type="text"
           readOnly
           value={`http://retro.local/${page}`}
-          className="flex-1 win98-input"
+          className="flex-1 win98-input min-w-0"
         />
-        <button className="win98-button px-4">Ir a</button>
-        <button className="win98-button px-4">Vínculos</button>
+        <button className="win98-button px-4 whitespace-nowrap">Ir a</button>
+        <button className="win98-button px-4 whitespace-nowrap">Vínculos</button>
       </div>
 
   {/* ===== Contenido ===== */}
@@ -261,15 +261,15 @@ export default function RetroBrowser() {
   </div>
 
       {/* ===== Status Bar ===== */}
-      <div className="win98-bar win98-status flex items-center justify-between h-12 px-2">
+      <div className="win98-bar win98-status flex items-center justify-between h-12 px-2 flex-wrap gap-2">
         {/* Izquierda */}
-        <div className="flex items-center gap-2 w-80 border-r-2 border-gray-600 px-2">
-          <img src="/icons/ie/internetpage.png" alt="IE" className="retro-icon" />
-          <span>{loading ? "Cargando..." : "Listo"}</span>
+        <div className="flex items-center gap-2 border-r-2 border-gray-600 px-2 min-w-0">
+          <img src="/icons/ie/internetpage.png" alt="IE" className="retro-icon flex-shrink-0" />
+          <span className="truncate">{loading ? "Cargando..." : "Listo"}</span>
         </div>
 
         {/* Centro */}
-        <div className="flex-1 flex items-center px-2">
+        <div className="flex-1 flex items-center px-2 min-w-0">
           <div className="win98-progress w-full">
             <div
               className="win98-progress-fill"
@@ -279,9 +279,9 @@ export default function RetroBrowser() {
         </div>
 
         {/* Derecha */}
-        <div className="flex items-center px-3 border-l border-white">
-          <img src="/icons/ie/world.png" alt="Internet" className="retro-icon" />
-          <span className="ml-1">Internet</span>
+        <div className="flex items-center px-3 border-l border-white whitespace-nowrap">
+          <img src="/icons/ie/world.png" alt="Internet" className="retro-icon flex-shrink-0" />
+          <span className="ml-1 hidden sm:inline">Internet</span>
         </div>
       </div>
     </div>
