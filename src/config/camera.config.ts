@@ -71,17 +71,6 @@ export const CAMERA_VIEWS: Record<string, CameraViewConfig> = {
     ease: "power2.inOut",
   },
 
-  /**
-   * Vista Windows 98 para móviles - Menos zoom para pantallas pequeñas
-   */
-  windowsMobile: {
-    position: { x: 0, y: 2.5, z: 4.5 },
-    target: { x: 0, y: 1.27, z: 0 },
-    fov: 25,
-    duration: 2,
-    fovDuration: 1.5,
-    ease: "power2.inOut",
-  },
 
 
   /**
