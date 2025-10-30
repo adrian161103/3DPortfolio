@@ -104,15 +104,15 @@
   
   /* Botones de ventanas más compactos */
   .taskbar button {
-    min-width: 8rem !important;
-    max-width: 10rem !important;
+    min-width: 10rem !important;
+    max-width: 14rem !important;
     padding: 0.3rem 0.5rem !important;
-    font-size: 0.9rem !important;
+    font-size: 1.4rem !important;
   }
   
   .taskbar button img {
-    width: 1.2rem !important;
-    height: 1.2rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
   }
 }
 
@@ -131,12 +131,12 @@
   }
   
   .start-btn p {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
   
   .start-btn img {
-    width: 1.6rem !important;
-    height: 1.6rem !important;
+    width: 1.4rem !important;
+    height: 1.4rem !important;
   }
   
   .taskbar-clock {
@@ -151,15 +151,15 @@
   }
   
   .taskbar button {
-    min-width: 6rem !important;
-    max-width: 8rem !important;
+    min-width: 8rem !important;
+    max-width: 12rem !important;
     padding: 0.2rem 0.3rem !important;
-    font-size: 0.8rem !important;
+    font-size: 1.3rem !important;
   }
   
   .taskbar button img {
-    width: 1rem !important;
-    height: 1rem !important;
+    width: 1.2rem !important;
+    height: 1.2rem !important;
   }
 }
 
