@@ -36,6 +36,11 @@ export interface ProjectsUIText {
   statusInProgress: string;
   statusPlanned: string;
   clearFilters: string;
+  viewDetails: string;
+  agencyLabel: string;
+  typeLabel: string;
+  databaseRecords: string;
+  systemConnected: string;
 }
 
 // Interfaz para los datos completos

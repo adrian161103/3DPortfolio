@@ -17,12 +17,11 @@ export const aboutEs: AboutPageData = {
   },
   bio: {
     kicker: 'Sobre mí / Profesional',
-    heading: ['Soy Adrián Alejos García,', ' Full Stack Web Developer', ' y estudiante de Sistemas (UTN)'],
+    heading: ['Soy Adrián Alejos García,', ' Full Stack Web Developer'],
     paragraphs: [
-      'Trabajo con React, TypeScript, Tailwind, Node.js y MongoDB, creando interfaces modernas y escalables con foco en rendimiento y experiencia de usuario.',
-  'Actualmente complemento mi formación con Desarrollo de software (IFTS N°29), fortaleciendo fundamentos y buenas prácticas.',
-      'Desarrollo proyectos personales, como un sitio web en el ámbito de la psicología, aplicando diseño y tecnología para generar confianza y cercanía.',
-      'Me apasiona la innovación, la optimización y la creación de productos digitales con impacto real.'
+      'Soy Desarrollador Web Full-Stack orientado a construir interfaces modernas, performantes y accesibles. Trabajo con React y TypeScript, Tailwind CSS y animaciones (GSAP/Framer Motion) para dar vida a productos que inspiran confianza y cercanía, manteniendo buenas prácticas de código (ESLint/Prettier, GitFlow) y una colaboración constante con producto, diseño y backend.',
+      'Tengo experiencia creando landing pages orientadas a SEO/Core Web Vitals, e-commerce y paneles internos, integrando APIs REST, autenticación y bases de datos (MongoDB/MySQL), y desplegando en Vercel/Render. También trabajo con experiencias 3D inmersivas usando Three.js, React Three Fiber y Blender para modelado de assets.',
+      'Actualmente continúo formándome en Ingeniería en Sistemas (UTN) y Desarrollo de Software (IFTS), mientras aporto en proyectos reales con foco en resultados medibles y experiencias que generen impacto positivo en los usuarios.'
     ],
     columns: [
       {

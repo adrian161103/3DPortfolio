@@ -31,16 +31,16 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
     const photo = photoRef.current;
     const background = backgroundRef.current;
 
-    // Configurar estado inicial simplificado
+    // Configurar estado inicial simplificado con fallback de visibilidad
     gsap.set([text, stats], { 
-      opacity: 0, 
-      y: 30
+      opacity: 1, // Cambiado de 0 a 1 para asegurar visibilidad
+      y: 0 // Cambiado de 30 a 0 para evitar desplazamiento inicial
     });
 
     // Estado inicial para la cita
     gsap.set(quote, {
-      opacity: 0,
-      y: 20
+      opacity: 1, // Cambiado de 0 a 1 para asegurar visibilidad
+      y: 0 // Cambiado de 20 a 0 para evitar desplazamiento inicial
     });
 
     // Estado inicial para la foto
@@ -58,14 +58,15 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
       });
     }
 
-    // Dividir texto en palabras para animación individual (solo para párrafos principales)
+    // Mantener el texto original sin división en palabras para asegurar visibilidad
     const textElements = text.querySelectorAll('p:not(.quote-text), h2, h3');
-    textElements.forEach(element => {
-      const words = element.textContent?.split(' ') || [];
-      element.innerHTML = words
-        .map(w => `<span style="opacity:0;transform:translateY(30px)">${w}</span>`)
-        .join(' '); // espacio común => el navegador puede cortar línea
-    });
+    // Comentado para evitar problemas de visibilidad
+    // textElements.forEach(element => {
+    //   const words = element.textContent?.split(' ') || [];
+    //   element.innerHTML = words
+    //     .map(w => `<span style="opacity:0;transform:translateY(30px)">${w}</span>`)
+    //     .join(' ');
+    // });
 
     // Dividir estadísticas para animación escalonada
     const statItems = stats.querySelectorAll('[data-animate]');
@@ -93,24 +94,21 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
       });
     }
 
-    // Animación del contenido principal simplificada
+    // Animación del contenido principal simplificada - asegurar visibilidad
     masterTl.to(text, {
       opacity: 1,
       y: 0,
-      duration: 1,
+      duration: 0.5, // Duración reducida
       ease: 'power2.out'
-    }, 0.2);
+    }, 0);
 
-    // Animación de palabras con efecto simple
-    textElements.forEach((element, index) => {
-      const words = element.querySelectorAll('span');
-      masterTl.to(words, {
+    // Asegurar que todos los elementos de texto sean visibles inmediatamente
+    textElements.forEach((element) => {
+      gsap.set(element, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        stagger: 0.02
-      }, index === 0 ? 0.5 : '-=0.6');
+        visibility: 'visible'
+      });
     });
 
     // Animación de estadísticas simplificada
@@ -174,7 +172,7 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
   }, []);
 
   return (
-    <section ref={bioRef} className={`py-32 px-8 bg-black relative overflow-hidden ${className}`}>
+    <section ref={bioRef} className={`bio-section py-32 px-8 bg-black relative overflow-hidden ${className}`}>
       {/* Gradiente de transición superior */}
       <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-10"></div>
       
@@ -195,9 +193,19 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
                 </span>
               </div>
               
-              <h2 className="text-5xl lg:text-7xl font-extralight leading-[0.9] tracking-[-0.02em]">
+              <h2 className="text-[clamp(3rem,8vw,6rem)] font-extralight leading-[1.05] tracking-[-0.02em]">
                 {data.heading.map((line, i) => (
-                  <span key={i} className={i === 1 ? 'block text-green-300 italic font-light' : 'block text-white'}>
+                  <span 
+                    key={i} 
+                    className={i === 1 ? 'block text-green-300 italic font-light opacity-100 visible' : 'block text-white opacity-100 visible'}
+                    style={{ 
+                      opacity: 1,
+                      visibility: 'visible',
+                      color: i === 1 ? '#34d399' : '#ffffff',
+                      fontWeight: i === 1 ? '300' : '200',
+                      fontStyle: i === 1 ? 'italic' : 'normal'
+                    }}
+                  >
                     {line}
                   </span>
                 ))}
@@ -209,7 +217,18 @@ export const Bio: React.FC<BioProps> = ({ className = '' }) => {
               {data.paragraphs.map((p, i) => (
                 <p
                   key={i}
-                  className={`${i === data.paragraphs.length - 1 ? 'text-gray-300 font-medium' : 'text-gray-400 font-light'} whitespace-normal break-words`}
+                  className={`${i === data.paragraphs.length - 1 ? 'text-gray-300 font-medium' : 'text-gray-400 font-light'} whitespace-normal break-words opacity-100 visible`}
+                  style={{
+                    opacity: 1,
+                    visibility: 'visible',
+                    display: 'block',
+                    color: i === data.paragraphs.length - 1 ? '#d1d5db' : '#9ca3af',
+                    fontWeight: i === data.paragraphs.length - 1 ? 500 : 300,
+                    transform: 'none',
+                    fontSize: i === 0 ? '1.25rem' : '1.125rem',
+                    lineHeight: '1.625',
+                    marginBottom: '2rem'
+                  } as React.CSSProperties}
                 >
                   {p}
                 </p>

@@ -1,0 +1,53 @@
+/* CSS para asegurar visibilidad del texto en la sección Bio */
+
+/* Asegurar que todos los textos principales sean visibles */
+.bio-section h2,
+.bio-section p,
+.bio-section span {
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: inherit !important;
+  transform: none !important;
+}
+
+/* Forzar colores específicos para el heading */
+.bio-section h2 .block:first-child {
+  color: #ffffff !important;
+  font-weight: 200 !important;
+}
+
+.bio-section h2 .block:nth-child(2) {
+  color: #34d399 !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+}
+
+/* Asegurar párrafos visibles */
+.bio-section p {
+  color: #9ca3af !important;
+  font-weight: 300 !important;
+  line-height: 1.625 !important;
+}
+
+.bio-section p:last-of-type {
+  color: #d1d5db !important;
+  font-weight: 500 !important;
+}
+
+/* Remover cualquier transformación que pueda ocultar el texto */
+.bio-section * {
+  transform: translateY(0px) !important;
+}
+
+/* Asegurar que las animaciones GSAP no oculten el texto */
+.bio-section [style*="opacity: 0"] {
+  opacity: 1 !important;
+}
+
+/* Forzar visibilidad para elementos con animaciones */
+.bio-section .cinematic-entrance,
+.bio-section .waypoint {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}

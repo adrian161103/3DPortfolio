@@ -93,47 +93,52 @@ const About: React.FC = () => {
 
       {/* Hero Section - Aurora cinematográfica */}
       <HeroAurora data-hero="true" className="cinematic-entrance">
-        <div className="flex flex-col h-full justify-between px-8 py-16 max-w-7xl mx-auto relative z-20">
+        <div className="flex flex-col h-full justify-between px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 max-w-7xl mx-auto relative z-20">
           {/* Header superior con efectos de entrada */}
           <div className="flex justify-between items-start">
-            <div className="text-sm tracking-[0.3em] text-green-300/60 font-mono neon-text">
+            <div className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] text-green-300/60 font-mono neon-text">
               {data.hero.kickerLeft}
             </div>
-            <div className="text-sm tracking-[0.3em] text-green-300/60 font-mono hologram-effect">
+            <div className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] text-green-300/60 font-mono hologram-effect">
               {data.hero.kickerRight}
             </div>
           </div>
           
           {/* Contenido principal centrado con efectos cinematográficos */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="text-center space-y-12 magnetic-hover">
+            <div className="text-center space-y-8 sm:space-y-10 md:space-y-12 magnetic-hover">
               {/* Título principal con tipografía editorial mejorada */}
-              <div className="space-y-4">
-                <h1 className="text-[clamp(4rem,12vw,10rem)] font-light leading-[0.85] tracking-[-0.02em]">
+              <div className="space-y-3 sm:space-y-4">
+                <h1 className="text-[clamp(2.5rem,10vw,10rem)] sm:text-[clamp(3rem,10vw,10rem)] md:text-[clamp(4rem,12vw,10rem)] font-light leading-[0.85] tracking-[-0.02em]">
                   <span className="block text-white font-extralight glitch-text" data-text={data.hero.titleTop}>{data.hero.titleTop}</span>
                   <span className="block text-green-300 font-bold italic tilt-3d">{data.hero.titleBottom}</span>
                 </h1>
                 
                 {/* Subtítulo con diseño asimétrico y efectos */}
-                <div className="relative">
-                  <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto leading-relaxed font-light">
+                <div className="relative px-4 sm:px-0">
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto leading-relaxed font-light">
                     {data.hero.subtitle}
                   </p>
-                  {/* Línea decorativa animada */}
-                  <div className="absolute -right-4 top-1/2 w-16 h-px bg-gradient-to-r from-green-300/50 to-transparent glow-effect"></div>
+                  {/* Línea decorativa animada - oculta en móviles */}
+                  <div className="hidden sm:block absolute -right-4 top-1/2 w-16 h-px bg-gradient-to-r from-green-300/50 to-transparent glow-effect"></div>
                 </div>
               </div>
 
               {/* Stats con diseño moderno y efectos 3D */}
               {data.hero.stats && data.hero.stats.length > 0 && (
-                <div className="flex justify-center items-center space-x-16">
+                <div className="flex flex-col sm:flex-row justify-center items-center space-y-6 sm:space-y-0 sm:space-x-8 md:space-x-16">
                   {data.hero.stats.map((s, idx) => (
                     <React.Fragment key={s.label + idx}>
                       {idx > 0 && (
-                        <div className="w-px h-16 bg-gradient-to-b from-transparent via-green-300/30 to-transparent glow-effect"></div>
+                        <>
+                          {/* Separador horizontal para móviles */}
+                          <div className="block sm:hidden w-16 h-px bg-gradient-to-r from-transparent via-green-300/30 to-transparent glow-effect"></div>
+                          {/* Separador vertical para desktop */}
+                          <div className="hidden sm:block w-px h-12 md:h-16 bg-gradient-to-b from-transparent via-green-300/30 to-transparent glow-effect"></div>
+                        </>
                       )}
                       <div className="text-center group cursor-default magnetic-hover">
-                        <div className="text-2xl md:text-3xl font-light text-green-300 mb-1 group-hover:scale-110 transition-transform duration-300 neon-text">{s.value}</div>
+                        <div className="text-xl sm:text-2xl md:text-3xl font-light text-green-300 mb-1 group-hover:scale-110 transition-transform duration-300 neon-text">{s.value}</div>
                         <div className="text-xs tracking-[0.2em] text-gray-200 uppercase">{s.label}</div>
                       </div>
                     </React.Fragment>
@@ -142,10 +147,10 @@ const About: React.FC = () => {
               )}
 
               {/* Botón de llamada a la acción cinematográfico */}
-              <div className="pt-8">
+              <div className="pt-6 sm:pt-8">
                 <button 
                   onClick={() => navigate('/projects')}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-green-400/10 to-emerald-600/10 border border-green-400/30 rounded-full text-green-300 font-mono text-sm tracking-[0.2em] uppercase liquid-morph hover:from-green-400/20 hover:to-emerald-600/20 hover:border-green-400/60 transition-all duration-500 cursor-pointer"
+                  className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-400/10 to-emerald-600/10 border border-green-400/30 rounded-full text-green-300 font-mono text-xs sm:text-sm tracking-[0.2em] uppercase liquid-morph hover:from-green-400/20 hover:to-emerald-600/20 hover:border-green-400/60 transition-all duration-500 cursor-pointer"
                 >
                   <span className="relative z-10">{data.hero.ctaLabel}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-green-400/0 via-green-400/20 to-green-400/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -156,10 +161,10 @@ const About: React.FC = () => {
 
           {/* Footer inferior con efectos */}
           <div className="flex justify-between items-end">
-            <div className="text-sm text-gray-200 font-mono hologram-effect">
+            <div className="text-xs sm:text-sm text-gray-200 font-mono hologram-effect">
               ADRIAN ALEJOS
             </div>
-            <div className="text-sm text-gray-200 font-mono cinematic-entrance">
+            <div className="text-xs sm:text-sm text-gray-200 font-mono cinematic-entrance">
               SCROLL ↓
             </div>
           </div>
