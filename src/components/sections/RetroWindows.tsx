@@ -84,6 +84,7 @@ export default function RetroWindows() {
   const [openedOrder, setOpenedOrder] = useState<AppId[]>([]);
   const [maximizedWindows, setMaximizedWindows] = useState<Partial<Record<AppId, boolean>>>({});
   const [lastTap, setLastTap] = useState<{ id: string; time: number } | null>(null);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   const bringToFront = (id: AppId) => {
     setWindowZ((old) => {
@@ -95,6 +96,7 @@ export default function RetroWindows() {
   };
 
   const menuRef = useRef<HTMLDivElement>(null);
+  const startBtnRef = useRef<HTMLDivElement>(null);
 
   // Actualizar títulos de ventanas cuando cambie el idioma
   useEffect(() => {
@@ -109,10 +111,46 @@ export default function RetroWindows() {
     });
   }, [windowTitles]);
 
-  // cerrar menú si hago click fuera
+  // Actualizar reloj cada minuto
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: false 
+      });
+      setCurrentTime(timeString);
+    };
+
+    // Actualizar inmediatamente
+    updateTime();
+    
+    // Calcular cuánto tiempo falta para el próximo minuto
+    const now = new Date();
+    const secondsUntilNextMinute = 60 - now.getSeconds();
+    
+    // Primer timeout para sincronizar con el cambio de minuto
+    const initialTimeout = setTimeout(() => {
+      updateTime();
+      // Luego actualizar cada minuto exacto
+      const interval = setInterval(updateTime, 60000);
+      
+      return () => clearInterval(interval);
+    }, secondsUntilNextMinute * 1000);
+    
+    return () => clearTimeout(initialTimeout);
+  }, []);
+
+  // cerrar menú 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(e.target as Node) &&
+        startBtnRef.current &&
+        !startBtnRef.current.contains(e.target as Node)
+      ) {
         setShowStartMenu(false);
       }
     };
@@ -261,8 +299,10 @@ export default function RetroWindows() {
       <div className="taskbar">
         {/* Botón inicio */}
         <div
+          ref={startBtnRef}
           className="start-btn flex items-center gap-2"
           onClick={() => setShowStartMenu((prev) => !prev)}
+          style={{ touchAction: 'manipulation' }}
         >
           <img
             src="/icons/windows.png"
@@ -301,7 +341,7 @@ export default function RetroWindows() {
         </div>
 
         {/* Reloj */}
-        <div className="taskbar-clock text-2xl">12:00</div>
+        <div className="taskbar-clock text-2xl">{currentTime}</div>
       </div>
 
       {/* Menú de Inicio */}

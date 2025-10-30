@@ -218,7 +218,7 @@ export default function RetroBrowser() {
   return (
     <div className="flex flex-col h-full w-full text-xl font-[Tahoma,'MS Sans Serif',sans-serif] bg-gray-300 border-2 border-gray-600">
       {/* ===== Toolbar ===== */}
-      <div className="win98-bar flex items-center h-14 px-2 overflow-x-auto flex-wrap">
+      <div className="win98-bar flex items-center h-14 px-2 overflow-x-auto flex-nowrap md:flex-wrap">
         {toolbarButtons.map((btn, i) =>
           btn.separator ? (
             <div key={i} className="win98-separator" />
