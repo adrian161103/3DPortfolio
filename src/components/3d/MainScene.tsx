@@ -199,12 +199,13 @@ export default function MainScene() {
           position: "absolute",
           top: 0,
           left: 0,
+          zIndex: 1, // asegura que el canvas esté detrás de otros elementos UI
         }}
       >
         <Canvas
           camera={{ position: [0, 5, 10], fov: 40 }}
           dpr={[1, Math.min(window.devicePixelRatio || 1, 2)]}
-          style={{ background: "#000", width: "100%", height: "100%" }}
+          style={{ background: "#000", width: "100%", height: "100%", zIndex: 1 }}
           shadows
           gl={{
             antialias: true,

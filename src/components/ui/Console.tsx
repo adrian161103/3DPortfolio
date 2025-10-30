@@ -271,7 +271,8 @@ if (cleanCmd === t.commands.windows) {
         imageRendering: 'crisp-edges',
         WebkitFontSmoothing: 'antialiased',
         transform: 'translateZ(0)',
-        willChange: 'transform'
+        willChange: 'transform',
+        zIndex: 10 // Asegura que esté por encima de otros elementos pero no por encima del header 
       }}
     >
       <div 
@@ -280,7 +281,8 @@ if (cleanCmd === t.commands.windows) {
         style={{
           opacity: showAnimation ? 1 : 0,
           transition: 'opacity 2s cubic-bezier(0.16, 1, 0.3, 1)',
-          willChange: 'opacity'
+          willChange: 'opacity',
+          zIndex: 10 // Asegurar que esté por debajo del header (z-50)
         }}
       >
         <div
