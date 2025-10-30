@@ -82,6 +82,8 @@ export default function RetroWindows() {
   const [windowZ, setWindowZ] = useState<Partial<Record<AppId, number>>>({});
   const [activeWindow, setActiveWindow] = useState<AppId | null>(null);
   const [openedOrder, setOpenedOrder] = useState<AppId[]>([]);
+  const [maximizedWindows, setMaximizedWindows] = useState<Partial<Record<AppId, boolean>>>({});
+  const [lastTap, setLastTap] = useState<{ id: string; time: number } | null>(null);
 
   const bringToFront = (id: AppId) => {
     setWindowZ((old) => {
@@ -129,6 +131,14 @@ export default function RetroWindows() {
       prev.includes(id) ? prev : [...prev, id] // agrega al final si no estaba
     );
 
+    // Si es Internet Explorer, maximizarlo automáticamente
+    if (id === "internet") {
+      setMaximizedWindows((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
+    }
+
     bringToFront(id);
     setShowStartMenu(false);
   };
@@ -138,6 +148,15 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], open: false, minimized: false },
     }));
+    
+    // Si es Internet Explorer, resetear el estado de maximización
+    if (id === "internet") {
+      setMaximizedWindows((prev) => ({
+        ...prev,
+        [id]: false,
+      }));
+    }
+    
     setActiveWindow(null);
   };
 
@@ -146,6 +165,8 @@ export default function RetroWindows() {
       ...prev,
       [id]: { ...prev[id], minimized: true },
     }));
+    
+
     if (activeWindow === id) setActiveWindow(null);
   };
 
@@ -163,6 +184,15 @@ export default function RetroWindows() {
       // Restaurar si está minimizada
       if (win.minimized) {
         bringToFront(id);
+        
+        // Si es Internet Explorer, asegurar que se mantenga maximizado
+        if (id === "internet") {
+          setMaximizedWindows((prevMax) => ({
+            ...prevMax,
+            [id]: true,
+          }));
+        }
+        
         return {
           ...prev,
           [id]: { ...win, minimized: false, open: true },
@@ -184,6 +214,39 @@ export default function RetroWindows() {
   };
 
   const handleSelect = (icon: string) => setSelectedIcon(icon);
+
+  // Función para manejar doble tap en móviles
+  const handleDoubleTap = (id: string, action?: () => void) => {
+    if (!action) return;
+
+    const now = Date.now();
+    const DOUBLE_TAP_DELAY = 300; // 300ms para considerar doble tap
+
+    if (lastTap && lastTap.id === id && now - lastTap.time < DOUBLE_TAP_DELAY) {
+      // Es un doble tap
+      action();
+      setLastTap(null);
+    } else {
+      // Es el primer tap
+      setLastTap({ id, time: now });
+      // Limpiar el estado después del delay para evitar taps tardíos
+      setTimeout(() => {
+        setLastTap((prev) => {
+          if (prev && prev.id === id && prev.time === now) {
+            return null;
+          }
+          return prev;
+        });
+      }, DOUBLE_TAP_DELAY);
+    }
+  };
+
+  // Función para manejar eventos táctiles
+  const handleTouchEnd = (e: React.TouchEvent, id: string, dbl?: () => void) => {
+    e.preventDefault();
+    handleSelect(id);
+    handleDoubleTap(id, dbl);
+  };
 
   return (
     <div
@@ -277,12 +340,23 @@ export default function RetroWindows() {
         ].map(({ id, icon, label, dbl }) => (
           <div
             key={id}
-            className="flex flex-col items-center w-20 cursor-pointer"
+            className="flex flex-col items-center w-20 cursor-pointer touch-manipulation select-none"
+            style={{ 
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              KhtmlUserSelect: 'none',
+              MozUserSelect: 'none',
+              msUserSelect: 'none',
+              userSelect: 'none'
+            }}
             onClick={(e) => {
               e.stopPropagation();
               handleSelect(id);
+              // También manejar doble tap en móviles
+              handleDoubleTap(id, dbl);
             }}
             onDoubleClick={dbl}
+            onTouchEnd={(e) => handleTouchEnd(e, id, dbl)}
           >
             <img src={icon} alt={label} className="w-16 h-16" />
             <span
@@ -372,6 +446,10 @@ export default function RetroWindows() {
           onMinimize={() => minimizeWindow("internet")}
           zIndex={windowZ.internet || 10}
           onFocus={() => bringToFront("internet")}
+          isMaximized={maximizedWindows.internet || false}
+          onMaximizeChange={(maximized) => 
+            setMaximizedWindows((prev) => ({ ...prev, internet: maximized }))
+          }
         >
           <RetroBrowser />
         </RetroWindow>

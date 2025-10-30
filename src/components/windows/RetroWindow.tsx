@@ -9,6 +9,8 @@ type RetroWindowProps = {
   onMinimize?: () => void;
   zIndex: number;
   onFocus: () => void;
+  isMaximized?: boolean;
+  onMaximizeChange?: (maximized: boolean) => void;
 };
 
 export default function RetroWindow({
@@ -18,11 +20,15 @@ export default function RetroWindow({
   onMinimize,
   zIndex,
   onFocus,
+  isMaximized: externalIsMaximized,
+  onMaximizeChange,
 }: RetroWindowProps) {
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [internalIsMaximized, setInternalIsMaximized] = useState(false);
+  const isMaximized = externalIsMaximized !== undefined ? externalIsMaximized : internalIsMaximized;
   const [savedContent, setSavedContent] = useState<React.ReactNode>(null);
   const [bounds, setBounds] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
   const nodeRef = useRef(null);
+  const lastTouchTimeRef = useRef<number>(0);
 
   // Guardar el contenido cuando se minimiza/maximiza
   useEffect(() => {
@@ -51,7 +57,14 @@ export default function RetroWindow({
     return () => window.removeEventListener('resize', updateBounds);
   }, []);
 
-  const toggleMaximize = () => setIsMaximized((prev) => !prev);
+  const toggleMaximize = () => {
+    const newMaximized = !isMaximized;
+    if (onMaximizeChange) {
+      onMaximizeChange(newMaximized);
+    } else {
+      setInternalIsMaximized(newMaximized);
+    }
+  };
 
   const WindowContent = (
     <div
@@ -76,6 +89,21 @@ export default function RetroWindow({
         className="retro-window-titlebar"
         onDoubleClick={toggleMaximize}
         onMouseDown={onFocus}
+        onTouchEnd={(e) => {
+          // Manejar doble tap en la barra de título para móviles
+          const now = Date.now();
+          const lastTouchTime = lastTouchTimeRef.current;
+          const DOUBLE_TAP_DELAY = 300;
+          
+          if (now - lastTouchTime < DOUBLE_TAP_DELAY) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMaximize();
+          }
+          
+          lastTouchTimeRef.current = now;
+        }}
+        style={{ touchAction: 'manipulation' }}
       >
         {/* Izquierda: ícono + título */}
         <div className="title-left">
@@ -85,11 +113,42 @@ export default function RetroWindow({
 
         {/* Derecha: controles */}
         <div className="retro-window-controls">
-          <button onClick={onMinimize} aria-label="Minimizar">─</button>
-          <button onClick={toggleMaximize} aria-label="Maximizar/Restaurar">
+          <button 
+            onClick={onMinimize} 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onMinimize?.();
+            }}
+            aria-label="Minimizar"
+            style={{ touchAction: 'manipulation' }}
+          >
+            ─
+          </button>
+          <button 
+            onClick={toggleMaximize} 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleMaximize();
+            }}
+            aria-label="Maximizar/Restaurar"
+            style={{ touchAction: 'manipulation' }}
+          >
             {isMaximized ? "❐" : "□"}
           </button>
-          <button onClick={onClose} aria-label="Cerrar">X</button>
+          <button 
+            onClick={onClose} 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
+            aria-label="Cerrar"
+            style={{ touchAction: 'manipulation' }}
+          >
+            X
+          </button>
         </div>
       </div>
 

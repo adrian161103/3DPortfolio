@@ -289,3 +289,31 @@
   color: #000080;
   font-style: italic;
 }
+
+/* === MEJORAS PARA DISPOSITIVOS TÁCTILES === */
+@media (hover: none) and (pointer: coarse) {
+  /* Estilos específicos para dispositivos táctiles */
+  .retro-window-controls button {
+    min-height: 44px; /* Tamaño mínimo recomendado para toques */
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  .retro-window-titlebar {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  /* Evitar zoom en doble tap */
+  .retro-window-titlebar,
+  .retro-window-controls button {
+    touch-action: manipulation;
+  }
+}
