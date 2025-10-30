@@ -29,6 +29,12 @@ function ConsoleContent() {
     const handleWindowsMode = (e: Event) => {
       const customEvent = e as CustomEvent<boolean>;
       setShowWindows(customEvent.detail);
+      
+      // Si se está cerrando Windows, mostrar la lista de comandos
+      if (!customEvent.detail) {
+
+        setShowCommands(true);
+      }
     };
 
     window.addEventListener("setWindowsMode", handleWindowsMode);
