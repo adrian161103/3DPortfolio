@@ -83,17 +83,6 @@ export const CAMERA_VIEWS: Record<string, CameraViewConfig> = {
     ease: "power2.inOut",
   },
 
-  /**
-   * Vista Windows 98 para pantallas ultra pequeñas (360px y menos)
-   */
-  windowsUltraSmall: {
-    position: { x: 0, y: 2, z: 2.4 },
-    target: { x: 0, y: 1.27, z: 0 },
-    fov: 25,
-    duration: 2,
-    fovDuration: 1.5,
-    ease: "power2.inOut",
-  },
 
   /**
    * Vista de consola - Para comandos about, projects, etc.
