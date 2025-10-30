@@ -32,13 +32,20 @@ export default function CameraController() {
       if (isWindows) {
         // Detectar el tamaño de pantalla y elegir la vista apropiada
         const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
         let windowsView;
         
-        if (screenWidth < 680) {
-          // Pantallas móviles (menores a 680px) - usar medidas de console para mejor navegación
-          windowsView = CAMERA_VIEWS.console;
+        // DEBUG: Ver qué tamaño detecta tu dispositivo
+        console.log(`🔍 Dimensiones detectadas: ${screenWidth}px x ${screenHeight}px`);
+        
+        // Considerar móvil si el ancho es menor a 680px O la altura es menor a 900px
+        const isMobile = screenWidth <= 680 || screenHeight <= 900;
+        
+        if (isMobile) {
+          // Pantallas móviles - usar vista sin zoom para Windows
+          windowsView = CAMERA_VIEWS.windowsMobileNoZoom;
         } else {
-          // Pantallas grandes (escritorio - 680px y más)
+          // Pantallas grandes (escritorio)
           windowsView = CAMERA_VIEWS.windows;
         }
         

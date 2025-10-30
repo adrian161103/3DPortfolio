@@ -86,6 +86,18 @@ export const CAMERA_VIEWS: Record<string, CameraViewConfig> = {
   },
 
   /**
+   * Vista Windows para móviles - Posición neutra sin zoom
+   */
+  windowsMobileNoZoom: {
+    position: { x: 0, y: 2, z: 2 },
+    target: { x: 0, y: 1, z: 0 },
+    fov: 40,
+    duration: 2,
+    fovDuration: 1.5,
+    ease: "power2.inOut",
+  },
+
+  /**
    * Vista del agujero negro - Zoom hacia el agujero negro
    */
   blackHole: {
