@@ -13,6 +13,15 @@
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
 }
 
+/* Mejorar área táctil en móviles */
+@media (max-width: 640px) {
+  .hamburger-btn {
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+  }
+}
+
 .hamburger-menu {
   font-family: 'VT323', monospace;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
@@ -67,10 +76,55 @@
     width: 100vw;
     right: 0;
     border-radius: 0;
+    top: 48px !important; /* Override inline styles if needed */
   }
   
   .hamburger-header {
-    padding: 0 16px;
+    padding: 8px 16px;
+  }
+  
+  .menu-item {
+    font-size: 14px;
+    padding: 12px 16px !important;
+  }
+  
+  .section-content {
+    margin-left: 12px !important;
+    padding-left: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hamburger-menu {
+    max-height: 90vh;
+  }
+  
+  .hamburger-header {
+    padding: 6px 12px;
+  }
+  
+  .menu-item {
+    font-size: 13px;
+    padding: 10px 12px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hamburger-menu {
+    border-radius: 0 0 0 12px;
+  }
+}
+
+/* Mejorar legibilidad en pantallas pequeñas */
+@media (max-width: 640px) {
+  .section-content p,
+  .section-content li {
+    line-height: 1.6;
+  }
+  
+  .section-content button {
+    padding: 10px 12px !important;
+    font-size: 11px;
   }
 }
 
@@ -104,6 +158,18 @@
 
 .hamburger-menu::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollbar más ancho en móviles para mejor manipulación */
+@media (max-width: 640px) {
+  .hamburger-menu::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .hamburger-menu {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling en iOS */
+    overscroll-behavior-y: contain; /* Prevenir el scroll en el body */
+  }
 }
 
 /* Borde animado para el menú */

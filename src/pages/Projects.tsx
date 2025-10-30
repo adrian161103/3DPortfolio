@@ -351,7 +351,7 @@ const Projects: React.FC = () => {
       {/* Contenedor principal */}
       <div 
         ref={containerRef}
-        className="absolute inset-0 flex flex-col cursor-default px-4 pt-14 pb-8 overflow-hidden"
+        className="absolute inset-0 flex flex-col cursor-default px-2 sm:px-4 pt-12 sm:pt-14 pb-6 sm:pb-8 overflow-hidden"
         style={{ 
           backgroundColor: '#0a0f18',
           backgroundImage: 'radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 60%)'
@@ -389,30 +389,30 @@ const Projects: React.FC = () => {
         <div className="absolute top-0 bottom-0 right-10 w-px bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"></div>
         
         {/* Encabezado */}
-        <div className="w-full flex justify-between items-center mb-6 px-4 border-b border-cyan-500/30 pb-4 relative">
-          {/* Indicador de conexión parpadeante */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center">
+        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 px-2 sm:px-4 border-b border-cyan-500/30 pb-4 relative space-y-4 sm:space-y-0">
+          {/* Indicador de conexión parpadeante - oculto en móviles */}
+          <div className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 items-center">
             <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse mr-2"></div>
-            <div className="text-cyan-400/70 text-xs font-mono">//SYS.CONNECTED</div>
+            <div className="text-cyan-400/70 text-xs font-mono">{uiText.systemConnected}</div>
           </div>
           
-          <h1 ref={headingRef} className="text-4xl font-bold text-cyan-400 ml-32">
+          <h1 ref={headingRef} className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-400 sm:ml-32 w-full sm:w-auto text-center sm:text-left">
             <span className="text-white">&gt;</span> <span className="typing-text"></span><span className="text-white animate-pulse">_</span>
           </h1>
           
           {/* Búsqueda */}
-          <div ref={searchRef} className="relative group">
+          <div ref={searchRef} className="relative group w-full sm:w-auto">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md opacity-30 group-hover:opacity-60 transition-opacity"></div>
             <input
               type="text"
               placeholder={uiText.searchPlaceholder}
-              className="relative bg-black/30 border border-cyan-500/50 text-cyan-100 px-4 py-2 rounded-md w-64
+              className="relative bg-black/30 border border-cyan-500/50 text-cyan-100 px-3 sm:px-4 py-2 rounded-md w-full sm:w-48 md:w-64 text-sm sm:text-base
                         focus:outline-none focus:ring-1 focus:ring-cyan-400 placeholder-cyan-700"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="absolute right-3 top-2.5 text-cyan-500">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -420,9 +420,9 @@ const Projects: React.FC = () => {
         </div>
         
         {/* Filtros */}
-        <div ref={filtersRef} className="flex space-x-2 mb-5 px-4 relative">
+        <div ref={filtersRef} className="flex flex-wrap gap-2 mb-4 sm:mb-5 px-2 sm:px-4 relative">
           <button 
-            className={`px-3 py-1 rounded-md transition-all duration-300 text-sm relative overflow-hidden
+            className={`px-2 sm:px-3 py-1 rounded-md transition-all duration-300 text-xs sm:text-sm relative overflow-hidden
                       ${activeFilter === null ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/20' : 
                       'bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 hover:shadow-md hover:shadow-cyan-500/10'}`}
             onClick={() => {
@@ -433,7 +433,7 @@ const Projects: React.FC = () => {
               setActiveFilter(null);
             }}
           >
-            <span className="relative z-10 ">{uiText.filterAll}</span>
+            <span className="relative z-10">{uiText.filterAll}</span>
             {activeFilter === null && (
               <span className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-cyan-500 opacity-70"></span>
             )}
@@ -441,7 +441,7 @@ const Projects: React.FC = () => {
           {uniqueTypes.map(type => (
             <button 
               key={type} 
-              className={`px-3 py-1 rounded-md transition-all duration-300 text-sm relative overflow-hidden
+              className={`px-2 sm:px-3 py-1 rounded-md transition-all duration-300 text-xs sm:text-sm relative overflow-hidden whitespace-nowrap
                         ${activeFilter === type ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/20' : 
                         'bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 hover:shadow-md hover:shadow-cyan-500/10'}`}
               onClick={() => {
@@ -461,7 +461,7 @@ const Projects: React.FC = () => {
         </div>
       
         {/* Proyectos (Vista de tabla o Vista 3D) */}
-        <div ref={projectsContainerRef} className="relative overflow-hidden flex-1 mx-4 border-pulse">
+        <div ref={projectsContainerRef} className="relative overflow-hidden flex-1 mx-2 sm:mx-4 border-pulse">
           {/* Holograma decorativo */}
           <div ref={hologramRef} className="absolute -top-10 right-4 w-32 h-32 pointer-events-none">
             <div className="relative w-full h-full">
@@ -500,7 +500,7 @@ const Projects: React.FC = () => {
               
               {/* UI decorativa */}
               <div className="absolute top-0 left-0 w-full h-8 flex items-center px-4 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-900/20 via-transparent to-transparent">
-                <div className="text-xs text-cyan-400/70 font-mono">DATABASE//RECORDS: {filteredProjects.length}</div>
+                <div className="text-xs text-cyan-400/70 font-mono">{uiText.databaseRecords} {filteredProjects.length}</div>
                 <div className="ml-auto flex space-x-2 items-center">
                   <div className="w-2 h-2 rounded-full bg-cyan-500/50"></div>
                   <div className="w-2 h-2 rounded-full bg-cyan-500/50"></div>
@@ -510,14 +510,15 @@ const Projects: React.FC = () => {
               
               {/* Contenido de la tabla */}
               <div className="w-full h-full pt-8 overflow-auto custom-scrollbar">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="text-cyan-300 border-b border-cyan-700/50">
-                      <th className="py-4 px-6 w-6"></th>
-                      <th className="py-4 px-6 w-24">{uiText.year}</th>
-                      <th className="py-4 px-6">{uiText.project}</th>
-                      <th className="py-4 px-6">{uiText.agency}</th>
-                      <th className="py-4 px-6">{uiText.type}</th>
+                <div className="hidden md:block">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="text-cyan-300 border-b border-cyan-700/50">
+                        <th className="py-4 px-6 w-6"></th>
+                        <th className="py-4 px-6 w-24">{uiText.year}</th>
+                        <th className="py-4 px-6">{uiText.project}</th>
+                        <th className="py-4 px-6">{uiText.agency}</th>
+                        <th className="py-4 px-6">{uiText.type}</th>
                       <th className="py-4 px-6">{uiText.status}</th>
                       <th className="py-4 px-6 w-16"></th>
                     </tr>
@@ -735,7 +736,199 @@ const Projects: React.FC = () => {
                       </tr>
                     )}
                   </tbody>
-                </table>
+                  </table>
+                </div>
+                
+                {/* Vista móvil - Cards con estilo holográfico */}
+                <div className="block md:hidden space-y-4">
+                  {currentProjects.length > 0 ? (
+                    currentProjects.map(project => (
+                      <div 
+                        key={project.id}
+                        className="project-row relative bg-gradient-to-br from-cyan-900/5 via-black/50 to-cyan-900/10 border border-cyan-500/30 rounded-lg overflow-hidden cursor-pointer group"
+                        onClick={() => {
+                          if (expandedProject !== project.id) {
+                            playClickSound();
+                          }
+                          setExpandedProject(expandedProject === project.id ? null : project.id);
+                        }}
+                      >
+                        {/* Efectos holográficos de fondo */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent"></div>
+                        
+                        {/* Esquinas decorativas */}
+                        <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-cyan-400/60"></div>
+                        <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-cyan-400/60"></div>
+                        <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-cyan-400/60"></div>
+                        <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-cyan-400/60"></div>
+                        
+                        <div className="relative p-4 z-10">
+                          <div className="flex justify-between items-start mb-3">
+                            <div className="flex-1">
+                              {/* Header con año destacado */}
+                              <div className="flex items-center mb-2">
+                                <span className="text-cyan-500 text-xs font-mono bg-cyan-900/30 px-2 py-1 rounded border border-cyan-500/30 mr-3">
+                                  {project.year}
+                                </span>
+                                <div className="flex-1 h-px bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+                              </div>
+                              
+                              <h3 className="text-cyan-300 font-medium text-sm mb-2 font-mono tracking-wide">{project.name}</h3>
+                              
+                              {/* Info grid estilo terminal */}
+                              <div className="grid grid-cols-2 gap-2 text-xs">
+                                <div className="flex items-center">
+                                  <span className="text-cyan-700 mr-1">{uiText.agencyLabel.substring(0, 3)}:</span>
+                                  <span className="text-gray-300">{project.agency}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="text-cyan-700 mr-1">{uiText.typeLabel.substring(0, 4)}:</span>
+                                  <span className="text-gray-300">{project.type}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Botón expandir con efecto holográfico */}
+                            <button
+                              className="ml-3 w-8 h-8 flex items-center justify-center rounded-full bg-cyan-900/40 border border-cyan-500/30 hover:bg-cyan-800/60 hover:border-cyan-400/60 transition-all duration-300 flex-shrink-0 relative overflow-hidden group/btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (expandedProject !== project.id) {
+                                  playClickSound();
+                                }
+                                setExpandedProject(expandedProject === project.id ? null : project.id);
+                              }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/20 to-cyan-400/0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                              <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                className={`h-4 w-4 text-cyan-400 transition-transform duration-300 relative z-10 ${expandedProject === project.id ? 'rotate-180' : ''}`}
+                                fill="none" 
+                                viewBox="0 0 24 24" 
+                                stroke="currentColor"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                          </div>
+                          
+                          {/* Status y botones con diseño futurista */}
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-2">
+                              {/* Status con efecto pulsante */}
+                              <div className={`flex items-center px-2 py-1 rounded text-xs border ${
+                                project.status === 'completed' ? 'bg-green-900/20 text-green-400 border-green-500/40' : 
+                                project.status === 'in-progress' ? 'bg-blue-900/20 text-blue-400 border-blue-500/40' : 
+                                'bg-gray-900/20 text-gray-400 border-gray-500/40'
+                              }`}>
+                                <div className={`w-1.5 h-1.5 rounded-full mr-2 ${
+                                  project.status === 'completed' ? 'bg-green-400' : 
+                                  project.status === 'in-progress' ? 'bg-blue-400 animate-pulse' : 
+                                  'bg-gray-400'
+                                }`}></div>
+                                <span className="font-mono text-xs">
+                                  {project.status === 'completed' ? uiText.statusCompleted : 
+                                   project.status === 'in-progress' ? uiText.statusInProgress : 
+                                   uiText.statusPlanned}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {/* Botón de detalles estilo terminal */}
+                            <button
+                              className="text-cyan-400 hover:text-cyan-300 text-xs px-3 py-1 border border-cyan-500/40 rounded hover:bg-cyan-900/30 hover:border-cyan-400/60 transition-all duration-300 font-mono relative overflow-hidden group/detail"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                playClickSound();
+                                setSelectedProject(project);
+                              }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-cyan-400/0 opacity-0 group-hover/detail:opacity-100 transition-opacity duration-300"></div>
+                              <span className="relative z-10">&gt; {uiText.viewDetails}</span>
+                            </button>
+                          </div>
+                          
+                          {/* Línea de separación con efecto */}
+                          <div className="mt-3 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
+                        </div>
+                        
+                        {/* Contenido expandido móvil con efectos holográficos */}
+                        {expandedProject === project.id && (
+                          <div className="mt-4 pt-4 border-t border-cyan-500/30 space-y-4 relative">
+                            {/* Efecto de escaneo para contenido expandido */}
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent animate-pulse"></div>
+                            
+                            {/* Descripción con estilo terminal */}
+                            <div className="relative">
+                              <div className="text-xs text-cyan-400 mb-2 font-mono uppercase tracking-wider flex items-center">
+                                <span className="text-cyan-700 mr-2">&gt;</span>
+                                DESCRIPCIÓN_PROYECTO
+                                <div className="ml-2 flex-1 h-px bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+                              </div>
+                              <p className="text-sm text-gray-300 leading-relaxed font-light pl-4 border-l border-cyan-500/20">
+                                {project.description}
+                              </p>
+                            </div>
+                            
+                            {/* Tecnologías con diseño futurista */}
+                            {project.technologies && project.technologies.length > 0 && (
+                              <div className="relative">
+                                <div className="text-xs text-cyan-400 mb-3 font-mono uppercase tracking-wider flex items-center">
+                                  <span className="text-cyan-700 mr-2">&gt;</span>
+                                  STACK_TECNOLÓGICO
+                                  <div className="ml-2 flex-1 h-px bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+                                </div>
+                                <div className="flex flex-wrap gap-2 pl-4">
+                                  {project.technologies.map((tech, idx) => (
+                                    <span 
+                                      key={idx} 
+                                      className="relative bg-gradient-to-r from-cyan-900/40 to-cyan-800/40 text-cyan-300 px-3 py-1.5 rounded text-xs border border-cyan-500/30 font-mono hover:border-cyan-400/60 hover:bg-cyan-800/50 transition-all duration-300 cursor-pointer group/tech overflow-hidden"
+                                    >
+                                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-cyan-400/0 opacity-0 group-hover/tech:opacity-100 transition-opacity duration-300"></div>
+                                      <span className="relative z-10">{tech}</span>
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Efectos decorativos adicionales */}
+                            <div className="flex justify-center pt-2">
+                              <div className="flex space-x-1">
+                                <div className="w-1 h-1 bg-cyan-500/60 rounded-full animate-pulse"></div>
+                                <div className="w-1 h-1 bg-cyan-500/40 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                                <div className="w-1 h-1 bg-cyan-500/60 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="py-8 text-center text-gray-500">
+                      <div className="flex flex-col items-center">
+                        <div className="mb-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-cyan-900/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <p className="text-sm">{uiText.noResults}</p>
+                        <button 
+                          className="mt-3 text-cyan-500 hover:text-cyan-400 text-sm cursor-pointer"
+                          onClick={() => { 
+                            playClickSound();
+                            setSearchTerm(''); 
+                            setActiveFilter(null); 
+                          }}
+                        >
+                          {uiText.clearFilters}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           
@@ -743,7 +936,7 @@ const Projects: React.FC = () => {
           {filteredProjects.length > projectsPerPage && (
             <div className="flex justify-center mt-4 space-x-2">
               <button 
-                className="bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 px-3 py-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                className="bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 px-2 sm:px-3 py-1 rounded disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm"
                 onClick={() => {
                   if (currentPage > 1) {
                     playClickSound();
@@ -759,7 +952,7 @@ const Projects: React.FC = () => {
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <button 
                     key={page}
-                    className={`w-8 h-8 flex items-center justify-center rounded ${currentPage === page 
+                    className={`w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded text-xs sm:text-sm ${currentPage === page 
                       ? 'bg-cyan-600 text-white' 
                       : 'bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50'}`}
                     onClick={() => {
@@ -775,7 +968,7 @@ const Projects: React.FC = () => {
               </div>
               
               <button 
-                className="bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 px-3 py-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                className="bg-cyan-900/30 text-cyan-400 hover:bg-cyan-800/50 px-2 sm:px-3 py-1 rounded disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm"
                 onClick={() => {
                   if (currentPage < totalPages) {
                     playClickSound();
@@ -791,7 +984,7 @@ const Projects: React.FC = () => {
         </div>
         
         {/* Pie de página */}
-        <div className="mt-6 text-cyan-700 px-4 flex justify-between items-center text-sm">
+        <div className="mt-4 sm:mt-6 text-cyan-700 px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center text-xs sm:text-sm space-y-2 sm:space-y-0">
           <div className="flex items-center">
             <span className="inline-block w-3 h-3 bg-cyan-900/50 border border-cyan-500/30 mr-2"></span>
             {uiText.projectsFound} {filteredProjects.length}
@@ -805,21 +998,21 @@ const Projects: React.FC = () => {
       
       {/* Panel de detalles del proyecto */}
       {selectedProject && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-10 project-modal">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-10 project-modal p-4">
           <div 
-            className="project-modal-content bg-gradient-to-b from-gray-900 to-gray-950 border border-cyan-500/30 w-11/12 max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg"
-            style={{ maxHeight: '80vh' }}
+            className="project-modal-content bg-gradient-to-b from-gray-900 to-gray-950 border border-cyan-500/30 w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg"
+            style={{ maxHeight: '90vh' }}
           >
             {/* Barra superior con efecto de escáner */}
-            <div className="relative flex justify-between items-center p-4 border-b border-cyan-700/50 bg-gradient-to-r from-cyan-900/30 to-transparent overflow-hidden">
-              <h3 className="text-xl font-bold text-cyan-400 relative z-10 flex items-center">
+            <div className="relative flex justify-between items-center p-3 sm:p-4 border-b border-cyan-700/50 bg-gradient-to-r from-cyan-900/30 to-transparent overflow-hidden">
+              <h3 className="text-lg sm:text-xl font-bold text-cyan-400 relative z-10 flex items-center truncate pr-2">
                 {selectedProject.name}
               </h3>
               <button 
                 onClick={() => setSelectedProject(null)} 
-                className="text-cyan-400 hover:text-white transition-colors relative z-10"
+                className="text-cyan-400 hover:text-white transition-colors relative z-10 flex-shrink-0"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -831,7 +1024,7 @@ const Projects: React.FC = () => {
               </div>
             </div>
             
-            <div className="p-6 custom-scrollbar overflow-auto" style={{ maxHeight: 'calc(80vh - 60px)' }}>
+            <div className="p-4 sm:p-6 custom-scrollbar overflow-auto" style={{ maxHeight: 'calc(90vh - 60px)' }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Imagen del proyecto con overlay futurista */}
                 <div className="aspect-video bg-black/50 rounded overflow-hidden flex items-center justify-center border border-cyan-900/50 relative">
@@ -1063,6 +1256,40 @@ const Projects: React.FC = () => {
         
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(34, 211, 238, 0.5);
+        }
+        
+        /* Efectos holográficos para cards móviles */
+        .project-row {
+          box-shadow: 
+            0 0 10px rgba(34, 211, 238, 0.1),
+            inset 0 1px 0 rgba(34, 211, 238, 0.1);
+        }
+        
+        .project-row:hover {
+          box-shadow: 
+            0 0 20px rgba(34, 211, 238, 0.2),
+            0 0 40px rgba(34, 211, 238, 0.1),
+            inset 0 1px 0 rgba(34, 211, 238, 0.2);
+          transform: translateY(-1px);
+        }
+        
+        @keyframes hologram-flicker {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
+        }
+        
+        .hologram-effect {
+          animation: hologram-flicker 2s infinite ease-in-out;
+        }
+        
+        @keyframes data-stream {
+          0% { transform: translateX(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .data-stream {
+          animation: data-stream 3s infinite linear;
         }
       `}} />
     </>

@@ -110,9 +110,15 @@ const HamburgerMinimal: React.FC = () => {
   useEffect(() => {
     if (isOpen) {
       gsap.to('.hamburger-menu', { height: 'auto', opacity: 1, duration: 0.25, ease: 'power2.out' });
+      // Prevenir scroll del body en móviles cuando el menú esté abierto
+      if (window.innerWidth <= 640) {
+        document.body.style.overflow = 'hidden';
+      }
     } else {
       gsap.to('.hamburger-menu', { height: 0, opacity: 0, duration: 0.2, ease: 'power2.in' });
       setExpandedSection(null); // Cerrar secciones expandidas cuando se cierre el menú
+      // Restaurar scroll del body
+      document.body.style.overflow = 'unset';
     }
   }, [isOpen]);
 
@@ -157,24 +163,31 @@ const HamburgerMinimal: React.FC = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, expandedSection, toggleSection]);
 
+  // Cleanup al desmontar el componente
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   return (
     <>
-      <header className="hamburger-header fixed top-0 right-0 z-50 p-3 bg-transparent">
+      <header className="hamburger-header fixed top-0 right-0 z-50 p-2 sm:p-3 bg-transparent">
         <button
           onClick={toggleMenu}
-          className="hamburger-btn pointer-events-auto flex flex-col justify-center items-center w-8 h-8 space-y-1 transition-all duration-300 cursor-pointer"
+          className="hamburger-btn pointer-events-auto flex flex-col justify-center items-center w-11 h-11 sm:w-8 sm:h-8 space-y-0.5 sm:space-y-1 transition-all duration-300 cursor-pointer"
           aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
         >
           <span 
-            className={`block h-0.5 w-6 transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-1.5' : ''}`}
+            className={`block h-0.5 w-5 sm:w-6 transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-1 sm:translate-y-1.5' : ''}`}
             style={{ backgroundColor: themeColors.primary }}
           />
           <span 
-            className={`block h-0.5 w-6 transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}
+            className={`block h-0.5 w-5 sm:w-6 transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}
             style={{ backgroundColor: themeColors.primary }}
           />
           <span 
-            className={`block h-0.5 w-6 transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-1.5' : ''}`}
+            className={`block h-0.5 w-5 sm:w-6 transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-1 sm:-translate-y-1.5' : ''}`}
             style={{ backgroundColor: themeColors.primary }}
           />
         </button>
@@ -183,17 +196,17 @@ const HamburgerMinimal: React.FC = () => {
       {isOpen && <div className="fixed inset-0 bg-black/40 z-40" onClick={() => setIsOpen(false)} />}
 
       <nav 
-        className={`hamburger-menu fixed top-14 right-0 z-50 bg-black/95 border overflow-hidden ${isOpen ? 'block' : 'hidden'}`}
+        className={`hamburger-menu fixed top-12 sm:top-14 right-0 z-50 bg-black/95 border overflow-hidden ${isOpen ? 'block' : 'hidden'}`}
         style={{ borderColor: `rgba(${themeColors.primaryRgb}, 0.2)` }}
       >
-        <div className="w-80 max-h-[80vh] overflow-y-auto">
-          <div className="p-4 space-y-2">
+        <div className="w-full sm:w-80 md:w-96 max-w-[95vw] max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
+          <div className="p-3 sm:p-4 space-y-1 sm:space-y-2">
             {menuItems.map((item, index) => (
               <div key={index} className="border-b border-white/10 last:border-b-0">
                 <button
                   onClick={() => toggleSection(item.label)}
                   disabled={item.disabled}
-                  className={`menu-item block w-full text-left px-4 py-3 font-mono transition-all duration-200 border border-transparent hover:border-opacity-30 ${
+                  className={`menu-item block w-full text-left px-3 sm:px-4 py-2 sm:py-3 font-mono text-sm sm:text-base transition-all duration-200 border border-transparent hover:border-opacity-30 ${
                     item.disabled
                       ? 'text-gray-600 cursor-not-allowed'
                       : ''
@@ -206,8 +219,8 @@ const HamburgerMinimal: React.FC = () => {
                   } as React.CSSProperties : {}}
                 >
                   <span className="flex items-center justify-between">
-                    <span className="flex items-center gap-3">
-                      {item.icon && <span className="text-sm">{item.icon}</span>}
+                    <span className="flex items-center gap-2 sm:gap-3">
+                      {item.icon && <span className="text-xs sm:text-sm">{item.icon}</span>}
                       <span>{'>'} {item.label}</span>
                     </span>
                     <span className={`text-xs transition-transform duration-200 ${
@@ -221,17 +234,17 @@ const HamburgerMinimal: React.FC = () => {
                 {/* Sección expandible */}
                 {expandedSection === item.label && sectionContent[item.label as keyof typeof sectionContent] && (
                   <div 
-                    className={`expanded-section-${item.label} section-content px-4 pb-4 pt-2 bg-black/50 border-l-2 ml-4 overflow-hidden`}
+                    className={`expanded-section-${item.label} section-content px-3 sm:px-4 pb-3 sm:pb-4 pt-2 bg-black/50 border-l-2 ml-3 sm:ml-4 overflow-hidden`}
                     style={{ borderLeftColor: `rgba(${themeColors.primaryRgb}, 0.2)` }}
                   >
                     <h3 
-                      className="font-mono text-sm mb-2"
+                      className="font-mono text-xs sm:text-sm mb-2"
                       style={{ color: themeColors.text }}
                     >
                       {sectionContent[item.label as keyof typeof sectionContent].title}
                     </h3>
                     <p 
-                      className="font-mono text-xs mb-4 leading-relaxed"
+                      className="font-mono text-xs mb-3 sm:mb-4 leading-relaxed"
                       style={{ color: themeColors.textSecondary }}
                     >
                       {sectionContent[item.label as keyof typeof sectionContent].description}
@@ -239,7 +252,7 @@ const HamburgerMinimal: React.FC = () => {
                     
                     {/* Tips section - solo para Home */}
                     {sectionContent[item.label as keyof typeof sectionContent].tips && (
-                      <div className="mb-4">
+                      <div className="mb-3 sm:mb-4">
                         <h4 
                           className="font-mono text-xs mb-2 opacity-80"
                           style={{ color: themeColors.text }}
@@ -254,10 +267,10 @@ const HamburgerMinimal: React.FC = () => {
                               style={{ color: themeColors.textSecondary }}
                             >
                               <span 
-                                className="inline-block w-1.5 h-1.5 rounded-full mr-2 mt-1.5 flex-shrink-0"
+                                className="inline-block w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full mr-2 mt-1.5 flex-shrink-0"
                                 style={{ backgroundColor: themeColors.primary }}
                               ></span>
-                              {tip}
+                              <span className="text-xs leading-relaxed">{tip}</span>
                             </li>
                           ))}
                         </ul>
@@ -266,7 +279,7 @@ const HamburgerMinimal: React.FC = () => {
                     
                     <button
                       onClick={() => handleNavigate(item.action)}
-                      className="w-full font-mono text-xs py-2 px-4 border transition-all duration-200 hover:shadow-lg cursor-pointer"
+                      className="w-full font-mono text-xs py-2 px-3 sm:px-4 border transition-all duration-200 hover:shadow-lg cursor-pointer"
                       style={{
                         backgroundColor: `rgba(${themeColors.primaryRgb}, 0.1)`,
                         color: themeColors.text,
@@ -293,16 +306,16 @@ const HamburgerMinimal: React.FC = () => {
           
           {/* Terminal-style footer */}
           <div 
-            className="p-4 border-t"
+            className="p-3 sm:p-4 border-t"
             style={{ borderTopColor: `rgba(${themeColors.primaryRgb}, 0.2)` }}
           >
             <div 
               className="font-mono text-xs space-y-1"
               style={{ color: themeColors.textSecondary }}
             >
-              <div>{headerData.footer.session}</div>
-              <div>{headerData.footer.status}</div>
-              <div style={{ color: themeColors.text }}>{headerData.footer.escHint}</div>
+              <div className="truncate">{headerData.footer.session}</div>
+              <div className="truncate">{headerData.footer.status}</div>
+              <div className="truncate" style={{ color: themeColors.text }}>{headerData.footer.escHint}</div>
             </div>
           </div>
         </div>

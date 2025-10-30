@@ -23,7 +23,12 @@ export const projectsEs: ProjectsData = {
     statusCompleted: "Completado",
     statusInProgress: "En progreso",
     statusPlanned: "Planificado",
-    clearFilters: "Limpiar filtros"
+    clearFilters: "Limpiar filtros",
+    viewDetails: "VER_DETALLES",
+    agencyLabel: "AGENCIA",
+    typeLabel: "TIPO",
+    databaseRecords: "BASE_DE_DATOS//REGISTROS:",
+    systemConnected: "//SYS.CONECTADO"
   },
   projects: [
     { 
