@@ -6,6 +6,7 @@ import { ErrorBoundary } from "../ErrorBoundary";
 import { gsap } from "../../lib/gsap";
 import * as THREE from "three";
 import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+import { useLanguage } from "../../context/LanguageContext";
 
 import CameraController from "./CameraController";
 import KeyboardController from "./desktop/KeyboardController";
@@ -179,10 +180,26 @@ useEffect(() => {
 }
 
 function LoadingScreen() {
+  const { language } = useLanguage();
+  
+  const messages = {
+    es: {
+      loading: "Cargando escena 3D...",
+      recommendation: "Si la escena no aparece después de un momento, se recomienda recargar la página hasta que aparezca."
+    },
+    en: {
+      loading: "Loading 3D scene...",
+      recommendation: "If the scene doesn't appear after a moment, we recommend refreshing the page until it appears."
+    }
+  };
+
+  const currentMessages = messages[language as keyof typeof messages];
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-neutral-900 text-white">
-      <div className="text-center">
-        <p className="text-xl animate-pulse">Cargando escena 3D...</p>
+      <div className="text-center max-w-md px-4">
+        <p className="text-xl animate-pulse mb-4">{currentMessages.loading}</p>
+        <p className="text-sm text-gray-400 leading-relaxed">{currentMessages.recommendation}</p>
       </div>
     </div>
   );
