@@ -30,8 +30,22 @@ export default function CameraController() {
       window.dispatchEvent(new CustomEvent("focusMode", { detail: isWindows }));
 
       if (isWindows) {
-        // POV especial de Windows
-        animateCameraToView(perspectiveCamera, controlsRef.current, CAMERA_VIEWS.windows);
+        // Detectar el tamaño de pantalla y elegir la vista apropiada
+        const screenWidth = window.innerWidth;
+        let windowsView;
+        
+        if (screenWidth <= 420) {
+          // Pantallas ultra pequeñas (360px y menos)
+          windowsView = CAMERA_VIEWS.windowsUltraSmall;
+        } else if (screenWidth <= 683) {
+          // Pantallas móviles (683px y menos)
+          windowsView = CAMERA_VIEWS.windowsMobile;
+        } else {
+          // Pantallas grandes (escritorio)
+          windowsView = CAMERA_VIEWS.windows;
+        }
+        
+        animateCameraToView(perspectiveCamera, controlsRef.current, windowsView);
       } else {
         // Restaurar POV normal
         animateCameraToView(perspectiveCamera, controlsRef.current, CAMERA_VIEWS.desktop);
