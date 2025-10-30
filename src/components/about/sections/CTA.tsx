@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../../../context/LanguageContext';
@@ -13,12 +14,29 @@ interface CTAProps {
 
 export const CTA: React.FC<CTAProps> = ({ className = '' }) => {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const data = language === 'es' ? aboutEs.cta : aboutEn.cta;
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const particleRef = useRef<HTMLDivElement>(null);
+
+  // Función para navegar a proyectos
+  const handleViewProjects = () => {
+    navigate('/projects');
+  };
+
+  // Función para descargar CV
+  const handleDownloadCV = () => {
+    const cvPath = '/docs/adrian alejos garcia cv.pdf';
+    const link = document.createElement('a');
+    link.href = cvPath;
+    link.download = 'Adrian_Alejos_Garcia_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current || !statsRef.current) return;
@@ -175,12 +193,18 @@ export const CTA: React.FC<CTAProps> = ({ className = '' }) => {
 
             {/* Botones de acción cinematográficos */}
             <div className="flex flex-col sm:flex-row gap-6 pt-8">
-              <button className="group relative px-8 py-4 bg-green-300 text-black font-medium rounded-full hover:bg-green-400 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-400 focus:ring-offset-0">
-                <span className="relative z-10 tracking-wide">{data.buttons.primary}</span>
+              <button 
+                onClick={handleViewProjects}
+                className="group relative px-8 py-4 bg-green-300 text-black font-medium rounded-full hover:bg-green-400 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-400 focus:ring-offset-0 cursor-pointer"
+              >
+                <span className="relative z-10 tracking-wide cursor-pointer">{data.buttons.primary}</span>
               </button>
               
-              <button className="group relative px-8 py-4 border border-green-300/50 text-green-300 font-medium rounded-full hover:border-green-300 hover:bg-green-300/5 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-400 focus:ring-offset-0">
-                <span className="relative z-10 tracking-wide">{data.buttons.secondary}</span>
+              <button 
+                onClick={handleDownloadCV}
+                className="group relative px-8 py-4 border border-green-300/50 text-green-300 font-medium rounded-full hover:border-green-300 hover:bg-green-300/5 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-400 focus:ring-offset-0 cursor-pointer"
+              >
+                <span className="relative z-10 tracking-wide cursor-pointer">{data.buttons.secondary}</span>
               </button>
             </div>
           </div>
