@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 
 type RetroWindowProps = {
   id: string;
@@ -37,18 +37,28 @@ export default function RetroWindow({
     }
   }, [children, savedContent]);
 
-  // Calcular límites dinámicamente
+  // Calcular límites dinámicamente - limitado al área visible del escritorio Windows 98
   useEffect(() => {
     const updateBounds = () => {
       const taskbarHeight = 55;
-      const windowWidth = Math.min(1500, window.innerWidth * 0.95);
-      const windowHeight = Math.min(800, window.innerHeight * 0.85);
+      
+      // Usar las dimensiones reales del viewport donde se renderiza el desktop
+      const desktopWidth = window.innerWidth;
+      const desktopHeight = window.innerHeight;
+      
+      // Usar exactamente las mismas dimensiones que en el estilo de la ventana
+      const windowWidth = Math.min(1500, desktopWidth * 0.95); // min(1500px, 95vw)
+      const windowHeight = Math.min(800, desktopHeight * 0.85); // min(800px, 85vh)
+      
+      // Restricción más estricta para el lado derecho - reducir libertad de movimiento
+      const rightMargin = 300; // Margen mucho más amplio para limitar el lado derecho (50 + 300)
+      const bottomMargin = -500; // Margen negativo para permitir más movimiento hacia abajo
       
       setBounds({
-        left: 0,
-        top: 0,
-        right: Math.max(0, window.innerWidth - windowWidth),
-        bottom: Math.max(0, window.innerHeight - taskbarHeight - windowHeight),
+        left: 0, // No permitir que se salga por la izquierda
+        top: 0, // No permitir que se salga por arriba
+        right: Math.max(0, desktopWidth - windowWidth - rightMargin), // Restricción muy estricta derecha
+        bottom: Math.max(0, desktopHeight - taskbarHeight - windowHeight - bottomMargin), // Mayor rango hacia abajo
       });
     };
 
@@ -164,6 +174,37 @@ export default function RetroWindow({
     </div>
   );
 
+  // Handler para verificar posición durante el arrastre
+  const handleDrag = (_e: DraggableEvent, data: DraggableData) => {
+    const desktopWidth = window.innerWidth;
+    const desktopHeight = window.innerHeight;
+    const taskbarHeight = 55;
+    const windowWidth = Math.min(1500, desktopWidth * 0.95);
+    const windowHeight = Math.min(800, desktopHeight * 0.85);
+    
+    // Verificar que no se salga por la derecha - con restricción adicional de 300px
+    const rightLimit = desktopWidth - windowWidth - 300;
+    if (data.x > rightLimit) {
+      data.x = rightLimit;
+    }
+    
+    // Verificar que no se salga por abajo - permitir mayor rango
+    const bottomLimit = desktopHeight - taskbarHeight - windowHeight + 200; // Permitir 200px más hacia abajo
+    if (data.y > bottomLimit) {
+      data.y = bottomLimit;
+    }
+    
+    // Verificar que no se salga por la izquierda
+    if (data.x < 0) {
+      data.x = 0;
+    }
+    
+    // Verificar que no se salga por arriba
+    if (data.y < 0) {
+      data.y = 0;
+    }
+  };
+
   return isMaximized ? (
     WindowContent
   ) : (
@@ -172,6 +213,7 @@ export default function RetroWindow({
       handle=".retro-window-titlebar"
       defaultPosition={{ x: 100, y: 100 }}
       onStart={onFocus}
+      onDrag={handleDrag}
       bounds={bounds}
     >
       {WindowContent}
