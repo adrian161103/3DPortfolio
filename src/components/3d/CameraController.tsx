@@ -35,8 +35,8 @@ export default function CameraController() {
         let windowsView;
         
         if (screenWidth <= 420) {
-          // Pantallas ultra pequeñas (360px y menos)
-          windowsView = CAMERA_VIEWS.windowsUltraSmall;
+          // Pantallas ultra pequeñas (420px y menos) - usar medidas de console para mejor navegación
+          windowsView = CAMERA_VIEWS.console;
         } else if (screenWidth <= 683) {
           // Pantallas móviles (683px y menos)
           windowsView = CAMERA_VIEWS.windowsMobile;
